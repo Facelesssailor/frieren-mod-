@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AMA",
+    "MPM",
+    "AMA"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "M": {
+      "item": "minecraft:echo_shard"
+    },
+    "P": {
+      "item": "frieren_arcana:barrier_device_2"
+    }
+  },
+  "result": {
+    "id": "frieren_arcana:barrier_device_3",
+    "count": 1
+  }
+}

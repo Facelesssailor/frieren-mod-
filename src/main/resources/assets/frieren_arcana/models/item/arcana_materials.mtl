@@ -1,0 +1,54 @@
+newmtl ivory
+Ka 0 0 0
+Kd 1 1 1
+map_Kd #materials
+
+newmtl bronze
+Ka 0 0 0
+Kd 1 1 1
+map_Kd #materials
+
+newmtl silver
+Ka 0 0 0
+Kd 1 1 1
+map_Kd #materials
+
+newmtl leather
+Ka 0 0 0
+Kd 1 1 1
+map_Kd #materials
+
+newmtl ruby
+Ka 0.25 0.25 0.25
+Kd 1 1 1
+map_Kd #materials
+
+newmtl amethyst
+Ka 0.25 0.25 0.25
+Kd 1 1 1
+map_Kd #materials
+
+newmtl cyan
+Ka 0.25 0.25 0.25
+Kd 1 1 1
+map_Kd #materials
+
+newmtl azure
+Ka 0.25 0.25 0.25
+Kd 1 1 1
+map_Kd #materials
+
+newmtl crimson
+Ka 0.25 0.25 0.25
+Kd 1 1 1
+map_Kd #materials
+
+newmtl gold
+Ka 0 0 0
+Kd 1 1 1
+map_Kd #materials
+
+newmtl obsidian
+Ka 0 0 0
+Kd 1 1 1
+map_Kd #materials

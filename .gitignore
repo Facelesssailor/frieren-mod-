@@ -1,0 +1,8 @@
+# build output and local tooling caches
+build/
+out/
+*.class
+.gradle/
+.idea/
+*.iml
+.DS_Store

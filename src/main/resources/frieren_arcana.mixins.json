@@ -1,0 +1,24 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.pete.frierenarcana.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "EntityBarrierMixin",
+    "ServerPlayerBarrierMixin",
+    "ConnectionBarrierMixin",
+    "LevelBarrierMixin",
+    "FluidBarrierMixin",
+    "IronProjectileBarrierMixin",
+    "RayBarrierMixin",
+    "CinematicBeamBarrierMixin"
+  ],
+  "client": [
+    "WeatherBarrierMixin",
+    "ClientRainBarrierMixin",
+    "FallingRainBarrierMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
