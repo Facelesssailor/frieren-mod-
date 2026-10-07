@@ -208,7 +208,7 @@ public final class ArcanaClient {
                 }
 
                 long now = System.nanoTime();
-                FRACTURES.removeIf(fx -> (double)(now - fx.startNanos) / 1.0E9 > 2.0);
+                FRACTURES.removeIf(fx -> (double)(now - fx.startNanos) / 1.0E9 > 3.2);
 
                 for (ArcanaClient.Fracture fx : FRACTURES) {
                     fracture(fill, matrix, fx, time, (double)(now - fx.startNanos) / 1.0E9);
@@ -587,13 +587,13 @@ public final class ArcanaClient {
     }
 
     private static void fracture(VertexConsumer out, Matrix4f m, ArcanaClient.Fracture f, double time, double age) {
-        sphere(out, m, f.field, time, Math.max(0.001, age - 0.55));
+        sphere(out, m, f.field, time, Math.max(0.001, age - 0.9));
         Vec3 n = f.impact.subtract(f.field.center).normalize();
         Vec3 u = n.cross(Math.abs(n.y) < 0.9 ? new Vec3(0.0, 1.0, 0.0) : new Vec3(1.0, 0.0, 0.0)).normalize();
         Vec3 v = n.cross(u);
         double propagation = Math.min(Math.PI, age * 7.0);
         double radius = (double)f.field.radius + 0.08;
-        float alpha = (float)Math.max(0.0, 1.0 - age / 2.0);
+        float alpha = (float)Math.max(0.0, 1.0 - age / 3.2);
 
         for (int ray = 0; ray < 15; ray++) {
             double angle = (double)ray * Math.PI * 2.0 / 15.0;
@@ -619,8 +619,8 @@ public final class ArcanaClient {
         Vec3 v = n.cross(u);
         double propagation = Math.min(Math.PI, age * 7.0);
         double width = Math.min(3.0, (double)f.field.radius * 0.045);
-        double drift = Math.max(0.0, age - 0.55);
-        float alpha = (float)Math.max(0.0, 0.45 * (1.0 - age / 2.0));
+        double drift = Math.max(0.0, age - 0.9);
+        float alpha = (float)Math.max(0.0, 0.45 * (1.0 - age / 3.2));
 
         for (int i = 0; i < 64; i++) {
             double a = (double)i * 2.39996;

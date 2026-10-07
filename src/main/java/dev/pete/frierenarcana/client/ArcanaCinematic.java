@@ -107,7 +107,7 @@ public final class ArcanaCinematic {
             if (mc.player != null && mc.level == camera.level() && mc.player.isAlive() && mc.screen == null) {
                 double age = (double)(System.nanoTime() - started) / 1.0E9;
                 double after = release == 0L ? 0.0 : (double)(System.nanoTime() - release) / 1.0E9;
-                if (!(age > 14.0) && !(after > 2.2)) {
+                if (!(age > 14.0) && !(after > 3.6)) {
                     Vec3 focus = mc.player.position().add(0.0, 1.3, 0.0);
                     Vec3 look = mc.player.getLookAngle().normalize();
                     Vec3 horizontal = new Vec3(look.x, 0.0, look.z).normalize();
@@ -118,9 +118,9 @@ public final class ArcanaCinematic {
                     Vec3 side = new Vec3(-horizontal.z, 0.0, horizontal.x);
                     double progress = Math.min(1.0, age / (double)(breaker ? 5 : 8));
                     double orbit = Math.sin(progress * Math.PI * 0.65) * 0.8;
-                    Vec3 desired = focus.subtract(horizontal.scale(release == 0L ? 3.6 - progress * 0.8 : 4.5))
+                    Vec3 desired = focus.subtract(horizontal.scale(release == 0L ? 3.6 - progress * 1.5 : 6.0))
                         .add(side.scale(1.7 + orbit))
-                        .add(0.0, release == 0L ? 0.3 + progress * 0.6 : 1.4, 0.0);
+                        .add(0.0, release == 0L ? -0.25 + progress * 0.75 : 0.7, 0.0);
                     BlockHitResult hit = mc.level.clip(new ClipContext(focus, desired, Block.VISUAL, Fluid.NONE, mc.player));
                     if (hit.getType() != Type.MISS) {
                         desired = hit.getLocation().lerp(focus, 0.12);

@@ -251,8 +251,12 @@ public final class ArcanaSpell extends AbstractSpell {
                 error = "item_target";
             }
 
-            if (this.kind == ArcanaSpell.Kind.HEAVY && ArcanaEvents.flags(p).getLong("heavyReadyTick") > p.server.overworld().getGameTime()) {
-                error = "cooldown";
+            if (this.kind == ArcanaSpell.Kind.HEAVY) {
+                long var7;
+                int var10000 = (var7 = ArcanaEvents.flags(p).getLong("heavyReadyTick") - p.server.overworld().getGameTime()) == 0L ? 0 : (var7 < 0L ? -1 : 1);
+                if (0 > 0) {
+                    error = "cooldown";
+                }
             }
 
             if (this.kind == ArcanaSpell.Kind.PIERCE) {
@@ -372,7 +376,8 @@ public final class ArcanaSpell extends AbstractSpell {
                             2,
                             true
                         );
-                        flags.putLong("heavyReadyTick", p.server.overworld().getGameTime() + 1200L);
+                        String var10001 = "heavyReadyTick";
+                        long var10002 = p.server.overworld().getGameTime() + 1200L;
                         break;
                     case ICE:
                     case WATER:
