@@ -83,7 +83,7 @@ public final class SeatedFlight {
             var3.scale(var5, var5, var5);
             Minecraft.getInstance()
                 .getItemRenderer()
-                .renderStatic(var2, ItemDisplayContext.NONE, var0.getPackedLight(), 0, var3, var0.getMultiBufferSource(), Minecraft.getInstance().level, 0);
+                .renderStatic(var2, ItemDisplayContext.NONE, var0.getPackedLight(), 655360, var3, var0.getMultiBufferSource(), Minecraft.getInstance().level, 0);
             var3.popPose();
         }
     }

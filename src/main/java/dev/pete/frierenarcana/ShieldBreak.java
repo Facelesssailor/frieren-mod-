@@ -2,7 +2,6 @@ package dev.pete.frierenarcana;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -32,11 +31,20 @@ public final class ShieldBreak {
         BarrierData.Field var4 = var0.firstBoundary(var1, var2, var3);
         ServerPlayer var5 = ctxPlayer;
         ctxPlayer = null;
-        if (var4 != null) {
-            Objects.requireNonNull(var4);
+        if (var4 != null && var4.defensive && var5 != null && (var4.owner == null || !var4.owner.equals(var5.getUUID()))) {
+            Vec3 var6 = var1.subtract(var4.center);
+            Vec3 var7 = var2.subtract(var1);
+            double var8 = BarrierGeometry.firstHit(var6.x, var6.y, var6.z, var7.x, var7.y, var7.z, (double)var4.radius);
+            if (!Double.isFinite(var8)) {
+                return var4;
+            } else {
+                Vec3 var10 = var1.add(var7.scale(Math.max(0.0, Math.min(1.0, var8))));
+                hit(var5.serverLevel(), var4, var10, attack(ctxLevel, ctxStyle), ctxStyle == 1 || ctxStyle == 99);
+                return var4;
+            }
+        } else {
+            return var4;
         }
-
-        return var4;
     }
 
     static int attack(int var0, int var1) {
@@ -63,7 +71,7 @@ public final class ShieldBreak {
         } catch (Throwable var3) {
         }
 
-        return Math.max(1, Math.min(5, 0 - var1 + 1));
+        return Math.max(1, Math.min(5, var0.radius - var1 + 1));
     }
 
     private static void hit(ServerLevel var0, BarrierData.Field var1, Vec3 var2, int var3, boolean var4) {

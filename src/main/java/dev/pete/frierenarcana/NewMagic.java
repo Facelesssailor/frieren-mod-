@@ -25,7 +25,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public final class NewMagic {
     public static final double FORM = 1.0;
     public static final double SPEED = 12.0;
-    public static final double HOLD = 2.4;
+    public static final double HOLD = 3.2;
     public static final double COLLAPSE = 0.8;
     private static final List<NewMagic.Hole> HOLES = new ArrayList<>();
 
@@ -66,47 +66,52 @@ public final class NewMagic {
     @SubscribeEvent
     public static void tick(Post var0) {
         if (var0.getLevel() instanceof ServerLevel var1 && !HOLES.isEmpty()) {
-            long var19 = var1.getGameTime();
+            long var21 = var1.getGameTime();
             Iterator var4 = HOLES.iterator();
 
             while (var4.hasNext()) {
                 NewMagic.Hole var5 = (NewMagic.Hole)var4.next();
                 if (var5.level == var1) {
-                    double var6 = (double)(var19 - var5.start) / 20.0;
+                    double var6 = (double)(var21 - var5.start) / 20.0;
                     Vec3 var8 = var5.at(var6);
-                    double var9 = (var6 < 1.0 ? 2.0 : 6.0) + 1.5 * (double)var5.lvl;
-                    boolean var11 = var5.owner.isAlive();
+                    double var9 = BlackHoleShape.grow(var5.hold(var6));
+                    double var11 = (var6 < 1.0 ? 2.0 : 6.0 + 3.0 * var9) + 1.5 * (double)var5.lvl;
+                    boolean var13 = var5.owner.isAlive();
 
-                    for (LivingEntity var13 : var1.getEntitiesOfClass(LivingEntity.class, new AABB(var8, var8).inflate(var9), var1x -> foe(var5.owner, var1x))) {
-                        Vec3 var14 = var8.subtract(var13.getBoundingBox().getCenter());
-                        double var15 = var14.length();
-                        if (!(var15 > var9) && !(var15 < 0.001)) {
-                            double var17 = 0.07 + 0.24 * (1.0 - var15 / var9);
-                            var13.setDeltaMovement(var13.getDeltaMovement().scale(0.82).add(var14.scale(var17 / var15)));
-                            var13.hurtMarked = true;
-                            var13.fallDistance = 0.0F;
-                            if (var15 < 2.0 && (var19 - var5.start) % 10L == 0L && var11) {
-                                NewSpell.hurt(var5.spell, var5.owner, var13, var5.power * 0.35F);
+                    for (LivingEntity var15 : var1.getEntitiesOfClass(LivingEntity.class, new AABB(var8, var8).inflate(var11), var1x -> foe(var5.owner, var1x))) {
+                        Vec3 var16 = var8.subtract(var15.getBoundingBox().getCenter());
+                        double var17 = var16.length();
+                        if (!(var17 > var11) && !(var17 < 0.001)) {
+                            double var19 = 0.07 + 0.24 * (1.0 - var17 / var11);
+                            var15.setDeltaMovement(var15.getDeltaMovement().scale(0.82).add(var16.scale(var19 / var17)));
+                            var15.hurtMarked = true;
+                            var15.fallDistance = 0.0F;
+                            if (var17 < 1.2 + 2.0 * var9 && (var21 - var5.start) % 10L == 0L && var13) {
+                                NewSpell.hurt(var5.spell, var5.owner, var15, var5.power * 0.35F);
                             }
                         }
                     }
 
                     if (var6 >= var5.end()) {
-                        for (LivingEntity var21 : var1.getEntitiesOfClass(
-                            LivingEntity.class, new AABB(var5.b, var5.b).inflate(3.5), var1x -> foe(var5.owner, var1x)
-                        )) {
-                            Vec3 var22 = var21.getBoundingBox().getCenter().subtract(var5.b);
-                            if (var11) {
-                                NewSpell.hurt(var5.spell, var5.owner, var21, var5.power * 1.6F);
-                            }
+                        Vec3 var22 = BlackHoleShape.center(var5.b, var5.rise, 1.0);
 
-                            Vec3 var23 = var22.lengthSqr() < 1.0E-4 ? new Vec3(0.0, 1.0, 0.0) : var22.normalize();
-                            var21.setDeltaMovement(var23.scale(1.1).add(0.0, 0.35, 0.0));
-                            var21.hurtMarked = true;
+                        for (LivingEntity var24 : var1.getEntitiesOfClass(
+                            LivingEntity.class, new AABB(var22, var22).inflate(5.0), var1x -> foe(var5.owner, var1x)
+                        )) {
+                            Vec3 var25 = var24.getBoundingBox().getCenter().subtract(var22);
+                            if (!(var25.length() > 5.0)) {
+                                if (var13) {
+                                    NewSpell.hurt(var5.spell, var5.owner, var24, var5.power * 1.6F);
+                                }
+
+                                Vec3 var18 = var25.lengthSqr() < 1.0E-4 ? new Vec3(0.0, 1.0, 0.0) : var25.normalize();
+                                var24.setDeltaMovement(var18.scale(1.1).add(0.0, 0.35, 0.0));
+                                var24.hurtMarked = true;
+                            }
                         }
 
-                        ArcanaNetwork.effect(var1, var5.b, 25, var5.lvl);
-                        var1.playSound(null, BlockPos.containing(var5.b), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 2.0F, 0.5F);
+                        ArcanaNetwork.effect(var1, var22, 25, var5.lvl);
+                        var1.playSound(null, BlockPos.containing(var22), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 2.0F, 0.5F);
                         var4.remove();
                     }
                 }
@@ -163,6 +168,7 @@ public final class NewMagic {
         final float power;
         final long start;
         final double travel;
+        final double rise;
 
         Hole(ServerPlayer var1, ServerLevel var2, Vec3 var3, Vec3 var4, NewSpell var5, int var6, float var7, long var8) {
             this.owner = var1;
@@ -174,14 +180,23 @@ public final class NewMagic {
             this.power = var7;
             this.start = var8;
             this.travel = NewMagic.travel(var3.distanceTo(var4));
+            this.rise = BlackHoleShape.rise(var2, var4);
+        }
+
+        double hold(double var1) {
+            return Math.max(0.0, Math.min(1.0, (var1 - 1.0 - this.travel) / 3.2));
         }
 
         Vec3 at(double var1) {
-            return var1 <= 1.0 ? this.a : this.a.lerp(this.b, Math.min(1.0, (var1 - 1.0) / this.travel));
+            if (var1 <= 1.0) {
+                return this.a;
+            } else {
+                return var1 < 1.0 + this.travel ? this.a.lerp(this.b, (var1 - 1.0) / this.travel) : BlackHoleShape.center(this.b, this.rise, this.hold(var1));
+            }
         }
 
         double end() {
-            return 1.0 + this.travel + 2.4;
+            return 1.0 + this.travel + 3.2;
         }
     }
 }

@@ -1,6 +1,7 @@
 package dev.pete.frierenarcana.client;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import dev.pete.frierenarcana.BlackHoleShape;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -25,7 +26,7 @@ public final class SpellFx {
     static final CircleArt.Look SHIELD_C = new CircleArt.Look(CircleArt.Design.BARRIER, 0.92F, 0.97F, 1.0F, 0.45F, 0.75F, 1.0F);
     static final double BH_FORM = 1.0;
     static final double BH_SPEED = 12.0;
-    static final double BH_HOLD = 2.4;
+    static final double BH_HOLD = 3.2;
     static final double BH_COLLAPSE = 0.8;
 
     private SpellFx() {
@@ -48,7 +49,7 @@ public final class SpellFx {
             case 6:
                 return 0.6;
             case 7:
-                return 6.8;
+                return 7.6;
             case 8:
                 return 0.7;
             case 9:
@@ -1147,29 +1148,29 @@ public final class SpellFx {
                     strikes(var0, var1, var9, var3, var12, var5, var10);
                     return true;
                 case 17:
-                    float var21 = env(var5, var10, 0.02, 0.4);
+                    float var31 = env(var5, var10, 0.02, 0.4);
 
-                    for (int var25 = 0; var25 < 30; var25++) {
-                        Vec3 var28 = new Vec3(hash(var25, 1) - 0.5, hash(var25, 2) - 0.2, hash(var25, 3) - 0.5).normalize();
-                        Vec3 var30 = var3.add(var28.scale(var5 * 5.0));
-                        PixelFx.streak(var30.subtract(var28.scale(0.28)), var30.add(var28.scale(0.28)), 0.22, 29, 1.0F, 1.0F, 1.0F, var21);
+                    for (int var35 = 0; var35 < 30; var35++) {
+                        Vec3 var37 = new Vec3(hash(var35, 1) - 0.5, hash(var35, 2) - 0.2, hash(var35, 3) - 0.5).normalize();
+                        Vec3 var41 = var3.add(var37.scale(var5 * 5.0));
+                        PixelFx.streak(var41.subtract(var37.scale(0.28)), var41.add(var37.scale(0.28)), 0.22, 29, 1.0F, 1.0F, 1.0F, var31);
                     }
 
                     return true;
                 case 20:
-                    float var20 = env(var5, var10, 0.1, 0.5);
-                    PixelFx.flat(var3.add(0.0, 0.05, 0.0), UP, 1.2 + 0.1 * Math.sin(var7 * 4.0), 5, var7, 0.7F, 0.95F, 1.0F, 0.8F * var20);
+                    float var30 = env(var5, var10, 0.1, 0.5);
+                    PixelFx.flat(var3.add(0.0, 0.05, 0.0), UP, 1.2 + 0.1 * Math.sin(var7 * 4.0), 5, var7, 0.7F, 0.95F, 1.0F, 0.8F * var30);
 
-                    for (int var24 = 0; var24 < 6; var24++) {
-                        double var27 = var7 * 2.0 + (double)var24 * 1.047;
+                    for (int var34 = 0; var34 < 6; var34++) {
+                        double var36 = var7 * 2.0 + (double)var34 * 1.047;
                         PixelFx.sprite(
-                            var3.add(Math.cos(var27) * 0.55, 0.2 + 0.3 * Math.sin(var7 * 3.0 + (double)var24), Math.sin(var27) * 0.55),
+                            var3.add(Math.cos(var36) * 0.55, 0.2 + 0.3 * Math.sin(var7 * 3.0 + (double)var34), Math.sin(var36) * 0.55),
                             0.25,
                             1,
                             0.8F,
                             1.0F,
                             1.0F,
-                            0.9F * var20
+                            0.9F * var30
                         );
                     }
 
@@ -1179,30 +1180,30 @@ public final class SpellFx {
                     return true;
                 case 22:
                 case 23:
-                    float var19 = env(var5, var10, 0.02, 0.4);
-                    boolean var23 = var2 == 23;
-                    shieldHexes(var0, var1, var9, var3, var5, var23 ? 2.2 : 1.5, var19);
-                    burst(var3, var23 ? 3.2 : 1.8, var5, var23 ? 0.6 : 0.4, var23 ? 1.0F : 0.75F, var23 ? 1.0F : 0.95F, 1.0F, var19);
-                    PixelFx.sprite(var3, (var23 ? 1.6 : 1.0) + var5 * 3.5, 6, 0.72F, 0.95F, 1.0F, var19 * (float)clamp(1.0 - var5 * 1.6));
-                    PixelFx.sprite(var3, var23 ? 2.8 : 1.6, 4, 0.7F, 0.92F, 1.0F, 0.6F * var19);
-                    int var26 = 2 + var4 * 2;
+                    float var29 = env(var5, var10, 0.02, 0.4);
+                    boolean var33 = var2 == 23;
+                    shieldHexes(var0, var1, var9, var3, var5, var33 ? 2.2 : 1.5, var29);
+                    burst(var3, var33 ? 3.2 : 1.8, var5, var33 ? 0.6 : 0.4, var33 ? 1.0F : 0.75F, var33 ? 1.0F : 0.95F, 1.0F, var29);
+                    PixelFx.sprite(var3, (var33 ? 1.6 : 1.0) + var5 * 3.5, 6, 0.72F, 0.95F, 1.0F, var29 * (float)clamp(1.0 - var5 * 1.6));
+                    PixelFx.sprite(var3, var33 ? 2.8 : 1.6, 4, 0.7F, 0.92F, 1.0F, 0.6F * var29);
+                    int var15 = 2 + var4 * 2;
 
-                    for (int var16 = 0; var16 < var26; var16++) {
+                    for (int var39 = 0; var39 < var15; var39++) {
                         PixelFx.sprite(
-                            var3.add((hash(var16, 1) - 0.5) * 1.2, (hash(var16, 2) - 0.5) * 1.2, (hash(var16, 3) - 0.5) * 1.2),
-                            0.6 + 0.3 * hash(var16, 4),
-                            42 + var16 % 4,
+                            var3.add((hash(var39, 1) - 0.5) * 1.2, (hash(var39, 2) - 0.5) * 1.2, (hash(var39, 3) - 0.5) * 1.2),
+                            0.6 + 0.3 * hash(var39, 4),
+                            42 + var39 % 4,
                             0.8F,
                             0.97F,
                             1.0F,
-                            0.9F * var19,
-                            hash(var16, 5) * 6.28
+                            0.9F * var29,
+                            hash(var39, 5) * 6.28
                         );
                     }
 
-                    for (int var29 = 0; var29 < (var23 ? 16 : 8); var29++) {
-                        Vec3 var17 = new Vec3(hash(var29, 6) - 0.5, hash(var29, 7) - 0.5, hash(var29, 8) - 0.5).normalize();
-                        PixelFx.sprite(var3.add(var17.scale(var5 * (double)(var23 ? 5 : 3))), 0.3, 1, var29 % 2 == 0 ? 1.0F : 0.75F, 1.0F, 1.0F, var19);
+                    for (int var40 = 0; var40 < (var33 ? 16 : 8); var40++) {
+                        Vec3 var43 = new Vec3(hash(var40, 6) - 0.5, hash(var40, 7) - 0.5, hash(var40, 8) - 0.5).normalize();
+                        PixelFx.sprite(var3.add(var43.scale(var5 * (double)(var33 ? 5 : 3))), 0.3, 1, var40 % 2 == 0 ? 1.0F : 0.75F, 1.0F, 1.0F, var29);
                     }
 
                     return true;
@@ -1210,22 +1211,39 @@ public final class SpellFx {
                     blackHole(var0, var1, var9, var3, var12, var5, var10, var7);
                     return true;
                 case 25:
-                    float var18 = env(var5, var10, 0.02, 0.6);
-                    burst(var3, 6.0, var5, 0.7, 1.0F, 0.6F, 0.2F, var18);
-                    PixelFx.sprite(var3, 4.0 * (1.0 - var5 / var10) + 1.0, 4, 1.0F, 0.45F, 0.1F, 0.8F * var18);
-                    shock(var3, UP, (2.0 + var5 * 14.0) * 0.5, 1.0F, 0.55F, 0.2F, var18);
+                    float var28 = env(var5, var10, 0.02, 0.6);
+                    double var32 = var5 / var10;
 
-                    for (int var22 = 0; var22 < 24; var22++) {
-                        Vec3 var15 = new Vec3(hash(var22, 1) - 0.5, hash(var22, 2) - 0.3, hash(var22, 3) - 0.5).normalize();
+                    for (int var16 = 0; var16 < 18; var16++) {
+                        double var17 = Math.acos(2.0 * hash(var16, 61) - 1.0);
+                        double var19 = hash(var16, 62) * 6.283;
+                        Vec3 var21 = new Vec3(Math.sin(var17) * Math.cos(var19), Math.cos(var17) * 0.6, Math.sin(var17) * Math.sin(var19)).normalize();
+                        double var22 = (3.0 + 20.0 * Math.sqrt(var32)) * (0.6 + 0.6 * hash(var16, 63));
+                        double var24 = 0.25 + 0.5 * (1.0 - var32);
+                        Vec3 var26 = var3.add(var21.scale(var22));
+                        Vec3 var27 = perp(var21);
+                        v(var0, var1, var9, var3.add(var27.scale(var24)), 0.95F, 0.9F, 1.0F, var28);
+                        v(var0, var1, var9, var26, 0.7F, 0.45F, 1.0F, 0.0F);
+                        v(var0, var1, var9, var26, 0.7F, 0.45F, 1.0F, 0.0F);
+                        v(var0, var1, var9, var3.subtract(var27.scale(var24)), 0.95F, 0.9F, 1.0F, var28);
+                    }
+
+                    PixelFx.sprite(var3, 7.0 * (1.0 - var32) + 1.0, 4, 0.8F, 0.6F, 1.0F, 0.85F * var28);
+                    PixelFx.sprite(var3, 3.0 * (1.0 - var32) + 0.5, 4, 1.0F, 1.0F, 1.0F, var28);
+                    shock(var3, null, 1.0 + var5 * 16.0, 0.82F, 0.62F, 1.0F, var28);
+                    shock(var3.add(0.0, -2.9, 0.0), UP, 1.0 + var5 * 12.0, 0.75F, 0.55F, 1.0F, 0.8F * var28);
+
+                    for (int var38 = 0; var38 < 28; var38++) {
+                        Vec3 var42 = new Vec3(hash(var38, 1) - 0.5, hash(var38, 2) - 0.3, hash(var38, 3) - 0.5).normalize();
                         PixelFx.sprite(
-                            var3.add(var15.scale(var5 * (6.0 + 4.0 * hash(var22, 4)))).add(0.0, -var5 * var5 * 4.0, 0.0),
-                            0.4 + 0.3 * hash(var22, 5),
-                            var22 % 3 == 0 ? 13 : 33,
+                            var3.add(var42.scale(var5 * (7.0 + 5.0 * hash(var38, 4)))).add(0.0, -var5 * var5 * 5.0, 0.0),
+                            0.4 + 0.35 * hash(var38, 5),
+                            var38 % 4 == 0 ? 1 : 33,
+                            var38 % 4 == 0 ? 0.85F : 1.0F,
+                            var38 % 4 == 0 ? 0.7F : 1.0F,
                             1.0F,
-                            var22 % 3 == 0 ? 0.7F : 1.0F,
-                            var22 % 3 == 0 ? 0.3F : 1.0F,
-                            var18,
-                            var5 * 8.0 + (double)var22
+                            var28,
+                            var5 * 8.0 + (double)var38
                         );
                     }
 
@@ -1942,92 +1960,228 @@ public final class SpellFx {
         double var9 = bhTravel(var7);
         double var11 = 1.0;
         double var13 = 1.0 + var9;
-        double var15 = var13 + 2.4;
+        double var15 = var13 + 3.2;
         double var17 = var15 + 0.8;
         if (!(var5 > var17)) {
             Vec3 var21 = var7 < 0.001 ? new Vec3(0.0, 0.0, 1.0) : var4.subtract(var3).scale(1.0 / var7);
             if (var5 < var11) {
-                double var37 = var5 / var11;
-                blackCore(var3, var2, 0.12 + 0.28 * var37 * var37, var5, (float)Math.min(1.0, var5 * 4.0));
-                if (var37 > 0.8) {
+                double var42 = var5 / var11;
+                blackCore(var3, var2, 0.12 + 0.28 * var42 * var42, var5, (float)Math.min(1.0, var5 * 4.0));
+                if (var42 > 0.8) {
                     PixelFx.sprite(
-                        var3, 3.0 + 10.0 * (var37 - 0.8), 48 + Math.min(3, (int)((var37 - 0.8) * 20.0)), 1.0F, 0.97F, 0.9F, (float)(1.0 - (var37 - 0.8) * 5.0)
+                        var3, 3.0 + 10.0 * (var42 - 0.8), 48 + Math.min(3, (int)((var42 - 0.8) * 20.0)), 1.0F, 0.97F, 0.9F, (float)(1.0 - (var42 - 0.8) * 5.0)
                     );
                 }
             } else {
                 float var23 = 1.0F;
-                if (var5 < var13) {
-                    double var39 = (var5 - var11) / var9;
-                    Vec3 var36 = var3.lerp(var4, var39);
-                    Vec3[] var41 = new Vec3[]{var3.lerp(var36, Math.max(0.0, 1.0 - 6.0 / Math.max(1.0, var7 * var39))), var36};
-                    tube(var0, var1, var2, var41, 0.18, 0.9F, 0.18F, 0.04F, 0.45F);
-                    tube(var0, var1, var2, var41, 0.07, 1.0F, 0.6F, 0.2F, 0.85F);
-                    Vec3 var27 = perp(var21);
-                    Vec3 var43 = var21.cross(var27).normalize();
+                if (!(var5 < var13)) {
+                    double var43 = bhRise(var4);
+                    if (var5 < var15) {
+                        double var45 = (var5 - var13) / 3.2;
+                        Vec3 var41 = BlackHoleShape.center(var4, var43, var45);
+                        double var47 = BlackHoleShape.grow(var45);
+                        double var51 = 0.45 + 2.9499999999999997 * var47;
+                        bhRays(var0, var1, var2, var41, var51, var5, 0.35 + 0.65 * var47, 1.0F);
+                        bhCore(var0, var1, var2, var41, 0.28 + 0.95 * var47, var5, 1.0F);
+                        bhShell(var0, var1, var2, var41, var51, var5, 0.25 + 0.7 * var47, 0.6 + 0.4 * var47, 1.0F);
 
-                    for (int var45 = 0; var45 < 18; var45++) {
-                        double var30 = 1.0 + 7.0 * hash(var45, 1);
-                        Vec3 var32 = var36.subtract(var21.scale(var30))
-                            .add(var27.scale((hash(var45, 2) - 0.5) * 2.4))
-                            .add(var43.scale((hash(var45, 3) - 0.5) * 2.4));
-                        PixelFx.streak(var32, var32.add(var21.scale(1.2 + hash(var45, 4))), 0.12, 4, 0.85F, 0.55F, 0.95F, 0.55F);
-                    }
-
-                    for (int var46 = 0; var46 < 16; var46++) {
-                        double var47 = (var5 * 0.9 + hash(var46, 5)) % 1.0;
-                        Vec3 var49 = var36.add(var27.scale((hash(var46, 6) - 0.5) * 5.0 * (1.0 - var47)))
-                            .add(var43.scale((hash(var46, 7) - 0.3) * 4.0 * (1.0 - var47)))
-                            .subtract(var21.scale(3.0 * (1.0 - var47)));
-                        PixelFx.sprite(var49, 0.35 + 0.4 * hash(var46, 8), 33, 1.0F, 1.0F, 1.0F, (float)Math.sin(var47 * Math.PI), var47 * 9.0 + (double)var46);
-                    }
-
-                    blackCore(var36, var2, 0.42, var5, var23);
-                } else {
-                    Vec3 var22 = var4;
-                    if (!(var5 < var15)) {
-                        double var38 = (var5 - var15) / 0.8;
-                        float var40 = (float)(1.0 - var38);
-                        PixelFx.sprite(var4, 1.5 + 9.0 * var38, 48 + Math.min(3, (int)(var38 * 4.0)), 1.0F, 0.8F, 0.4F, var40);
-                        PixelFx.sprite(var4, 4.0 * (1.0 - var38) + 0.5, 4, 1.0F, 0.9F, 0.7F, var40);
-                        shock(var4, null, (2.0 + 16.0 * var38) * 0.5, 1.0F, 0.55F, 0.2F, var40);
-                    } else {
-                        double var24 = (var5 - var13) / 2.4;
-                        double var26 = 1.6 * (1.0 - 0.45 * var24);
-
-                        for (int var28 = 0; var28 < 40; var28++) {
-                            double var29 = hash(var28, 1) * 6.283 + var5 * (1.5 + 2.0 * hash(var28, 2));
-                            double var31 = (hash(var28, 3) - 0.5) * 2.6;
-                            double var33 = var26 * (0.8 + 0.5 * hash(var28, 4)) + Math.max(0.0, 1.0 - var24 * 3.0) * 6.0 * hash(var28, 5);
-                            Vec3 var35 = var22.add(
-                                Math.cos(var29) * Math.cos(var31) * var33, Math.sin(var31) * var33, Math.sin(var29) * Math.cos(var31) * var33
+                        for (int var53 = 0; var53 < 34; var53++) {
+                            double var33 = (var5 * (0.45 + 0.25 * hash(var53, 12)) + hash(var53, 13)) % 1.0;
+                            double var35 = hash(var53, 14) * 6.283 + var33 * 4.0;
+                            double var37 = (3.0 + 4.0 * hash(var53, 15)) * (1.0 - var33) + var51 * 0.9 * var33;
+                            Vec3 var39 = new Vec3(
+                                var41.x + Math.cos(var35) * var37,
+                                (var4.y - 0.9) * (1.0 - var33 * var33) + var41.y * var33 * var33,
+                                var41.z + Math.sin(var35) * var37
                             );
                             PixelFx.sprite(
-                                var35,
-                                0.45 + 0.4 * hash(var28, 6),
+                                var39,
+                                0.55 + 0.6 * hash(var53, 16),
                                 33,
-                                (float)(0.55 + 0.45 * var24),
-                                (float)(0.5 - 0.2 * var24),
-                                (float)(0.45 - 0.3 * var24),
-                                1.0F,
-                                var29
+                                0.85F,
+                                0.75F,
+                                0.7F,
+                                (float)Math.min(1.0, Math.sin(var33 * Math.PI) * 1.6),
+                                var33 * 8.0 + (double)var53
                             );
+                            if (var53 % 3 == 0) {
+                                PixelFx.sprite(var39.add(0.0, -0.2, 0.0), 0.6, 46, 0.6F, 0.5F, 0.5F, 0.4F * (float)Math.sin(var33 * Math.PI));
+                            }
                         }
 
-                        for (int var42 = 0; var42 < 12; var42++) {
-                            double var44 = hash(var42, 9) * 6.283 + var5 * 0.6;
-                            double var48 = (hash(var42, 10) - 0.5) * 2.0;
-                            Vec3 var50 = var22.add(
-                                Math.cos(var44) * Math.cos(var48) * var26 * 0.8, Math.sin(var48) * var26 * 0.8, Math.sin(var44) * Math.cos(var48) * var26 * 0.8
-                            );
-                            PixelFx.sprite(var50, 0.6 + 0.6 * var24, 42 + var42 % 4, 1.0F, 0.25F, 0.2F, (float)(0.3 + 0.7 * var24), hash(var42, 11) * 6.28);
+                        shock(new Vec3(var41.x, var4.y - 0.95, var41.z), UP, 1.5 + var51 * 1.2 + 0.4 * Math.sin(var5 * 3.0), 0.9F, 0.3F, 0.5F, 0.35F);
+                    } else {
+                        Vec3 var40 = BlackHoleShape.center(var4, var43, 1.0);
+                        double var44 = (var5 - var15) / 0.8;
+                        double var46 = Math.pow(1.0 - Math.min(1.0, var44 * 1.4), 2.0);
+                        float var50 = (float)(1.0 - var44);
+                        double var31 = 3.4 * var46;
+                        if (var31 > 0.05) {
+                            bhRays(var0, var1, var2, var40, 3.4 * (1.0 + var44 * 2.0), var5, 1.0, var50);
+                            bhShell(var0, var1, var2, var40, var31, var5 * 3.0, 0.95, 1.0 + var44 * 2.0, var50);
+                            bhCore(var0, var1, var2, var40, Math.max(0.05, 1.05 * var46), var5, var50);
                         }
 
-                        PixelFx.sprite(var22, var26 * 2.6, 4, 0.9F, 0.15F, 0.08F, (float)(0.25 + 0.5 * var24));
-                        blackCore(var22, var2, 0.5 * (1.0 - 0.5 * var24), var5, (float)(1.0 - 0.6 * var24));
+                        PixelFx.sprite(var40, 1.0 + 6.0 * var44, 4, 0.85F, 0.6F, 1.0F, 0.8F * var50);
+                        shock(var40, null, 0.5 + 9.0 * var44, 0.85F, 0.6F, 1.0F, var50);
                     }
+                } else {
+                    double var24 = (var5 - var11) / var9;
+                    Vec3 var22 = var3.lerp(var4, var24);
+                    Vec3[] var26 = new Vec3[]{var3.lerp(var22, Math.max(0.0, 1.0 - 6.0 / Math.max(1.0, var7 * var24))), var22};
+                    tube(var0, var1, var2, var26, 0.18, 0.9F, 0.18F, 0.04F, 0.45F);
+                    tube(var0, var1, var2, var26, 0.07, 1.0F, 0.6F, 0.2F, 0.85F);
+                    Vec3 var27 = perp(var21);
+                    Vec3 var28 = var21.cross(var27).normalize();
+
+                    for (int var29 = 0; var29 < 18; var29++) {
+                        double var30 = 1.0 + 7.0 * hash(var29, 1);
+                        Vec3 var32 = var22.subtract(var21.scale(var30))
+                            .add(var27.scale((hash(var29, 2) - 0.5) * 2.4))
+                            .add(var28.scale((hash(var29, 3) - 0.5) * 2.4));
+                        PixelFx.streak(var32, var32.add(var21.scale(1.2 + hash(var29, 4))), 0.12, 4, 0.85F, 0.55F, 0.95F, 0.55F);
+                    }
+
+                    for (int var48 = 0; var48 < 16; var48++) {
+                        double var49 = (var5 * 0.9 + hash(var48, 5)) % 1.0;
+                        Vec3 var52 = var22.add(var27.scale((hash(var48, 6) - 0.5) * 5.0 * (1.0 - var49)))
+                            .add(var28.scale((hash(var48, 7) - 0.3) * 4.0 * (1.0 - var49)))
+                            .subtract(var21.scale(3.0 * (1.0 - var49)));
+                        PixelFx.sprite(var52, 0.35 + 0.4 * hash(var48, 8), 33, 1.0F, 1.0F, 1.0F, (float)Math.sin(var49 * Math.PI), var49 * 9.0 + (double)var48);
+                    }
+
+                    blackCore(var22, var2, 0.42, var5, var23);
                 }
             }
         }
+    }
+
+    private static double bhRise(Vec3 var0) {
+        Minecraft var1 = Minecraft.getInstance();
+        return BlackHoleShape.rise(var1 == null ? null : var1.level, var0);
+    }
+
+    private static void bhCore(VertexConsumer var0, Matrix4f var1, Vec3 var2, Vec3 var3, double var4, double var6, float var8) {
+        Vec3 var9 = var2.subtract(var3).normalize();
+        Vec3 var10 = perp(var9);
+        Vec3 var11 = var9.cross(var10).normalize();
+        Vec3 var12 = var3.add(var9.scale(Math.min(0.6, var4 * 0.5)));
+        byte var13 = 36;
+
+        for (int var14 = 0; var14 < var13; var14++) {
+            double var15 = (Math.PI * 2) * (double)var14 / (double)var13;
+            double var17 = (Math.PI * 2) * (double)(var14 + 1) / (double)var13;
+            Vec3 var19 = var12.add(var10.scale(Math.cos(var15) * var4)).add(var11.scale(Math.sin(var15) * var4));
+            Vec3 var20 = var12.add(var10.scale(Math.cos(var17) * var4)).add(var11.scale(Math.sin(var17) * var4));
+            v(var0, var1, var2, var12, 0.0F, 0.0F, 0.0F, var8);
+            v(var0, var1, var2, var19, 0.0F, 0.0F, 0.0F, var8);
+            v(var0, var1, var2, var20, 0.0F, 0.0F, 0.0F, var8);
+            v(var0, var1, var2, var20, 0.0F, 0.0F, 0.0F, var8);
+        }
+
+        ring(var0, var1, var2, var12, var9, var4 * 1.04, 0.03 + var4 * 0.05, 1.0F, 0.45F, 0.2F, 0.9F * var8);
+        ring(var0, var1, var2, var12, var9, var4 * 1.12, 0.02 + var4 * 0.03, 1.0F, 0.3F, 0.45F, 0.45F * var8);
+        Vec3 var21 = var9.cross(UP);
+        var21 = var21.lengthSqr() < 1.0E-4 ? new Vec3(1.0, 0.0, 0.0) : var21.normalize();
+        double var23 = 1.0 + 0.06 * Math.sin(var6 * 31.0);
+        line(
+            var0,
+            var1,
+            var2,
+            var12.subtract(var21.scale(var4 * 4.5 * var23)),
+            var12.add(var21.scale(var4 * 4.5 * var23)),
+            0.05 + var4 * 0.06,
+            1.0F,
+            0.2F,
+            0.12F,
+            0.75F * var8
+        );
+        line(var0, var1, var2, var12.subtract(var21.scale(var4 * 2.2)), var12.add(var21.scale(var4 * 2.2)), 0.03 + var4 * 0.03, 1.0F, 0.75F, 0.45F, 0.9F * var8);
+    }
+
+    private static void bhRays(VertexConsumer var0, Matrix4f var1, Vec3 var2, Vec3 var3, double var4, double var6, double var8, float var10) {
+        int var11 = (int)(16.0 + 48.0 * Math.max(0.0, Math.min(1.0, var8)));
+        double var12 = var6 * 0.35;
+
+        for (int var14 = 0; var14 < var11; var14++) {
+            double var15 = Math.acos(2.0 * hash(var14, 41) - 1.0);
+            double var17 = hash(var14, 42) * 6.283 + var12;
+            Vec3 var19 = new Vec3(Math.sin(var15) * Math.cos(var17), Math.cos(var15), Math.sin(var15) * Math.sin(var17));
+            double var20 = var4 * (1.4 + 1.6 * hash(var14, 43)) * (0.9 + 0.1 * Math.sin(var6 * 3.0 + (double)var14));
+            double var22 = var20 * 0.045;
+            Vec3 var24 = perp(var19);
+            Vec3 var25 = var3.add(var19.scale(var20));
+            Vec3 var26 = var25.add(var24.scale(var22));
+            Vec3 var27 = var25.subtract(var24.scale(var22));
+            v(var0, var1, var2, var3, 1.0F, 0.3F, 0.9F, 0.6F * var10);
+            v(var0, var1, var2, var26, 0.7F, 0.15F, 0.95F, 0.0F);
+            v(var0, var1, var2, var27, 0.7F, 0.15F, 0.95F, 0.0F);
+            v(var0, var1, var2, var3, 1.0F, 0.3F, 0.9F, 0.6F * var10);
+        }
+    }
+
+    private static void bhShell(VertexConsumer var0, Matrix4f var1, Vec3 var2, Vec3 var3, double var4, double var6, double var8, double var10, float var12) {
+        if (!(var4 <= 0.05)) {
+            byte var13 = 7;
+            byte var14 = 12;
+            double var15 = var6 * 0.25;
+            Vec3 var17 = var2.subtract(var3).normalize();
+
+            for (int var18 = 0; var18 < var13; var18++) {
+                for (int var19 = 0; var19 < var14; var19++) {
+                    int var20 = var18 * 31 + var19;
+                    if (!(hash(var20, 51) > var8)) {
+                        double var21 = Math.PI * (double)var18 / (double)var13;
+                        double var23 = Math.PI * (double)(var18 + 1) / (double)var13;
+                        double var25 = (Math.PI * 2) * (double)var19 / (double)var14 + var15 + (double)(var18 % 2) * 0.26;
+                        double var27 = var25 + (Math.PI * 2) / (double)var14;
+                        double var29 = 0.07;
+                        double var31 = var4 * (0.94 + 0.12 * hash(var20, 52));
+                        Vec3 var33 = sph(var3, var31, var21 + var29, var25 + var29);
+                        Vec3 var34 = sph(var3, var31, var21 + var29, var27 - var29);
+                        Vec3 var35 = sph(var3, var31, var23 - var29, var27 - var29);
+                        Vec3 var36 = sph(var3, var31, var23 - var29, var25 + var29);
+                        Vec3 var37 = var33.add(var35).scale(0.5).subtract(var3).normalize();
+                        float var38 = (float)(0.35 + 0.65 * Math.max(0.0, var37.dot(var17)));
+                        float var39 = 0.3F * var38 + 0.06F;
+                        float var40 = 0.17F * var38 + 0.04F;
+                        float var41 = 0.17F * var38 + 0.05F;
+
+                        for (Vec3 var45 : new Vec3[]{var33, var34, var35, var36}) {
+                            v(var0, var1, var2, var45, var39, var40, var41, 0.96F * var12);
+                        }
+
+                        float var46 = (float)Math.min(1.0, var10);
+                        float var47 = 1.0F;
+                        float var48 = 0.25F + 0.55F * (float)Math.max(0.0, var10 - 1.0);
+                        float var49 = 0.42F + 0.4F * (float)Math.max(0.0, var10 - 1.0);
+                        line(var0, var1, var2, var33, var34, 0.035 + var4 * 0.02, var47, var48, var49, 0.95F * var46 * var12);
+                        line(var0, var1, var2, var34, var35, 0.035 + var4 * 0.02, var47, var48, var49, 0.95F * var46 * var12);
+                        if (hash(var20, 53) < 0.5) {
+                            line(
+                                var0,
+                                var1,
+                                var2,
+                                var33.lerp(var34, 0.5),
+                                var35.lerp(var36, 0.4),
+                                0.025 + var4 * 0.012,
+                                var47,
+                                var48,
+                                var49,
+                                0.8F * var46 * var12
+                            );
+                        }
+                    }
+                }
+            }
+
+            PixelFx.sprite(var3, var4 * 3.2, 4, 1.0F, 0.2F, 0.4F, 0.35F * var12 * (float)Math.min(1.0, var10));
+            PixelFx.sprite(var3.subtract(var2.subtract(var3).normalize().scale(var4)), var4 * 2.6, 4, 0.8F, 0.1F, 0.25F, 0.5F * var12);
+        }
+    }
+
+    private static Vec3 sph(Vec3 var0, double var1, double var3, double var5) {
+        return var0.add(Math.sin(var3) * Math.cos(var5) * var1, Math.cos(var3) * var1, Math.sin(var3) * Math.sin(var5) * var1);
     }
 
     private static void blackHole(VertexConsumer var0, Matrix4f var1, Vec3 var2, Vec3 var3, int var4, double var5, double var7, double var9) {

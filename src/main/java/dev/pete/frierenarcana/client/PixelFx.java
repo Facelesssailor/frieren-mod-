@@ -303,7 +303,7 @@ public final class PixelFx {
         var0.addVertex(var1, (float)(var3 - var2.x), (float)(var5 - var2.y), (float)(var7 - var2.z))
             .setColor(var9, var10, var11, var12)
             .setUv(var13, var14)
-            .setOverlay(0)
+            .setOverlay(655360)
             .setLight(15728880)
             .setNormal(0.0F, 1.0F, 0.0F);
     }

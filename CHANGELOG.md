@@ -2,6 +2,12 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.5.4
+
+- Black Hole shape; effect fixes; seated flight tweak.
+
+Code: added BlackHoleShape; changed BreakerAim, CircleNet, NewMagic, ShieldBreak, client.BlackHoleCinema, client.PixelFx, client.SeatedFlight, client.SpellFx.
+
 ## 1.5.3
 
 - Hand-drawn magic circle designs (CircleArt).
