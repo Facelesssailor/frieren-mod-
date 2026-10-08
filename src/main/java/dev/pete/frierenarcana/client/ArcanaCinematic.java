@@ -219,4 +219,12 @@ public final class ArcanaCinematic {
             );
         }
     }
+
+    public static boolean breakerActive() {
+        return active() ? breaker : false;
+    }
+
+    public static long startedNanos() {
+        return started;
+    }
 }

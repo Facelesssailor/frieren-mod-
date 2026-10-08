@@ -130,7 +130,6 @@ public final class ArcanaSpell extends AbstractSpell {
 
         if (this.kind == ArcanaSpell.Kind.HEAVY && entity instanceof ServerPlayer p) {
             ArcanaModes.stopBarrage(p);
-            ArcanaNetwork.charge(p, true);
         }
 
         super.onServerPreCast(level, spellLevel, entity, data);
@@ -485,15 +484,15 @@ public final class ArcanaSpell extends AbstractSpell {
         EARTH("balgrant", 50, 5, 10, SpellRarity.RARE),
         SPEED("jilwer", 30, 3, 8, SpellRarity.UNCOMMON),
         BIND("sorganeil", 40, 3, 12, SpellRarity.RARE),
-        CUT("reelseiden", 45, 5, 5, SpellRarity.EPIC),
+        CUT("reelseiden", 60, 5, 6, SpellRarity.EPIC),
         FLOWERS("flower_field", 10, 3, 3, SpellRarity.COMMON),
         HEAL("goddess_healing", 50, 3, 15, SpellRarity.RARE),
         CLEANSE("goddess_cleansing", 40, 3, 12, SpellRarity.RARE),
         GOLD("golden_transmutation", 350, 1, 60, SpellRarity.LEGENDARY),
         INFERNO("vollzanbel", 120, 3, 15, SpellRarity.EPIC),
-        THUNDER("judradjim", 100, 3, 18, SpellRarity.EPIC),
+        THUNDER("judradjim", 130, 3, 18, SpellRarity.EPIC),
         TORNADO("waldgose", 60, 5, 10, SpellRarity.RARE),
-        FIREWIND("daosdorg", 80, 5, 12, SpellRarity.EPIC),
+        FIREWIND("daosdorg", 95, 5, 14, SpellRarity.EPIC),
         JUDGMENT("catastrovia", 90, 5, 10, SpellRarity.EPIC),
         PETALS("jubelade", 45, 5, 7, SpellRarity.RARE),
         STONE("dragate", 40, 5, 5, SpellRarity.UNCOMMON),

@@ -170,5 +170,9 @@
   "spell.frieren_arcana.dragate.summary": "Spread of faceted stone shots",
   "spell.frieren_arcana.object_levitation.summary": "Grab and move targets; H throws",
   "spell.frieren_arcana.goddess_three_spears.summary": "Fan of three radiant attacks",
-  "info.frieren_arcana.breaker_skip": "R / Escape: skip cast camera"
+  "info.frieren_arcana.breaker_skip": "R / Escape: skip cast camera",
+  "info.frieren_arcana.preview.damage": "Damage: %s (at your spell power)",
+  "info.frieren_arcana.preview.repeating": "Hits repeatedly while the wind lasts",
+  "info.frieren_arcana.preview.ignite": "Ignites targets for %s seconds",
+  "info.frieren_arcana.preview.pierce": "Pierces creatures along the beam"
 }

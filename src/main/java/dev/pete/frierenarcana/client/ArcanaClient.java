@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.pete.frierenarcana.ArcanaNetwork;
 import dev.pete.frierenarcana.BarrierGeometry;
+import dev.pete.frierenarcana.BarrierSlide;
 import dev.pete.frierenarcana.FrierenArcana;
 import dev.pete.frierenarcana.ShipSpace;
 import java.util.ArrayList;
@@ -23,7 +24,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -145,25 +145,8 @@ public final class ArcanaClient {
         return nearest;
     }
 
-    public static Vec3 movement(Entity entity, Vec3 movement) {
-        if (movement.lengthSqr() < 1.0E-10) {
-            return movement;
-        } else {
-            Vec3 start = ShipSpace.world(entity.level(), entity.getBoundingBox().getCenter());
-            Vec3 end = ShipSpace.world(entity.level(), entity.getBoundingBox().getCenter().add(movement));
-            Vec3 delta = end.subtract(start);
-            double best = Double.POSITIVE_INFINITY;
-
-            for (ArcanaClient.VisualField f : FIELDS) {
-                if (!f.defensive || entity instanceof Projectile && !(start.distanceToSqr(f.center) < (double)(f.radius * f.radius))) {
-                    Vec3 r = start.subtract(f.center);
-                    double hit = BarrierGeometry.firstHit(r.x, r.y, r.z, delta.x, delta.y, delta.z, (double)f.radius);
-                    best = Math.min(best, hit);
-                }
-            }
-
-            return Double.isFinite(best) ? movement.scale(Math.max(0.0, best - 0.01)) : movement;
-        }
+    public static Vec3 movement(Entity var0, Vec3 var1) {
+        return BarrierSlide.client(var0, var1);
     }
 
     @SubscribeEvent
@@ -869,6 +852,10 @@ public final class ArcanaClient {
     public static boolean isFlying(UUID var0) {
         Long var1 = FLIGHTS.get(var0);
         return var1 != null && System.nanoTime() - var1 < 1500000000L;
+    }
+
+    public static List fields() {
+        return FIELDS;
     }
 
     private static record Beam(Vec3 start, Vec3 end, int style, long startNanos) {

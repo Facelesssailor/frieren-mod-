@@ -35,8 +35,7 @@ public final class BarrierHooks {
                 Vec3 rel = start.subtract(field.center);
                 Vec3 delta = end.subtract(start);
                 double t = BarrierGeometry.firstHit(rel.x, rel.y, rel.z, delta.x, delta.y, delta.z, (double)field.radius);
-                e.setDeltaMovement(Vec3.ZERO);
-                return movement.scale(Math.max(0.0, t - 0.01));
+                return BarrierSlide.slide(e, rel, movement, t, (double)field.radius);
             }
 
             return movement;
