@@ -16,7 +16,9 @@
   "client": [
     "WeatherBarrierMixin",
     "ClientRainBarrierMixin",
-    "FallingRainBarrierMixin"
+    "FallingRainBarrierMixin",
+    "SeatedPoseMixin",
+    "SeatedHandMixin"
   ],
   "injectors": {
     "defaultRequire": 1

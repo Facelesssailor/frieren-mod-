@@ -24,13 +24,13 @@ public final class ArcanaKeys {
         "key.frieren_arcana.cycle", KeyConflictContext.IN_GAME, Type.KEYSYM, 71, "key.categories.frieren_arcana"
     );
     public static final KeyMapping CAST = new KeyMapping(
-        "key.frieren_arcana.cast", KeyConflictContext.IN_GAME, Type.KEYSYM, 86, "key.categories.frieren_arcana"
+        "key.frieren_arcana.cast", KeyConflictContext.IN_GAME, Type.KEYSYM, 74, "key.categories.frieren_arcana"
     );
     public static final KeyMapping STOP = new KeyMapping(
         "key.frieren_arcana.stop", KeyConflictContext.IN_GAME, Type.KEYSYM, 66, "key.categories.frieren_arcana"
     );
     public static final KeyMapping SKIP = new KeyMapping(
-        "key.frieren_arcana.skip_cinematic", KeyConflictContext.IN_GAME, Type.KEYSYM, 82, "key.categories.frieren_arcana"
+        "key.frieren_arcana.skip_cinematic", KeyConflictContext.IN_GAME, Type.KEYSYM, 75, "key.categories.frieren_arcana"
     );
     public static final KeyMapping THROW = new KeyMapping(
         "key.frieren_arcana.throw_lift", KeyConflictContext.IN_GAME, Type.KEYSYM, 72, "key.categories.frieren_arcana"

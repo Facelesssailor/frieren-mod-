@@ -866,6 +866,11 @@ public final class ArcanaClient {
         out.addVertex(matrix, (float)relative.x, (float)relative.y, (float)relative.z).setColor(r, g, b, alpha);
     }
 
+    public static boolean isFlying(UUID var0) {
+        Long var1 = FLIGHTS.get(var0);
+        return var1 != null && System.nanoTime() - var1 < 1500000000L;
+    }
+
     private static record Beam(Vec3 start, Vec3 end, int style, long startNanos) {
     }
 

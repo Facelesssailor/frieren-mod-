@@ -35,7 +35,7 @@ public final class ArcanaModes {
         return isStaff(player.getMainHandItem()) || isStaff(player.getOffhandItem());
     }
 
-    private static boolean isStaff(ItemStack stack) {
+    public static boolean isStaff(ItemStack stack) {
         return stack.getItem() instanceof StaffItem || stack.is(FLIGHT_STAVES);
     }
 
