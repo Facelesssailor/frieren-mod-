@@ -2,6 +2,12 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.4.2
+
+- Defensive barriers break with their own effect (ShieldBreak).
+
+Code: added ShieldBreak; changed ArcanaModes, client.BreakerFx, client.SpellFx.
+
 ## 1.4.1
 
 - Pixel-art effect sprites (PixelFx); Barrier Breaker aiming (BreakerAim).

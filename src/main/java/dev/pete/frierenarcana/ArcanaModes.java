@@ -147,6 +147,7 @@ public final class ArcanaModes {
     }
 
     public static Vec3 fire(ServerPlayer var0, ArcanaSpell var1, int var2, Vec3 var3, double var4, float var6, float var7, int var8, boolean var9) {
+        ShieldBreak.context(var0, var1, var2, var8);
         Vec3 var10 = ShipSpace.world(var0.level(), var0.getEyePosition());
         Vec3 var11 = var10.add(var3.scale(var4));
         BlockHitResult var12 = var0.level().clip(new ClipContext(var10, var11, Block.COLLIDER, Fluid.NONE, var0));
@@ -154,7 +155,7 @@ public final class ArcanaModes {
             var11 = var12.getLocation();
         }
 
-        BarrierData.Field var13 = BarrierData.get(var0.serverLevel()).firstBoundary(var10, var11, true);
+        BarrierData.Field var13 = ShieldBreak.boundary(BarrierData.get(var0.serverLevel()), var10, var11, true);
         if (var13 != null) {
             Vec3 var14 = var10.subtract(var13.center);
             Vec3 var15 = var11.subtract(var10);
