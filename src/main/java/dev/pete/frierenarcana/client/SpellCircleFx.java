@@ -69,23 +69,13 @@ public final class SpellCircleFx {
                         ArcanaShaders.prepare((double)((float)var3.getGameTime() + var4) / 20.0, var9);
                         double var15 = ArcanaCinematic.release != 0L ? 1.0 : Math.min(1.0, var5 / 10.0);
                         float var17 = (float)(0.8 + 0.2 * Math.sin(var5 * 4.0));
-                        double var18 = ArcanaCinematic.release == 0L ? 0.0 : (double)(System.nanoTime() - ArcanaCinematic.release) / 1.0E9;
-                        var11.fade = (float)Math.max(0.0, 1.0 - var18 / 3.5);
-                        if ((double)var11.fade > 0.01) {
-                            PixelFx.flat(
-                                new Vec3(var10.x, groundY + 0.07, var10.z),
-                                new Vec3(0.0, 1.0, 0.0),
-                                4.0 + 3.0 * var15,
-                                4,
-                                0.0,
-                                0.4F,
-                                1.0F,
-                                0.6F,
-                                0.55F * var11.fade * var17
-                            );
+                        if (ArcanaCinematic.release == 0L) {
+                            double var10000 = 0.0;
+                        } else {
+                            double var20 = (double)(System.nanoTime() - ArcanaCinematic.release) / 1.0E9;
                         }
 
-                        var11.fade = (float)Math.max(0.0, 1.0 - var18 / 4.0);
+                        var11.fade = 1.0F;
                         extras(var11, var10, var9, var5, var15, var17);
                         var11.fade = 1.0F;
                         scene(var11, var10, var9, var5);
@@ -289,41 +279,59 @@ public final class SpellCircleFx {
 
     private static void extras(SpellCircleFx.Ctx var0, Vec3 var1, Vec3 var2, double var3, double var5, float var7) {
         double var8 = var1.y + 1.05;
-        var0.cx = var1.x;
-        var0.cy = groundY + 0.08;
-        var0.cz = var1.z;
-        var0.ux = 1.0;
-        var0.uy = 0.0;
-        var0.uz = 0.0;
-        var0.vx = 0.0;
-        var0.vy = 0.0;
-        var0.vz = 1.0;
-        var0.r = 0.6F;
-        var0.g = 1.0F;
-        var0.b = 0.7F;
-        var0.a = 0.55F * var7;
-        var0.ring(0.9 + 0.15 * Math.sin(var3 * 3.0), 0.04);
-        var0.ring(1.5, 0.02);
-        faceCamera(var0, new Vec3(var1.x, groundY + 0.15, var1.z), var2);
-        var0.r = 0.8F;
-        var0.g = 1.0F;
-        var0.b = 0.88F;
-        var0.a = (float)(0.25 + 0.55 * var5) * var7;
-        var0.seg(-7.0 * var5, 0.0, 7.0 * var5, 0.0, 0.025);
-        var0.a *= 0.3F;
-        var0.seg(-4.0 * var5, 0.0, 4.0 * var5, 0.0, 0.12);
-        Vec3 var10 = CinemaDirector.lockedLook();
-        Vec3 var11 = new Vec3(var10.x, 0.0, var10.z);
-        var11 = var11.lengthSqr() < 0.01 ? new Vec3(0.0, 0.0, 1.0) : var11.normalize();
-        Vec3 var12 = new Vec3(var1.x, var8, var1.z).add(var11.scale(0.42));
-        double var13 = ArcanaCinematic.release == 0L ? 0.0 : (double)(System.nanoTime() - ArcanaCinematic.release) / 1.0E9;
-        if (var13 <= 0.0) {
-            nonEuclid(var0, var12, var11, var2, var5, var3, 0.0);
+        double var10 = ArcanaCinematic.release == 0L ? 0.0 : (double)(System.nanoTime() - ArcanaCinematic.release) / 1.0E9;
+        Vec3 var12 = CinemaDirector.lockedLook();
+        Vec3 var13 = new Vec3(var12.x, 0.0, var12.z);
+        var13 = var13.lengthSqr() < 0.01 ? new Vec3(0.0, 0.0, 1.0) : var13.normalize();
+        if (var10 <= 0.0) {
+            Vec3 var14 = new Vec3(var1.x, var8, var1.z).add(var13.scale(0.42));
+            faceCamera(var0, var14, var2);
+            double var15 = Math.max(1.0, var14.distanceTo(var2) / 5.0);
+            double var17 = Math.min(4.0, var15);
+            float var19 = (float)(0.25 + 0.55 * var5) * var7;
+            var0.r = 0.8F;
+            var0.g = 1.0F;
+            var0.b = 0.88F;
+            var0.a = var19;
+            var0.seg(-5.0 * var5 * var17, 0.0, 5.0 * var5 * var17, 0.0, 0.02 * var15);
+            var0.seg(0.0, -0.6 * var5 * var17, 0.0, 1.4 * var5 * var17, 0.015 * var15);
+            var0.a = var19 * 0.3F;
+            var0.seg(-3.0 * var5 * var17, 0.0, 3.0 * var5 * var17, 0.0, 0.09 * var15);
+            if (var15 > 1.5) {
+                PixelFx.sprite(var14, 0.5 * var15, 4, 0.6F, 1.0F, 0.8F, 0.7F * var19);
+            }
+        }
+
+        Vec3 var21 = CinemaDirector.lockedLook();
+        Vec3 var22 = new Vec3(var21.x, 0.0, var21.z);
+        var22 = var22.lengthSqr() < 0.01 ? new Vec3(0.0, 0.0, 1.0) : var22.normalize();
+        Vec3 var16 = new Vec3(var1.x, var8, var1.z).add(var22.scale(0.42));
+        double var24 = ArcanaCinematic.release == 0L ? 0.0 : (double)(System.nanoTime() - ArcanaCinematic.release) / 1.0E9;
+        if (var24 <= 0.0) {
+            nonEuclid(var0, var16, var22, var2, var5, var3, 0.0);
         } else {
-            float var15 = var0.fade;
+            float var25 = var0.fade;
             var0.fade = 1.0F;
-            release(var0, var12, var11, var2, var13, var3);
-            var0.fade = var15;
+            release(var0, var16, var22, var2, var24, var3);
+            var0.fade = var25;
+        }
+    }
+
+    private static void lance(SpellCircleFx.Ctx var0, Vec3 var1, Vec3 var2, Vec3 var3, double var4, float var6, float var7, float var8, float var9) {
+        Vec3 var10 = var3.subtract(var2);
+        Vec3 var11 = var2.add(var10.scale(0.42));
+        Vec3 var12 = var1.subtract(var11);
+        Vec3 var13 = var10.cross(var12);
+        if (!(var13.lengthSqr() < 1.0E-10)) {
+            var13 = var13.normalize().scale(var4);
+            Vec3 var14 = var11.add(var13);
+            Vec3 var15 = var11.subtract(var13);
+
+            for (Vec3 var19 : new Vec3[]{var2, var14, var3, var15}) {
+                var0.vc
+                    .addVertex(var0.m, (float)(var19.x - var0.camX), (float)(var19.y - var0.camY), (float)(var19.z - var0.camZ))
+                    .setColor(var6, var7, var8, var9);
+            }
         }
     }
 
@@ -365,9 +373,9 @@ public final class SpellCircleFx {
                 BreakerFx.ribbon(var0.vc, var0.m, var3, var29, var27, 0.02, 0.75F, 1.0F, 0.82F, 0.85F * var11);
             }
 
-            for (int var47 = 0; var47 < 10; var47++) {
-                double var50 = hash(var47, 41) * Math.PI * 2.0;
-                Vec3 var53 = var8.scale(Math.cos(var50)).add(0.0, Math.sin(var50), 0.0).add(var2.scale(0.2 * (hash(var47, 42) - 0.5)));
+            for (int var46 = 0; var46 < 10; var46++) {
+                double var50 = hash(var46, 41) * Math.PI * 2.0;
+                Vec3 var53 = var8.scale(Math.cos(var50)).add(0.0, Math.sin(var50), 0.0).add(var2.scale(0.2 * (hash(var46, 42) - 0.5)));
                 double var16 = 0.3 + 2.4 * smooth(0.0, 0.5, var4);
                 double var60 = var16 + 0.6;
                 BreakerFx.ribbon(
@@ -410,79 +418,61 @@ public final class SpellCircleFx {
             var0.b = 0.78F;
             var0.a = 0.55F * var38;
             var0.ring(var42, 0.012);
-            double var48 = 0.1;
+            double var47 = 0.1;
 
             for (byte var14 = -1; var14 <= 1; var14 += 2) {
                 double var54 = (double)var14 * var42 * 0.9;
                 double var58 = (double)var14 * 5.5;
                 double var19 = -0.02;
-                double var62 = (double)var14 * 5.5 * var48;
-                Vec3 var63 = new Vec3(
+                double var61 = (double)var14 * 5.5 * var47;
+                Vec3 var62 = new Vec3(
                     var0.cx + var0.ux * var54 + var0.vx * var19, var0.cy + var0.uy * var54 + var0.vy * var19, var0.cz + var0.uz * var54 + var0.vz * var19
                 );
                 Vec3 var24 = new Vec3(
-                    var0.cx + var0.ux * var58 + var0.vx * var62, var0.cy + var0.uy * var58 + var0.vy * var62, var0.cz + var0.uz * var58 + var0.vz * var62
+                    var0.cx + var0.ux * var58 + var0.vx * var61, var0.cy + var0.uy * var58 + var0.vy * var61, var0.cz + var0.uz * var58 + var0.vz * var61
                 );
-                BreakerFx.ribbon(var0.vc, var0.m, var3, var63, var24, 0.26, 0.45F, 0.95F, 0.35F, 0.42F * var38);
-                BreakerFx.ribbon(var0.vc, var0.m, var3, var63, var24, 0.08, 0.75F, 1.0F, 0.55F, 0.55F * var38);
+                BreakerFx.ribbon(var0.vc, var0.m, var3, var62, var24, 0.26, 0.45F, 0.95F, 0.35F, 0.42F * var38);
+                BreakerFx.ribbon(var0.vc, var0.m, var3, var62, var24, 0.08, 0.75F, 1.0F, 0.55F, 0.55F * var38);
             }
         }
 
-        if (var4 > 2.02 && var4 < 2.9) {
-            float var39 = (float)(smooth(2.02, 2.1, var4) * (1.0 - smooth(2.75, 2.9, var4)));
+        if (var4 > 2.02 && var4 < 2.75) {
+            float var39 = (float)(smooth(2.02, 2.1, var4) * (1.0 - smooth(2.55, 2.72, var4)));
             double var43 = 0.075;
             var0.r = 1.0F;
             var0.g = 0.7F;
             var0.b = 0.74F;
-            var0.a = 0.85F * var39 * (float)(1.0 - smooth(2.55, 2.7, var4));
+            var0.a = 0.85F * var39;
             var0.disc(var43, 22);
             var0.r = 0.95F;
             var0.g = 0.4F;
             var0.b = 0.35F;
             var0.a = 0.5F * var39 * (float)(1.0 - smooth(2.15, 2.35, var4));
             var0.seg(-3.5, 0.0, 3.5, 0.0, 0.006);
-            if (var4 > 2.55) {
-                var0.r = 0.5F;
-                var0.g = 1.0F;
-                var0.b = 0.55F;
-                var0.a = 0.9F * var39;
-                var0.seg(0.0, -0.04, 0.0, 0.06, 0.03);
-                PixelFx.sprite(var1, 0.35, 4, 0.4F, 1.0F, 0.5F, 0.6F * var39);
-            }
         }
 
-        if (var4 > 2.82 && var4 < 3.3) {
-            float var40 = (float)(smooth(2.82, 2.9, var4) * (1.0 - smooth(3.1, 3.3, var4)));
-            BreakerFx.softGlow(var0.vc, var0.m, var3, var1.add(0.0, 0.1, 0.0), 1.9, 1.0F, 1.0F, 0.95F, 0.95F * var40);
-
-            for (int var44 = 0; var44 < 46; var44++) {
-                double var45 = (Math.PI * 2) * ((double)var44 + hash(var44, 51) * 0.6) / 46.0;
-                double var51 = 1.0 + 0.6 * hash(var44, 52);
-                double var55 = var51 + 2.5 + 4.0 * hash(var44, 53);
-                Vec3 var59 = new Vec3(
-                    var0.cx + var0.ux * Math.cos(var45) * var51 + var0.vx * Math.sin(var45) * var51,
-                    var0.cy + var0.vy * Math.sin(var45) * var51,
-                    var0.cz + var0.uz * Math.cos(var45) * var51 + var0.vz * Math.sin(var45) * var51
-                );
-                Vec3 var61 = new Vec3(
-                    var0.cx + var0.ux * Math.cos(var45) * var55 + var0.vx * Math.sin(var45) * var55,
-                    var0.cy + var0.vy * Math.sin(var45) * var55,
-                    var0.cz + var0.uz * Math.cos(var45) * var55 + var0.vz * Math.sin(var45) * var55
-                );
-                BreakerFx.ribbon(var0.vc, var0.m, var3, var59, var61, 0.03 + 0.04 * hash(var44, 54), 0.7F, 0.95F, 0.35F, 0.75F * var40);
-            }
+        if (var4 > 2.55 && var4 < 3.28) {
+            double var40 = smooth(2.58, 3.05, var4);
+            float var44 = (float)(smooth(2.55, 2.66, var4) * (1.0 - smooth(3.12, 3.28, var4)));
+            double var48 = 0.1 + 1.05 * var40;
+            double var51 = 0.04 + 0.05 * var40;
+            Vec3 var56 = var1.add(0.0, -var48 * 0.35, 0.0);
+            Vec3 var59 = var1.add(0.0, var48 * 0.65 + 0.4 * smooth(3.05, 3.2, var4), 0.0);
+            PixelFx.sprite(var1, 0.35 + 0.7 * var40, 4, 0.45F, 1.0F, 0.6F, 0.45F * var44);
+            lance(var0, var3, var56, var59, var51 * 3.2, 0.45F, 1.0F, 0.6F, 0.3F * var44);
+            lance(var0, var3, var56, var59, var51, 0.88F, 1.0F, 0.9F, 0.95F * var44);
         }
 
         double var41 = var4 - 3.1;
         if (var41 > 0.0 && var41 < 1.6) {
-            float var46 = (float)(smooth(0.0, 0.12, var41) * (1.0 - smooth(0.9, 1.6, var41)));
+            float var45 = (float)(smooth(0.0, 0.12, var41) * (1.0 - smooth(0.9, 1.6, var41)));
             double var49 = Math.min(40.0, var41 * 45.0);
             Vec3 var52 = var1.add(0.0, -0.15, 0.0);
-            Vec3 var56 = var1.add(0.0, var49, 0.0);
+            Vec3 var55 = var1.add(0.0, var49, 0.0);
             double var57 = 0.1 + 0.42 * smooth(0.0, 0.35, var41) * (1.0 - 0.6 * smooth(0.6, 1.6, var41));
-            SpellFx.tube(var0.vc, var0.m, var3, new Vec3[]{var52, var56}, var57, 0.7F, 1.0F, 0.82F, 0.22F * var46);
-            SpellFx.tube(var0.vc, var0.m, var3, new Vec3[]{var52, var56}, var57 * 0.45, 0.88F, 1.0F, 0.92F, 0.4F * var46);
-            SpellFx.tube(var0.vc, var0.m, var3, new Vec3[]{var52, var56}, var57 * 0.14, 1.0F, 1.0F, 1.0F, 0.85F * var46);
+            SpellFx.tube(var0.vc, var0.m, var3, new Vec3[]{var52, var55}, var57, 0.7F, 1.0F, 0.82F, 0.22F * var45);
+            SpellFx.tube(var0.vc, var0.m, var3, new Vec3[]{var52, var55}, var57 * 0.45, 0.88F, 1.0F, 0.92F, 0.4F * var45);
+            SpellFx.tube(var0.vc, var0.m, var3, new Vec3[]{var52, var55}, var57 * 0.14, 1.0F, 1.0F, 1.0F, 0.85F * var45);
         }
     }
 

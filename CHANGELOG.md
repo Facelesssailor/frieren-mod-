@@ -2,6 +2,12 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.5.10
+
+- Cutscene shots matched to ep. 21; the whitish-green spear replaces the speed-line flash; pre-release ground glow removed.
+
+Code: changed client.BreakerFx, client.CinemaDirector, client.CinemaOverlay, client.SpellCircleFx.
+
 ## 1.5.9
 
 - Flight Staff removed: any of Iron's staffs works for flight.

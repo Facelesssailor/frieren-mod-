@@ -59,7 +59,7 @@ public final class CinemaOverlay {
                 var6 = 0.97 * ss(0.0, 0.06, var16) * (1.0 - ss(0.32, 0.75, var16));
             }
 
-            var4 = Math.max(var4, (var2 - 19.099999999999998) / 0.7);
+            var4 = Math.max(var4, (var2 - 20.099999999999998) / 0.7);
         }
 
         return new int[]{argb(var8, 14217312), argb(var10, 15138815), argb(var6, 16514559), argb(Math.min(1.0, var4), 0)};

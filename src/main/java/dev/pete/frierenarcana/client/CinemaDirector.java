@@ -29,7 +29,7 @@ public final class CinemaDirector {
     private static float bands = 0.0F;
     private static float descent = 0.0F;
     private static long fractureSeen = 0L;
-    static final double END_AFTER_SHATTER = 19.799999999999997;
+    static final double END_AFTER_SHATTER = 20.799999999999997;
 
     private CinemaDirector() {
     }
@@ -147,7 +147,7 @@ public final class CinemaDirector {
 
                     double var42 = fractureSeen == 0L ? -1.0 : (double)(var3 - fractureSeen) / 1.0E9;
                     if (!(var5 > 40.0)
-                        && (fractureSeen == 0L || !(var42 > 19.799999999999997))
+                        && (fractureSeen == 0L || !(var42 > 20.799999999999997))
                         && (fractureSeen != 0L || ArcanaCinematic.release == 0L || !(var7 > 6.1))) {
                         sEyePrev = sEye == null ? var13 : sEye;
                         sEye = var13;
@@ -199,7 +199,7 @@ public final class CinemaDirector {
     }
 
     static double ease(int var0) {
-        return var0 != 1 && var0 != 3 && var0 != 11 && var0 != 6 ? 0.24 : 0.12;
+        return var0 != 1 && var0 != 3 && var0 != 6 ? 0.24 : 0.12;
     }
 
     private static double ss(double var0, double var2, double var4) {
@@ -209,73 +209,96 @@ public final class CinemaDirector {
 
     static Vec3[] shot(double var0, double var2, boolean var4, boolean var5, Vec3 var6, Vec3 var7, Vec3 var8, Vec3 var9, double var10, Vec3 var12, int[] var13) {
         double var17 = var2 - 6.2;
+        Vec3 var19 = var6.add(0.0, -0.57, 0.0).add(var7.scale(0.42));
         Vec3 var14;
         Vec3 var15;
         byte var16;
         if (!var4) {
-            if (var0 < 3.4) {
+            if (var0 < 1.8) {
                 var16 = 10;
-                double var19 = var0 / 3.4;
-                var14 = var6.add(var7.scale(3.9 - 0.6 * var19)).add(var8.scale(0.45 - 0.2 * var19)).add(0.0, -0.15, 0.0);
-                var15 = var6.add(0.0, -0.3, 0.0).add(var7.scale(0.6));
-            } else if (var0 < 7.0) {
+                double var20 = var0 / 1.8;
+                var14 = var19.add(var7.scale(1.05 - 0.1 * var20)).add(var8.scale(0.08)).add(0.0, 0.3, 0.0);
+                var15 = var19.add(0.0, -0.02, 0.0);
+            } else if (var0 < 3.2) {
+                var16 = 12;
+                var14 = var6.add(var7.scale(2.5)).add(0.0, -0.4, 0.0);
+                var15 = var6.add(0.0, -0.45, 0.0);
+            } else if (var0 < 6.2) {
                 var16 = 11;
-                double var25 = (var0 - 3.4) / 3.6;
-                var14 = var6.add(var7.scale(10.0 + 1.5 * var25)).add(var8.scale(6.5)).add(0.0, 0.3 + 0.4 * var25, 0.0);
-                var15 = var6.add(0.0, 0.5 + 0.5 * var25, 0.0);
+                var14 = var6.add(var7.scale(16.0)).add(var8.scale(8.0)).add(0.0, -0.7, 0.0);
+                var15 = var6.add(0.0, 1.6, 0.0);
             } else {
-                var16 = 0;
-                double var26 = Math.min(1.0, (var0 - 7.0) / 3.2);
-                double var21 = Math.sin(var26 * Math.PI * 0.6) * 0.9;
-                Vec3 var23 = var7.scale(-Math.cos(var21)).add(var8.scale(Math.sin(var21)));
-                var14 = var6.add(var23.scale(5.2 - 1.6 * var26)).add(0.0, -0.45 + 0.9 * var26, 0.0);
-                var15 = var6.add(0.0, 0.15, 0.0).add(var7.scale(0.5));
+                var16 = 13;
+                Vec3 var30 = var7.scale(55.0).add(var8.scale(-22.0)).normalize();
+                double var21 = 59.0;
+                if (var9 != null) {
+                    Vec3 var23 = var6.subtract(var9);
+                    double var24 = var23.dot(var30);
+                    double var26 = var23.lengthSqr() - (var10 - 8.0) * (var10 - 8.0);
+                    double var28 = var24 * var24 - var26;
+                    if (var28 > 0.0) {
+                        var21 = Math.max(12.0, Math.min(var21, -var24 + Math.sqrt(var28)));
+                    }
+                }
+
+                var14 = var6.add(var30.scale(var21)).add(0.0, 2.0, 0.0);
+                var15 = var6.add(0.0, 5.0, 0.0);
             }
         } else if (!var5 || var9 == null || var12 == null) {
             var16 = 5;
-            double var35 = ss(3.1, 4.3, var2);
-            var14 = var6.add(var7.scale(2.7)).add(var8.scale(0.25)).add(0.0, -0.25 + 0.4 * var35, 0.0);
-            var15 = var6.add(0.0, -0.25 + 8.0 * var35 * var35, 0.0).add(var7.scale(0.4));
+            double var38 = ss(3.1, 4.3, var2);
+            var14 = var6.add(var7.scale(2.4)).add(0.0, -0.35 + 0.4 * var38, 0.0);
+            var15 = var6.add(0.0, -0.42 + 8.0 * var38 * var38, 0.0);
         } else if (var2 < 4.2) {
             var16 = 5;
-            double var27 = ss(3.25, 4.15, var2);
-            var14 = var6.add(var7.scale(2.7 - 0.3 * ss(0.0, 3.1, var2))).add(var8.scale(0.25)).add(0.0, -0.25 + 0.2 * var27, 0.0);
-            var15 = var6.add(0.0, -0.28 + 1.9 * var27, 0.0).add(var7.scale(0.4));
+            var14 = var6.add(var7.scale(2.4)).add(0.0, -0.35, 0.0);
+            var15 = var6.add(0.0, -0.42, 0.0);
+        } else if (var2 < 4.7) {
+            var16 = 7;
+            var14 = var6.add(var7.scale(1.6)).add(var8.scale(0.9)).add(0.0, -0.5, 0.0);
+            var15 = var6.add(0.0, 14.0, 0.0).add(var7.scale(1.5));
         } else if (var2 < 5.1) {
+            var16 = 8;
+            var14 = var6.add(var7.scale(Math.max(30.0, var10 * 0.8))).add(var8.scale(6.0)).add(0.0, -0.4, 0.0);
+            var15 = var6.add(0.0, 3.0, 0.0);
+        } else if (var2 < 6.1) {
             var16 = 6;
-            double var28 = Math.pow(Math.max(0.0, Math.min(1.0, (var2 - 3.1) / 3.1)), 1.6);
-            Vec3 var37 = var6.add(0.0, -0.57, 0.0).lerp(var12, var28);
-            Vec3 var22 = new Vec3(var6.x - var9.x, 0.0, var6.z - var9.z);
-            var22 = var22.lengthSqr() < 0.25 ? var7 : var22.normalize();
-            var14 = var37.add(var22.scale(4.5)).add(new Vec3(-var22.z, 0.0, var22.x).scale(1.5)).add(0.0, -2.5, 0.0);
-            var15 = var37.add(0.0, 1.5, 0.0);
-        } else if (var17 < 1.6) {
+            double var31 = Math.pow(Math.max(0.0, Math.min(1.0, (var2 - 3.1) / 3.1)), 1.6);
+            Vec3 var22 = var6.add(0.0, -0.57, 0.0).lerp(var12, var31);
+            Vec3 var41 = new Vec3(var6.x - var9.x, 0.0, var6.z - var9.z);
+            var41 = var41.lengthSqr() < 0.25 ? var7 : var41.normalize();
+            var14 = var22.add(var41.scale(4.5)).add(new Vec3(-var41.z, 0.0, var41.x).scale(1.5)).add(0.0, -2.5, 0.0);
+            var15 = var22.add(0.0, 1.5, 0.0);
+        } else if (var17 < 2.6) {
             var16 = 1;
-            Vec3 var29 = new Vec3(var6.x - var9.x, 0.0, var6.z - var9.z);
-            var29 = var29.lengthSqr() < 0.25 ? var7.scale(-1.0) : var29.normalize();
-            double var20 = Math.cos(0.5);
-            double var39 = Math.sin(0.5);
-            Vec3 var24 = new Vec3(var29.x * var20 - var29.z * var39, 0.0, var29.x * var39 + var29.z * var20);
-            var14 = var9.add(var24.scale(var10 * 1.35 + 10.0)).add(0.0, var10 * 0.22 + 3.0, 0.0);
+            Vec3 var32 = new Vec3(var6.x - var9.x, 0.0, var6.z - var9.z);
+            var32 = var32.lengthSqr() < 0.25 ? var7.scale(-1.0) : var32.normalize();
+            double var39 = Math.cos(0.5);
+            double var43 = Math.sin(0.5);
+            Vec3 var25 = new Vec3(var32.x * var39 - var32.z * var43, 0.0, var32.x * var43 + var32.z * var39);
+            var14 = var9.add(var25.scale(var10 * 1.35 + 10.0)).add(0.0, var10 * 0.22 + 3.0, 0.0);
             var15 = var9.add(0.0, var10 * 0.38, 0.0);
-        } else if (var17 < 7.4) {
+        } else if (var17 < 7.0) {
             var16 = 2;
-            Vec3 var31 = new Vec3(var9.x - var6.x, 0.0, var9.z - var6.z);
-            var31 = var31.lengthSqr() < 1.0 ? var7 : var31.normalize();
-            double var36 = Math.max(6.0, Math.min(18.0, var10 * 0.4));
-            double var40 = ss(5.3, 6.8, var17);
-            var14 = var6.add(var31.scale(var36)).add(0.0, -0.7, 0.0);
-            var15 = var6.add(0.0, var36 * (0.3 + 0.12 * var40), 0.0);
+            Vec3 var34 = new Vec3(var9.x - var6.x, 0.0, var9.z - var6.z);
+            var34 = var34.lengthSqr() < 1.0 ? var7 : var34.normalize();
+            double var40 = Math.max(6.0, Math.min(18.0, var10 * 0.4));
+            var14 = var6.add(var34.scale(var40)).add(0.0, -0.7, 0.0);
+            var15 = var6.add(0.0, var40 * 0.3, 0.0);
         } else if (var17 < 9.6) {
             var16 = 3;
-            double var33 = (var17 - 5.0 - 2.4) / 2.2;
+            double var36 = (var17 - 5.0 - 2.0) / 2.6;
             var14 = var6.add(var7.scale(-2.2)).add(var8.scale(1.4)).add(0.0, -0.2, 0.0);
-            var15 = var6.add(var7.scale(7.0)).add(var8.scale(3.0 + 2.0 * var33)).add(0.0, 5.5 - 1.0 * var33, 0.0);
-        } else {
+            var15 = var6.add(var7.scale(7.0)).add(var8.scale(3.0 + 1.0 * var36)).add(0.0, 5.5 - 0.6 * var36, 0.0);
+        } else if (var17 < 12.2) {
             var16 = 4;
-            double var34 = (var17 - 5.0 - 4.6) / 3.0;
-            var14 = var6.add(var7.scale(3.2 - 0.3 * var34)).add(var8.scale(0.7 - 0.4 * var34)).add(0.0, 0.05 + 0.1 * var34, 0.0);
-            var15 = var6.add(0.0, 0.05, 0.0);
+            double var37 = (var17 - 5.0 - 4.6) / 2.6;
+            var14 = var6.add(var7.scale(4.2 - 0.3 * var37)).add(var8.scale(0.5)).add(0.0, -0.2, 0.0);
+            var15 = var6.add(0.0, -0.1, 0.0);
+        } else {
+            var16 = 9;
+            var14 = var6.add(var7.scale(3.0)).add(0.0, -0.8, 0.0);
+            var15 = var6.add(var7.scale(40.0)).add(0.0, 7.0, 0.0);
         }
 
         var13[0] = var16;

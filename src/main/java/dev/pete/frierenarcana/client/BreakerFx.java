@@ -415,7 +415,7 @@ public final class BreakerFx {
                             float var42 = (float)(0.74 + 0.24 * Math.cos(6.2831 * (var39 - 0.33)));
                             float var43 = (float)(0.8 + 0.2 * Math.cos(6.2831 * (var39 + 0.33)));
                             var25[var28] = new float[]{var41, g(var42, var43), var43};
-                            var24[var28] = (float)(0.3 * var10 * var37);
+                            var24[var28] = (float)(0.45 * var10 * var37);
                             var27 |= var24[var28] > 0.004F;
                             var26[var28] = new double[]{var3.x + var29, var19, var3.z + var31};
                         }
