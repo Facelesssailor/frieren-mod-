@@ -17,7 +17,7 @@ jump to it.§r
 [[22:Offensive Magic]]
 [[80:Support and Utility]]
 [[106:Barriers]]
-[[117:Items]]
+[[118:Items]]
 @@page
 §2§lGetting Started§r
 §oHow magic works in
@@ -177,7 +177,7 @@ Two spells play a
 short cinematic for
 the caster: the
 §lBarrier Breaker§r
-(about 25 s) and the
+(about 30 s) and the
 §lBlack Hole§r (about 8
 s). While one plays,
 your movement and
@@ -235,14 +235,18 @@ ships, Zoltraak
 Cinematic and Frieren
 Void.
 
-This book needs
+This book is the
 @@page
-Patchouli. You get one
-the first time you join
-a world; craft
+§lFrieren: Magic
+Compendium§r. You get
+one the first time you
+join a world; craft
 another from a book
 and an amethyst
-shard.
+shard. It works on its
+own; with Patchouli
+installed it opens this
+richer version.
 
 [[3:< Getting Started]]
 @@page
@@ -1002,16 +1006,20 @@ magic that does not
 §oStaff flight;
 double-tap jump.§r
 
-Hold a staff in either
-hand. Double-tap
-jump for ordinary
-flight. A staff
+Hold any of Iron's
+staffs in either hand
+(or an item in the
+#frieren_arcana:fligh
+t_staves tag).
+Double-tap jump for
+ordinary flight; the
+staff you hold
 appears beneath you.
+@@page
 Mana drains only while
 flying.
 
 §lAt a glance§r
-@@page
 §lSchool:§r Evocation
 §lRarity:§r Rare and up
 §lLevels:§r 1
@@ -1019,18 +1027,19 @@ flying.
 §lCooldown:§r 2 s
 §lCast:§r Toggle
 
-§lCrafting: Flight
-Staff§r
-- G A
-- S G
-S - -
-§lG§r Gold Ingot
+§lWhich staff?§r
+Any of Iron's staffs
 @@page
-§lA§r Amethyst Shard
-§lS§r Stick
-
-Any staff works; this
-one is easy to make.
+works, in either hand,
+so the other hand
+stays free. Modpacks
+can add more items to
+the
+§o#frieren_arcana:fligh
+t_staves§r item tag.
+While you fly, the
+staff you hold is
+drawn beneath you.
 
 [[80:< Support and Utility]]
 @@page
@@ -1292,8 +1301,8 @@ how to break them.§r
 [[107:Examination Barrier]]
 [[109:Defensive Barrier]]
 [[111:Barrier Breaker]]
-[[114:Breaking Defensive]]
-[[114:Magic]]
+[[115:Breaking Defensive]]
+[[115:Magic]]
 
 [[2:< Contents]]
 @@page
@@ -1361,33 +1370,41 @@ above you.§r
 
 Frieren's unravelling
 of Serie's barrier
-(ep. 21). In her
-cupped hands a
-green and black
+(ep. 21). The
 non-Euclidean shape
-turns through itself
-and compresses, then
+in her cupped hands
+bursts into panes of
+green glass, then a
+column of light shoots
 @@page
-a single cone of light
-rises straight up into
-the dome; the barrier
-bands, cracks and
-shatters into falling
-shards.
+up from her hands
+into the dome.
 
-Examination barriers
-only; you must stand
-inside or beneath one.
-Needs full mana. K or
+The dome turns to
+clear, oily glass,
+bands spread down it
+until the whole sky is
+striped violet and
+green, and after a
+flash it breaks into
+crystals that hang in
+the sky and drift
+down. Examination
+@@page
+barriers only; you
+must stand inside or
+beneath one. Needs
+full mana. K or
 Escape skips the
 camera.
-@@page
+
 §lAt a glance§r
 §lSchool:§r Evocation
 §lRarity:§r Legendary
 and up
 §lLevels:§r 1
 §lMana:§r your whole
+@@page
 equipped mana
 capacity
 §lCooldown:§r 90 s
@@ -1436,36 +1453,33 @@ one.
 [[106:< Barriers]]
 @@page
 §2§lItems§r
-§oStaffs, barrier
-devices and sigils,
-with their recipes.§r
+§oThe Compendium,
+barrier devices and
+the release sigil, with
+their recipes.§r
 
-[[118:Flight Staff]]
+[[119:Frieren: Magic]]
+[[119:Compendium]]
 [[120:Barrier Release Sigil]]
 [[122:Examination Barrier]]
 [[122:Devices]]
 
 [[2:< Contents]]
 @@page
-§2§lFlight Staff§r
-A simple staff. Holding
-any staff in either
-hand lets you use
-Flight Magic and fire
-the barrage from the
-hand.
+§2§lFrieren: Magic
+Compendium§r
+This book. Right-click
+to read it; it works
+without Patchouli, and
+opens this version
+when Patchouli is
+installed.
 
-§lCrafting: Flight
-Staff§r
-- G A
-- S G
-S - -
-@@page
-§lG§r Gold Ingot
-§lA§r Amethyst Shard
-§lS§r Stick
-
-[[117:< Items]]
+§lCrafting: Frieren:
+Magic Compendium§r
+Shapeless: Book +
+Amethyst Shard
+[[118:< Items]]
 @@page
 §2§lBarrier Release
 Sigil§r
@@ -1483,7 +1497,7 @@ G A G
 @@page
 §lA§r Amethyst Shard
 
-[[117:< Items]]
+[[118:< Items]]
 @@page
 §2§lExamination
 Barrier Devices§r
@@ -1581,4 +1595,4 @@ A M A
 §lP§r Examination Barrier
 Device — Tier 4
 
-[[117:< Items]]
+[[118:< Items]]

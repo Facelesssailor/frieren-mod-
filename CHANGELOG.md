@@ -2,6 +2,16 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.5.9
+
+- Flight Staff removed: any of Iron's staffs works for flight.
+- Barrier break: no green barrier left during or after the shatter; crystal shards rebuilt.
+- Fixed a crash when skipping the cutscene; guide book updates.
+
+Code: added StaffView; changed ArcanaGameTests, FrierenArcana, client.ArcanaClient, client.BarrierLook, client.BreakerFx, client.ChargeFx, client.CinemaDirector, client.CinemaOverlay, client.SpellCircleFx, client.SpellFx, client.VisualClientSmoke, compat.jei.ArcanaJeiPlugin, compat.jei.JeiClientSmoke.
+
+Resources: added patchouli_books/guide/en_us/entries/items/compendium.json; changed guide/en_us.txt, patchouli_books/guide/en_us/categories/basics.json, patchouli_books/guide/en_us/categories/items.json, patchouli_books/guide/en_us/entries/barriers/barrier_breaker.json, patchouli_books/guide/en_us/entries/basics/compat.json, patchouli_books/guide/en_us/entries/basics/cutscenes.json, patchouli_books/guide/en_us/entries/support/flight.json, shaders/core/arcana_energy.fsh, shaders/core/arcana_refraction.fsh, data/tags/item/flight_staves.json; removed models/item/flight_staff.json, patchouli_books/guide/en_us/entries/items/flight_staff.json, textures/item/flight_staff.png, textures/item/flight_staff_3d.png, data/recipe/flight_staff.json.
+
 ## 1.5.8
 
 - Built-in guide book, the Magic Compendium, that works without Patchouli.

@@ -34,7 +34,7 @@ public final class FrierenArcana {
     public static final DeferredRegister<AbstractSpell> SPELLS = DeferredRegister.create(SpellRegistry.SPELL_REGISTRY_KEY, "frieren_arcana");
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, "frieren_arcana");
     public static final DeferredItem<Item> RELEASE = ITEMS.register("release_sigil", () -> new ReleaseSigil(new Properties().stacksTo(1).rarity(Rarity.RARE)));
-    public static final DeferredItem<Item> STAFF = ITEMS.register("flight_staff", () -> new Item(new Properties().stacksTo(1).rarity(Rarity.RARE)));
+    public static final DeferredItem<Item> STAFF = null;
     public static final List<DeferredItem<Item>> DEVICES = new ArrayList<>();
     public static final Map<ArcanaSpell.Kind, DeferredHolder<AbstractSpell, ArcanaSpell>> SPELL_MAP;
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB;
@@ -77,7 +77,6 @@ public final class FrierenArcana {
                     .icon(() -> RELEASE.get().getDefaultInstance())
                     .displayItems((var0x, var1x) -> {
                         var1x.accept(RELEASE.get());
-                        var1x.accept(STAFF.get());
 
                         for (DeferredItem var3x : DEVICES) {
                             var1x.accept((ItemLike)var3x.get());

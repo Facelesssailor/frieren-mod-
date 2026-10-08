@@ -19,30 +19,50 @@ public final class CinemaOverlay {
         if (ArcanaCinematic.breakerActive()) {
             long var1 = System.nanoTime();
             double var3 = (double)(var1 - ArcanaCinematic.startedNanos()) / 1.0E9;
-            double var5 = Math.max(0.0, 1.0 - var3 / 0.7);
-            double var7 = 0.0;
-            long var9 = CinemaDirector.fractureNanos();
-            if (var9 != 0L) {
-                double var11 = (double)(var1 - var9) / 1.0E9;
-                double var13 = var11 - 2.6 - 3.0;
-                if (var13 > 0.0) {
-                    var7 = var13 < 0.12 ? var13 / 0.12 * 0.8 : Math.max(0.0, 0.8 * (1.0 - (var13 - 0.12) / 0.7));
+            long var5 = CinemaDirector.fractureNanos();
+            double var7 = var5 == 0L ? -1.0 : (double)(var1 - var5) / 1.0E9;
+            GuiGraphics var9 = var0.getGuiGraphics();
+            int var10 = var9.guiWidth();
+            int var11 = var9.guiHeight();
+
+            for (int var15 : layers(var3, var7)) {
+                if (var15 >>> 24 > 1) {
+                    var9.fill(0, 0, var10, var11, var15);
                 }
-
-                var5 = Math.max(var5, (var11 - 15.1) / 0.7);
-            }
-
-            GuiGraphics var15 = var0.getGuiGraphics();
-            int var12 = var15.guiWidth();
-            int var16 = var15.guiHeight();
-            if (var7 > 0.004) {
-                var15.fill(0, 0, var12, var16, argb(var7, 15925238));
-            }
-
-            if (var5 > 0.004) {
-                var15.fill(0, 0, var12, var16, argb(Math.min(1.0, var5), 0));
             }
         }
+    }
+
+    private static double ss(double var0, double var2, double var4) {
+        var4 = Math.max(0.0, Math.min(1.0, (var4 - var0) / (var2 - var0)));
+        return var4 * var4 * (3.0 - 2.0 * var4);
+    }
+
+    static int[] layers(double var0, double var2) {
+        double var4 = Math.max(0.0, 1.0 - var0 / 0.7);
+        double var6 = 0.0;
+        double var8 = 0.0;
+        double var10 = 0.0;
+        if (var2 >= 0.0) {
+            double var12 = var2 - 6.2;
+            double var14 = 5.0;
+            if (var12 > var14 - 0.3 && var12 < var14 - 0.15) {
+                var8 = 0.3;
+            }
+
+            if (var12 > var14 - 0.15 && var12 < var14) {
+                var10 = 0.35 + 0.4 * ss(var14 - 0.15, var14, var12);
+            }
+
+            double var16 = var12 - var14;
+            if (var16 > 0.0) {
+                var6 = 0.97 * ss(0.0, 0.06, var16) * (1.0 - ss(0.32, 0.75, var16));
+            }
+
+            var4 = Math.max(var4, (var2 - 19.099999999999998) / 0.7);
+        }
+
+        return new int[]{argb(var8, 14217312), argb(var10, 15138815), argb(var6, 16514559), argb(Math.min(1.0, var4), 0)};
     }
 
     private static int argb(double var0, int var2) {

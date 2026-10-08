@@ -53,7 +53,7 @@ public final class BarrierLook {
                     int var17 = var16 + 1;
 
                     for (int var21 : new int[]{var14, var15, var17, var16}) {
-                        float var22 = (float)((double)var7 * Math.max(0.0, Math.min(1.0, (SY[var21] - var10) / 0.3)));
+                        float var22 = (float)(0.13 + ((double)var7 - 0.13) * Math.max(0.0, Math.min(1.0, (SY[var21] - var10) / 0.3)));
                         vtx(var0, var1, var2, var3, var5, var21, var6, var22);
                     }
                 }
@@ -74,11 +74,24 @@ public final class BarrierLook {
         double var27 = Math.sqrt(var21 * var21 + var23 * var23 + var25 * var25);
         double var29 = var27 < 1.0E-6 ? 1.0 : Math.abs(var9 * var21 + var11 * var23 + var13 * var25) / var27;
         double var31 = Math.pow(1.0 - var29, 2.2);
-        float var33 = var8 >= 0.0F ? 0.6F + 0.04F * Math.min(1.0F, var8) : CinemaDirector.bandTag(var11);
-        float var34 = (var33 - 0.6F) / 0.04F;
-        float var35 = (float)((0.06 + 0.32 * var31) * (1.0 + 0.6 * (double)var34)) * var7;
+        float var33;
+        float var34;
+        if (var8 >= 2.0F) {
+            var33 = 0.6490196F;
+            var34 = 0.5F * var7;
+        } else if (var8 >= 1.25F) {
+            var33 = 0.64509803F;
+            var34 = 0.5F * var7;
+        } else if (var8 >= 0.0F) {
+            var33 = 0.6F + 0.04F * Math.max(0.13F, Math.min(1.0F, var8));
+            var34 = 0.5F * var7;
+        } else {
+            var33 = 0.6F;
+            var34 = (float)(0.06 + 0.32 * var31) * var7;
+        }
+
         var0.addVertex(var1, (float)(var15 - var5.x), (float)(var17 - var5.y), (float)(var19 - var5.z))
-            .setColor((float)var31, 0.9F, var33, Math.min(1.0F, var35));
+            .setColor((float)var31, 0.9F, var33, Math.min(1.0F, var34));
     }
 
     static {

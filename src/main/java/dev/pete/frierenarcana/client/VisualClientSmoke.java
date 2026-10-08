@@ -6,6 +6,7 @@ import dev.pete.frierenarcana.ArcanaNetwork;
 import dev.pete.frierenarcana.ArcanaSpell;
 import dev.pete.frierenarcana.BarrierData;
 import dev.pete.frierenarcana.FrierenArcana;
+import dev.pete.frierenarcana.StaffView;
 import io.redspace.ironsspellbooks.api.spells.CastSource;
 import io.redspace.ironsspellbooks.api.spells.ISpellContainer;
 import io.redspace.ironsspellbooks.api.spells.ISpellContainerMutable;
@@ -16,7 +17,6 @@ import io.redspace.ironsspellbooks.registries.ItemRegistry;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -52,37 +52,37 @@ public final class VisualClientSmoke {
     private static final Vec3 CENTER = new Vec3(0.0, 75.0, 0.0);
 
     @SubscribeEvent
-    public static void tick(Post event) {
+    public static void tick(Post var0) {
         if (Boolean.getBoolean("frieren_arcana.visualClientSmoke")) {
-            Minecraft mc = Minecraft.getInstance();
-            if (mc.level != null && mc.player != null && mc.getSingleplayerServer() != null) {
-                int t = ++tick;
-                if (t == 5) {
-                    mc.setScreen(new VisualClientSmoke.Gallery());
-                    setup(mc);
+            Minecraft var1 = Minecraft.getInstance();
+            if (var1.level != null && var1.player != null && var1.getSingleplayerServer() != null) {
+                int var2 = ++tick;
+                if (var2 == 5) {
+                    var1.setScreen(new VisualClientSmoke.Gallery());
+                    setup(var1);
                 }
 
-                if (t == 35) {
-                    capture(mc, "01-3d-items.png");
+                if (var2 == 35) {
+                    capture(var1, "01-3d-items.png");
                 }
 
-                if (t == 45) {
-                    mc.setScreen(null);
+                if (var2 == 45) {
+                    var1.setScreen(null);
                 }
 
-                if (t == 60) {
-                    scene(mc, new Vec3(0.0, 78.0, -38.0), 0.0F, 8.0F, false);
+                if (var2 == 60) {
+                    scene(var1, new Vec3(0.0, 78.0, -38.0), 0.0F, 8.0F, false);
                 }
 
-                if (t == 90) {
-                    capture(mc, "02-round-exam-dome.png");
+                if (var2 == 90) {
+                    capture(var1, "02-round-exam-dome.png");
                 }
 
-                if (t == 100) {
-                    scene(mc, new Vec3(0.0, 76.0, -2.0), 0.0F, 0.0F, true);
+                if (var2 == 100) {
+                    scene(var1, new Vec3(0.0, 76.0, -2.0), 0.0F, 0.0F, true);
                 }
 
-                if (t == 125) {
+                if (var2 == 125) {
                     if (!ArcanaClient.rainBlocked(CENTER) || ArcanaClient.rainHeight(0, 0, 65) < 90) {
                         throw new IllegalStateException("Rain roof absent");
                     }
@@ -91,168 +91,170 @@ public final class VisualClientSmoke {
                         throw new IllegalStateException("Outside rain incorrectly blocked");
                     }
 
-                    capture(mc, "03-dry-interior.png");
+                    capture(var1, "03-dry-interior.png");
                     System.out.println("FRIEREN_VISUAL_SMOKE Rain roof and inside/outside containment passed");
                 }
 
-                if (t == 140) {
-                    CompoundTag tag = new CompoundTag();
-                    tag.putString("kind", "charge");
-                    tag.putUUID("player", mc.player.getUUID());
-                    tag.putBoolean("active", true);
-                    tag.putBoolean("breaker", true);
-                    ArcanaClient.receive(tag);
+                if (var2 == 140) {
+                    CompoundTag var3 = new CompoundTag();
+                    var3.putString("kind", "charge");
+                    var3.putUUID("player", var1.player.getUUID());
+                    var3.putBoolean("active", true);
+                    var3.putBoolean("breaker", true);
+                    ArcanaClient.receive(var3);
                 }
 
-                if (t == 180) {
-                    capture(mc, "04-skippable-cutscene.png");
+                if (var2 == 180) {
+                    capture(var1, "04-skippable-cutscene.png");
                 }
 
-                if (t == 185) {
+                if (var2 == 185) {
                     if (!ArcanaCinematic.active()) {
                         throw new IllegalStateException("Cutscene did not start");
                     }
 
                     ArcanaCinematic.skip();
-                    if (ArcanaCinematic.active() || mc.getCameraEntity() != mc.player) {
+                    if (ArcanaCinematic.active() || var1.getCameraEntity() != var1.player) {
                         throw new IllegalStateException("Skip failed to restore player camera");
                     }
 
                     System.out.println("FRIEREN_VISUAL_SMOKE Cutscene start, skip and camera restoration passed");
-                    CompoundTag tag = new CompoundTag();
-                    tag.putString("kind", "charge");
-                    tag.putUUID("player", mc.player.getUUID());
-                    tag.putBoolean("active", false);
-                    ArcanaClient.receive(tag);
+                    CompoundTag var9 = new CompoundTag();
+                    var9.putString("kind", "charge");
+                    var9.putUUID("player", var1.player.getUUID());
+                    var9.putBoolean("active", false);
+                    ArcanaClient.receive(var9);
                 }
 
-                if (t == 195) {
-                    scene(mc, new Vec3(0.0, 78.0, -38.0), 0.0F, 8.0F, false);
+                if (var2 == 195) {
+                    scene(var1, new Vec3(0.0, 78.0, -38.0), 0.0F, 8.0F, false);
                 }
 
-                if (t == 210) {
-                    CompoundTag beam = new CompoundTag();
-                    beam.putString("kind", "beam");
-                    vector(beam, "start", CENTER.add(0.0, 0.0, -5.0));
-                    vector(beam, "end", CENTER.add(0.0, 16.0, 0.0));
-                    beam.putInt("style", 3);
-                    ArcanaClient.receive(beam);
-                    CompoundTag shatter = new CompoundTag();
-                    shatter.putString("kind", "shatter");
-                    shatter.put("field", field(false));
-                    vector(shatter, "impact", CENTER.add(0.0, 16.0, 0.0));
-                    ArcanaClient.receive(shatter);
-                    mc.getSingleplayerServer()
-                        .execute(() -> BarrierData.get(mc.getSingleplayerServer().overworld()).remove(mc.getSingleplayerServer().overworld(), fieldId, false));
+                if (var2 == 210) {
+                    CompoundTag var10 = new CompoundTag();
+                    var10.putString("kind", "beam");
+                    vector(var10, "start", CENTER.add(0.0, 0.0, -5.0));
+                    vector(var10, "end", CENTER.add(0.0, 16.0, 0.0));
+                    var10.putInt("style", 3);
+                    ArcanaClient.receive(var10);
+                    CompoundTag var4 = new CompoundTag();
+                    var4.putString("kind", "shatter");
+                    var4.put("field", field(false));
+                    vector(var4, "impact", CENTER.add(0.0, 16.0, 0.0));
+                    ArcanaClient.receive(var4);
+                    var1.getSingleplayerServer()
+                        .execute(
+                            () -> BarrierData.get(var1.getSingleplayerServer().overworld()).remove(var1.getSingleplayerServer().overworld(), fieldId, false)
+                        );
                 }
 
-                if (t == 212) {
-                    capture(mc, "05-green-breaker-fracture.png");
+                if (var2 == 212) {
+                    capture(var1, "05-green-breaker-fracture.png");
                 }
 
-                if (t == 220) {
-                    fields(mc, true);
-                    scene(mc, new Vec3(0.0, 78.0, -38.0), 0.0F, 8.0F, false);
+                if (var2 == 220) {
+                    fields(var1, true);
+                    scene(var1, new Vec3(0.0, 78.0, -38.0), 0.0F, 8.0F, false);
                 }
 
-                if (t == 245) {
-                    capture(mc, "06-defensive-honeycomb.png");
+                if (var2 == 245) {
+                    capture(var1, "06-defensive-honeycomb.png");
                 }
 
-                if (t == 255) {
-                    scene(mc, new Vec3(0.0, 77.0, -9.0), 0.0F, 6.0F, false);
-                    mc.options.setCameraType(CameraType.THIRD_PERSON_BACK);
-                    CompoundTag f = new CompoundTag();
-                    f.putString("kind", "flight");
-                    f.putUUID("player", mc.player.getUUID());
-                    f.putBoolean("active", true);
-                    ArcanaClient.receive(f);
+                if (var2 == 255) {
+                    scene(var1, new Vec3(0.0, 77.0, -9.0), 0.0F, 6.0F, false);
+                    var1.options.setCameraType(CameraType.THIRD_PERSON_BACK);
+                    CompoundTag var11 = new CompoundTag();
+                    var11.putString("kind", "flight");
+                    var11.putUUID("player", var1.player.getUUID());
+                    var11.putBoolean("active", true);
+                    ArcanaClient.receive(var11);
                 }
 
-                if (t >= 255 && t <= 285 && t % 5 == 0) {
-                    CompoundTag f = new CompoundTag();
-                    f.putString("kind", "flight");
-                    f.putUUID("player", mc.player.getUUID());
-                    f.putBoolean("active", true);
-                    ArcanaClient.receive(f);
+                if (var2 >= 255 && var2 <= 285 && var2 % 5 == 0) {
+                    CompoundTag var12 = new CompoundTag();
+                    var12.putString("kind", "flight");
+                    var12.putUUID("player", var1.player.getUUID());
+                    var12.putBoolean("active", true);
+                    ArcanaClient.receive(var12);
                 }
 
-                if (t == 277) {
-                    capture(mc, "07-flight-staff.png");
+                if (var2 == 277) {
+                    capture(var1, "07-flight-staff.png");
                 }
 
-                if (t == 290) {
-                    scene(mc, new Vec3(0.0, 78.0, -14.0), 0.0F, 9.0F, false);
+                if (var2 == 290) {
+                    scene(var1, new Vec3(0.0, 78.0, -14.0), 0.0F, 9.0F, false);
 
-                    for (int style : new int[]{11, 13, 14, 17, 8, 9}) {
-                        CompoundTag tag = new CompoundTag();
-                        tag.putString("kind", "effect");
-                        vector(tag, "center", CENTER.add((double)((style % 3 - 1) * 3), 0.0, (double)(style % 2 * 4)));
-                        tag.putInt("style", style);
-                        tag.putInt("strength", 3);
-                        ArcanaClient.receive(tag);
+                    for (int var6 : new int[]{11, 13, 14, 17, 8, 9}) {
+                        CompoundTag var7 = new CompoundTag();
+                        var7.putString("kind", "effect");
+                        vector(var7, "center", CENTER.add((double)((var6 % 3 - 1) * 3), 0.0, (double)(var6 % 2 * 4)));
+                        var7.putInt("style", var6);
+                        var7.putInt("strength", 3);
+                        ArcanaClient.receive(var7);
                     }
                 }
 
-                if (t == 295) {
-                    capture(mc, "08-volumetric-spells.png");
+                if (var2 == 295) {
+                    capture(var1, "08-volumetric-spells.png");
                 }
 
-                if (t == 310) {
-                    mc.setScreen(null);
-                    mc.options.setCameraType(CameraType.FIRST_PERSON);
-                    fields(mc, false);
+                if (var2 == 310) {
+                    var1.setScreen(null);
+                    var1.options.setCameraType(CameraType.FIRST_PERSON);
+                    fields(var1, false);
                 }
 
-                if (t == 315) {
-                    mc.getSingleplayerServer().execute(() -> {
-                        ServerPlayer p = mc.getSingleplayerServer().getPlayerList().getPlayer(mc.player.getUUID());
-                        ArcanaSpell spell = FrierenArcana.SPELL_MAP.get(ArcanaSpell.Kind.PIERCE).get();
-                        ItemStack book = new ItemStack(ItemRegistry.WIMPY_SPELL_BOOK.get());
-                        ISpellContainerMutable container = ISpellContainer.create(1, true, true).mutableCopy();
-                        container.addSpell(spell, 1, false);
-                        ISpellContainer.set(book, container.toImmutable());
-                        CuriosApi.getCuriosInventory(p).orElseThrow().getStacksHandler("spellbook").orElseThrow().getStacks().setStackInSlot(0, book);
-                        p.getInventory().setItem(0, ItemStack.EMPTY);
-                        p.containerMenu.broadcastChanges();
-                        ArcanaCooldowns.begin(p, spell, CastSource.SPELLBOOK);
+                if (var2 == 315) {
+                    var1.getSingleplayerServer().execute(() -> {
+                        ServerPlayer var1x = var1.getSingleplayerServer().getPlayerList().getPlayer(var1.player.getUUID());
+                        ArcanaSpell var2x = FrierenArcana.SPELL_MAP.get(ArcanaSpell.Kind.PIERCE).get();
+                        ItemStack var3x = new ItemStack(ItemRegistry.WIMPY_SPELL_BOOK.get());
+                        ISpellContainerMutable var4x = ISpellContainer.create(1, true, true).mutableCopy();
+                        var4x.addSpell(var2x, 1, false);
+                        ISpellContainer.set(var3x, var4x.toImmutable());
+                        CuriosApi.getCuriosInventory(var1x).orElseThrow().getStacksHandler("spellbook").orElseThrow().getStacks().setStackInSlot(0, var3x);
+                        var1x.getInventory().setItem(0, ItemStack.EMPTY);
+                        var1x.containerMenu.broadcastChanges();
+                        ArcanaCooldowns.begin(var1x, var2x, CastSource.SPELLBOOK);
                     });
                 }
 
-                if (t == 345) {
+                if (var2 == 345) {
                     ClientMagicData.updateSpellSelectionManager();
                     if (ClientMagicData.getSpellSelectionManager().getAllSpells().isEmpty()) {
                         throw new IllegalStateException("Equipped spellbook not synchronized to native selector");
                     }
                 }
 
-                if (t == 350) {
-                    ArcanaSpell spell = FrierenArcana.SPELL_MAP.get(ArcanaSpell.Kind.PIERCE).get();
-                    CooldownInstance cd = ClientMagicData.getCooldowns().getSpellCooldowns().get(spell.getSpellId());
-                    if (cd == null || cd.getCooldownRemaining() <= 0) {
+                if (var2 == 350) {
+                    ArcanaSpell var14 = FrierenArcana.SPELL_MAP.get(ArcanaSpell.Kind.PIERCE).get();
+                    CooldownInstance var16 = ClientMagicData.getCooldowns().getSpellCooldowns().get(var14.getSpellId());
+                    if (var16 == null || var16.getCooldownRemaining() <= 0) {
                         throw new IllegalStateException("Native client cooldown not received");
                     }
 
-                    capture(mc, "09-irons-breaker-cooldown.png");
-                    System.out.println("FRIEREN_VISUAL_SMOKE Native Iron client cooldown received: " + cd.getCooldownRemaining());
+                    capture(var1, "09-irons-breaker-cooldown.png");
+                    System.out.println("FRIEREN_VISUAL_SMOKE Native Iron client cooldown received: " + var16.getCooldownRemaining());
                 }
 
-                if (t == 352) {
+                if (var2 == 352) {
                     SpellWheelOverlay.instance.open();
                 }
 
-                if (t == 357) {
-                    capture(mc, "10-irons-cooldown-wheel.png");
+                if (var2 == 357) {
+                    capture(var1, "10-irons-cooldown-wheel.png");
                 }
 
-                if (t == 362) {
+                if (var2 == 362) {
                     SpellWheelOverlay.instance.close();
                 }
 
-                if (t == 365) {
+                if (var2 == 365) {
                     try {
                         Files.writeString(
-                            mc.gameDirectory.toPath().resolve("visual-smoke/result.txt"),
+                            var1.gameDirectory.toPath().resolve("visual-smoke/result.txt"),
                             "PASS: actual client rendered ten screenshots; rain boundary classification, skippable camera restoration and native Iron cooldown reception passed.\n"
                         );
                     } catch (Exception var8) {
@@ -260,114 +262,114 @@ public final class VisualClientSmoke {
                     }
 
                     System.out.println("FRIEREN_VISUAL_SMOKE completed models, rain, dome, fracture, flight, effects and skip");
-                    mc.stop();
+                    var1.stop();
                 }
             }
         }
     }
 
-    private static void vector(CompoundTag root, String key, Vec3 v) {
-        root.putDouble(key + "X", v.x);
-        root.putDouble(key + "Y", v.y);
-        root.putDouble(key + "Z", v.z);
+    private static void vector(CompoundTag var0, String var1, Vec3 var2) {
+        var0.putDouble(var1 + "X", var2.x);
+        var0.putDouble(var1 + "Y", var2.y);
+        var0.putDouble(var1 + "Z", var2.z);
     }
 
-    private static CompoundTag field(boolean defensive) {
-        CompoundTag f = new CompoundTag();
-        f.putUUID("id", fieldId);
-        f.putUUID("owner", UUID.nameUUIDFromBytes("visual-smoke-owner".getBytes()));
-        vector(f, "center", CENTER);
-        f.putDouble("x", CENTER.x);
-        f.putDouble("y", CENTER.y);
-        f.putDouble("z", CENTER.z);
-        f.putInt("radius", 16);
-        f.putBoolean("defensive", defensive);
-        return f;
+    private static CompoundTag field(boolean var0) {
+        CompoundTag var1 = new CompoundTag();
+        var1.putUUID("id", fieldId);
+        var1.putUUID("owner", UUID.nameUUIDFromBytes("visual-smoke-owner".getBytes()));
+        vector(var1, "center", CENTER);
+        var1.putDouble("x", CENTER.x);
+        var1.putDouble("y", CENTER.y);
+        var1.putDouble("z", CENTER.z);
+        var1.putInt("radius", 16);
+        var1.putBoolean("defensive", var0);
+        return var1;
     }
 
-    private static void fields(Minecraft mc, boolean defensive) {
-        CompoundTag root = new CompoundTag();
-        ListTag list = new ListTag();
-        list.add(field(defensive));
-        root.put("fields", list);
-        mc.getSingleplayerServer().execute(() -> {
-            ServerLevel level = mc.getSingleplayerServer().overworld();
-            level.getDataStorage().set("frieren_arcana_barriers", BarrierData.load(root, level.registryAccess()));
-            ArcanaNetwork.syncFields(level);
+    private static void fields(Minecraft var0, boolean var1) {
+        CompoundTag var2 = new CompoundTag();
+        ListTag var3 = new ListTag();
+        var3.add(field(var1));
+        var2.put("fields", var3);
+        var0.getSingleplayerServer().execute(() -> {
+            ServerLevel var2x = var0.getSingleplayerServer().overworld();
+            var2x.getDataStorage().set("frieren_arcana_barriers", BarrierData.load(var2, var2x.registryAccess()));
+            ArcanaNetwork.syncFields(var2x);
         });
     }
 
-    private static void setup(Minecraft mc) {
-        mc.getSingleplayerServer().execute(() -> {
-            IntegratedServer server = mc.getSingleplayerServer();
-            ServerLevel level = server.overworld();
-            level.getDataStorage().set("frieren_arcana_barriers", new BarrierData());
+    private static void setup(Minecraft var0) {
+        var0.getSingleplayerServer().execute(() -> {
+            IntegratedServer var1 = var0.getSingleplayerServer();
+            ServerLevel var2 = var1.overworld();
+            var2.getDataStorage().set("frieren_arcana_barriers", new BarrierData());
 
-            for (int x = -45; x <= 45; x++) {
-                for (int z = -45; z <= 45; z++) {
-                    level.setBlock(new BlockPos(x, 65, z), Blocks.STONE_BRICKS.defaultBlockState(), 2);
+            for (int var3 = -45; var3 <= 45; var3++) {
+                for (int var4 = -45; var4 <= 45; var4++) {
+                    var2.setBlock(new BlockPos(var3, 65, var4), Blocks.STONE_BRICKS.defaultBlockState(), 2);
                 }
             }
 
-            level.setDayTime(7000L);
-            level.setWeatherParameters(0, 12000, true, false);
-            ServerPlayer p = server.getPlayerList().getPlayer(mc.player.getUUID());
-            if (p != null) {
-                p.getAbilities().mayfly = true;
-                p.getAbilities().flying = true;
-                p.onUpdateAbilities();
-                p.teleportTo(0.0, 77.0, -2.0);
-                p.getInventory().setItem(0, FrierenArcana.STAFF.get().getDefaultInstance());
-                CuriosApi.getCuriosInventory(p).orElseThrow().getStacksHandler("spellbook").orElseThrow().getStacks().setStackInSlot(0, ItemStack.EMPTY);
+            var2.setDayTime(7000L);
+            var2.setWeatherParameters(0, 12000, true, false);
+            ServerPlayer var5 = var1.getPlayerList().getPlayer(var0.player.getUUID());
+            if (var5 != null) {
+                var5.getAbilities().mayfly = true;
+                var5.getAbilities().flying = true;
+                var5.onUpdateAbilities();
+                var5.teleportTo(0.0, 77.0, -2.0);
+                var5.getInventory().setItem(0, StaffView.demo());
+                CuriosApi.getCuriosInventory(var5).orElseThrow().getStacksHandler("spellbook").orElseThrow().getStacks().setStackInSlot(0, ItemStack.EMPTY);
             }
         });
-        fields(mc, false);
+        fields(var0, false);
     }
 
-    private static void scene(Minecraft mc, Vec3 position, float yaw, float pitch, boolean rain) {
-        mc.player.setPos(position.x, position.y, position.z);
-        mc.player.setYRot(yaw);
-        mc.player.setXRot(pitch);
-        mc.options.setCameraType(CameraType.FIRST_PERSON);
-        mc.level.setRainLevel(rain ? 1.0F : 0.0F);
-        mc.level.setThunderLevel(0.0F);
-        mc.getSingleplayerServer().execute(() -> {
-            IntegratedServer server = mc.getSingleplayerServer();
-            ServerLevel level = server.overworld();
-            BarrierData data = BarrierData.get(level);
-            level.getDataStorage().set("frieren_arcana_barriers", new BarrierData());
-            ServerPlayer p = server.getPlayerList().getPlayer(mc.player.getUUID());
-            if (p != null) {
-                p.teleportTo(position.x, position.y, position.z);
-                p.setYRot(yaw);
-                p.setXRot(pitch);
+    private static void scene(Minecraft var0, Vec3 var1, float var2, float var3, boolean var4) {
+        var0.player.setPos(var1.x, var1.y, var1.z);
+        var0.player.setYRot(var2);
+        var0.player.setXRot(var3);
+        var0.options.setCameraType(CameraType.FIRST_PERSON);
+        var0.level.setRainLevel(var4 ? 1.0F : 0.0F);
+        var0.level.setThunderLevel(0.0F);
+        var0.getSingleplayerServer().execute(() -> {
+            IntegratedServer var4x = var0.getSingleplayerServer();
+            ServerLevel var5 = var4x.overworld();
+            BarrierData var6 = BarrierData.get(var5);
+            var5.getDataStorage().set("frieren_arcana_barriers", new BarrierData());
+            ServerPlayer var7 = var4x.getPlayerList().getPlayer(var0.player.getUUID());
+            if (var7 != null) {
+                var7.teleportTo(var1.x, var1.y, var1.z);
+                var7.setYRot(var2);
+                var7.setXRot(var3);
             }
 
-            level.getDataStorage().set("frieren_arcana_barriers", data);
-            ArcanaNetwork.syncFields(level);
+            var5.getDataStorage().set("frieren_arcana_barriers", var6);
+            ArcanaNetwork.syncFields(var5);
         });
     }
 
-    private static void capture(Minecraft mc, String name) {
-        pendingCapture = name;
+    private static void capture(Minecraft var0, String var1) {
+        pendingCapture = var1;
     }
 
     @SubscribeEvent
-    public static void rendered(net.neoforged.neoforge.client.event.RenderGuiEvent.Post event) {
+    public static void rendered(net.neoforged.neoforge.client.event.RenderGuiEvent.Post var0) {
         if (pendingCapture != null) {
-            Minecraft mc = Minecraft.getInstance();
-            String name = pendingCapture;
+            Minecraft var1 = Minecraft.getInstance();
+            String var2 = pendingCapture;
             pendingCapture = null;
-            Path dir = mc.gameDirectory.toPath().resolve("visual-smoke");
+            Path var3 = var1.gameDirectory.toPath().resolve("visual-smoke");
 
             try {
-                Files.createDirectories(dir);
+                Files.createDirectories(var3);
 
-                try (NativeImage image = Screenshot.takeScreenshot(mc.getMainRenderTarget())) {
-                    image.writeToFile(dir.resolve(name));
+                try (NativeImage var4 = Screenshot.takeScreenshot(var1.getMainRenderTarget())) {
+                    var4.writeToFile(var3.resolve(var2));
                 }
 
-                System.out.println("FRIEREN_VISUAL_SMOKE screenshot " + name);
+                System.out.println("FRIEREN_VISUAL_SMOKE screenshot " + var2);
             } catch (Exception var9) {
                 throw new IllegalStateException(var9);
             }
@@ -385,30 +387,38 @@ public final class VisualClientSmoke {
         }
 
         @Override
-        public void render(GuiGraphics g, int mouseX, int mouseY, float partial) {
-            g.fill(0, 0, this.width, this.height, -15722457);
-            g.drawString(this.font, this.title, 20, 18, 14871295);
-            g.drawString(this.font, Component.literal("Actual Minecraft OBJ item rendering • faceted ruby, wrapped grip, armillary devices"), 20, 34, 9676740);
-            List<ItemStack> items = new ArrayList<>();
-            items.add(FrierenArcana.STAFF.get().getDefaultInstance());
+        public void render(GuiGraphics var1, int var2, int var3, float var4) {
+            var1.fill(0, 0, this.width, this.height, -15722457);
+            var1.drawString(this.font, this.title, 20, 18, 14871295);
+            var1.drawString(
+                this.font, Component.literal("Actual Minecraft OBJ item rendering • faceted ruby, wrapped grip, armillary devices"), 20, 34, 9676740
+            );
+            ArrayList var5 = new ArrayList();
+            var5.add(StaffView.demo());
 
-            for (DeferredItem<Item> item : FrierenArcana.DEVICES) {
-                items.add(item.get().getDefaultInstance());
+            for (DeferredItem var7 : FrierenArcana.DEVICES) {
+                var5.add(((Item)var7.get()).getDefaultInstance());
             }
 
-            items.add(FrierenArcana.RELEASE.get().getDefaultInstance());
+            var5.add(FrierenArcana.RELEASE.get().getDefaultInstance());
 
-            for (int i = 0; i < items.size(); i++) {
-                int x = 28 + i % 4 * (this.width - 56) / 4;
-                int y = 65 + i / 4 * 135;
-                int cell = (this.width - 56) / 4;
-                g.fill(x - 4, y - 4, x + cell - 12, y + 121, -15195079);
-                g.pose().pushPose();
-                g.pose().translate((float)(x + 7), (float)(y + 5), 0.0F);
-                g.pose().scale(6.0F, 6.0F, 6.0F);
-                g.renderItem(items.get(i), 0, 0);
-                g.pose().popPose();
-                g.drawString(this.font, Component.literal(i == 0 ? "Flight Staff" : (i == 6 ? "Release Sigil" : "Barrier Device " + i)), x, y + 105, 13885943);
+            for (int var10 = 0; var10 < var5.size(); var10++) {
+                int var11 = 28 + var10 % 4 * (this.width - 56) / 4;
+                int var8 = 65 + var10 / 4 * 135;
+                int var9 = (this.width - 56) / 4;
+                var1.fill(var11 - 4, var8 - 4, var11 + var9 - 12, var8 + 121, -15195079);
+                var1.pose().pushPose();
+                var1.pose().translate((float)(var11 + 7), (float)(var8 + 5), 0.0F);
+                var1.pose().scale(6.0F, 6.0F, 6.0F);
+                var1.renderItem((ItemStack)var5.get(var10), 0, 0);
+                var1.pose().popPose();
+                var1.drawString(
+                    this.font,
+                    Component.literal(var10 == 0 ? "Flight Staff" : (var10 == 6 ? "Release Sigil" : "Barrier Device " + var10)),
+                    var11,
+                    var8 + 105,
+                    13885943
+                );
             }
         }
     }

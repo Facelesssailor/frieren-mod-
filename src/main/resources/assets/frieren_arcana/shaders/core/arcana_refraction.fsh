@@ -17,7 +17,7 @@ void main() {
                          texture(SceneSampler, clamp(uv + bend * .6, .001, .999)).b);
     float phase = seed.x * 2.3 + seed.y * 1.1 + uv.x * 1.4 + uv.y * .9 + ArcanaTime * .08;
     vec3 holo = .64 + .36 * cos(6.2831 * (vec3(0.0, .33, .67) + phase));
-    holo = mix(holo, vec3(.80, .72, 1.0), .28);
+    holo = mix(holo, vec3(.74, .70, 1.0), .40);
     float facet = vertexColor.b;
     vec3 glass = spectrum * (.42 + .20 * facet) + holo * (.58 + .30 * facet) + vec3(.55) * facet * facet;
     fragColor = vec4(glass, clamp(vertexColor.a, 0.0, 1.0)) * ColorModulator;

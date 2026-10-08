@@ -13,7 +13,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Hold a staff in either hand. Double-tap jump for ordinary flight. A staff appears beneath you. Mana drains only while flying."
+      "text": "Hold any of Iron's staffs in either hand (or an item in the #frieren_arcana:flight_staves tag). Double-tap jump for ordinary flight; the staff you hold appears beneath you. Mana drains only while flying."
     },
     {
       "type": "patchouli:text",
@@ -21,9 +21,9 @@
       "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Rare and up$(br)$(l)Levels:$() 1$(br)$(l)Mana:$() 30$(br)$(l)Cooldown:$() 2 s$(br)$(l)Cast:$() Toggle"
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "frieren_arcana:flight_staff",
-      "text": "Any staff works; this one is easy to make."
+      "type": "patchouli:text",
+      "title": "Which staff?",
+      "text": "Any of Iron's staffs works, in either hand, so the other hand stays free. Modpacks can add more items to the $(o)#frieren_arcana:flight_staves$() item tag. While you fly, the staff you hold is drawn beneath you."
     }
   ]
 }

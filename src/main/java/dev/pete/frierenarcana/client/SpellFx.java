@@ -41,7 +41,7 @@ public final class SpellFx {
             case 2:
                 return 1.8;
             case 3:
-                return 5.2;
+                return 11.5;
             case 4:
                 return 1.2;
             case 5:

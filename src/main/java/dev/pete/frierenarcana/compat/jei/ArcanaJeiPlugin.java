@@ -27,58 +27,53 @@ public final class ArcanaJeiPlugin implements IModPlugin {
     }
 
     @Override
-    public void registerCategories(IRecipeCategoryRegistration registration) {
-        registration.addRecipeCategories(new ArcanaSpellCategory(registration.getJeiHelpers().getGuiHelper()));
+    public void registerCategories(IRecipeCategoryRegistration var1) {
+        var1.addRecipeCategories(new ArcanaSpellCategory(var1.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
-    public void registerExtraIngredients(IExtraIngredientRegistration registration) {
-        registration.addExtraItemStacks(SpellGuidePages.all().stream().map(SpellGuidePages.Page::scroll).toList());
+    public void registerExtraIngredients(IExtraIngredientRegistration var1) {
+        var1.addExtraItemStacks(SpellGuidePages.all().stream().map(SpellGuidePages.Page::scroll).toList());
     }
 
     @Override
-    public void registerRecipes(IRecipeRegistration registration) {
-        List<SpellGuidePages.Page> pages = SpellGuidePages.all();
-        registration.addRecipes(GUIDE, pages);
+    public void registerRecipes(IRecipeRegistration var1) {
+        List var2 = SpellGuidePages.all();
+        var1.addRecipes(GUIDE, var2);
 
-        for (SpellGuidePages.Page page : pages) {
-            registration.addItemStackInfo(
-                page.scroll(),
-                Component.translatable("spell.frieren_arcana." + page.spell().kind.path + ".guide"),
+        for (SpellGuidePages.Page var4 : var2) {
+            var1.addItemStackInfo(
+                var4.scroll(),
+                Component.translatable("spell.frieren_arcana." + var4.spell().kind.path + ".guide"),
                 Component.translatable("jei.frieren_arcana.inscription")
             );
         }
 
-        registration.addIngredientInfo(FrierenArcana.STAFF.get(), Component.translatable("jei.frieren_arcana.staff"));
-        registration.addIngredientInfo(FrierenArcana.RELEASE.get(), Component.translatable("jei.frieren_arcana.release"));
+        var1.addIngredientInfo(FrierenArcana.RELEASE.get(), Component.translatable("jei.frieren_arcana.release"));
 
-        for (DeferredItem<Item> item : FrierenArcana.DEVICES) {
-            BarrierDevice device = (BarrierDevice)item.get();
-            registration.addIngredientInfo(
-                device,
-                Component.translatable("info.frieren_arcana.device", device.radius(), device.manaCost()),
-                Component.translatable("jei.frieren_arcana.device")
+        for (DeferredItem var7 : FrierenArcana.DEVICES) {
+            BarrierDevice var5 = (BarrierDevice)var7.get();
+            var1.addIngredientInfo(
+                var5, Component.translatable("info.frieren_arcana.device", var5.radius(), var5.manaCost()), Component.translatable("jei.frieren_arcana.device")
             );
         }
     }
 
     @Override
-    public void onRuntimeAvailable(IJeiRuntime runtime) {
+    public void onRuntimeAvailable(IJeiRuntime var1) {
         if (Boolean.getBoolean("frieren_arcana.jeiClientSmoke")) {
-            JeiClientSmoke.start(runtime);
+            JeiClientSmoke.start(var1);
         }
     }
 
     @Override
-    public void registerIngredientAliases(IIngredientAliasRegistration registration) {
-        for (SpellGuidePages.Page page : SpellGuidePages.all()) {
-            registration.addAlias(page.scroll(), "Frieren Arcana spell magic");
+    public void registerIngredientAliases(IIngredientAliasRegistration var1) {
+        for (SpellGuidePages.Page var3 : SpellGuidePages.all()) {
+            var1.addAlias(var3.scroll(), "Frieren Arcana spell magic");
         }
 
-        registration.addAlias(FrierenArcana.STAFF.get().getDefaultInstance(), "Frieren flight staff");
-
-        for (DeferredItem<Item> item : FrierenArcana.DEVICES) {
-            registration.addAlias(item.get().getDefaultInstance(), "Frieren examination barrier dome");
+        for (DeferredItem var5 : FrierenArcana.DEVICES) {
+            var1.addAlias(((Item)var5.get()).getDefaultInstance(), "Frieren examination barrier dome");
         }
     }
 }

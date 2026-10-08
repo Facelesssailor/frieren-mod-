@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import dev.pete.frierenarcana.ArcanaSpell;
 import dev.pete.frierenarcana.FrierenArcana;
 import dev.pete.frierenarcana.SpellGuidePages;
+import dev.pete.frierenarcana.StaffView;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -17,62 +18,63 @@ import net.neoforged.neoforge.common.NeoForge;
 final class JeiClientSmoke {
     private static boolean started;
 
-    static void start(IJeiRuntime runtime) {
+    static void start(IJeiRuntime var0) {
         if (!started) {
             started = true;
-            int expected = SpellGuidePages.all().size();
-            long actual = runtime.getRecipeManager().createRecipeLookup(ArcanaJeiPlugin.GUIDE).includeHidden().get().count();
-            if (actual != (long)expected) {
-                throw new IllegalStateException("JEI guide expected " + expected + " pages, registered " + actual);
+            int var1 = SpellGuidePages.all().size();
+            long var2 = var0.getRecipeManager().createRecipeLookup(ArcanaJeiPlugin.GUIDE).includeHidden().get().count();
+            if (var2 != (long)var1) {
+                throw new IllegalStateException("JEI guide expected " + var1 + " pages, registered " + var2);
             } else {
-                System.out.println("FRIEREN_JEI_SMOKE registered " + actual + " spell-level pages");
-                int[] tick = new int[]{0};
+                System.out.println("FRIEREN_JEI_SMOKE registered " + var2 + " spell-level pages");
+                int[] var4 = new int[]{0};
                 NeoForge.EVENT_BUS
                     .addListener(
-                        event -> {
-                            Minecraft mc = Minecraft.getInstance();
-                            if (mc.level != null && mc.player != null) {
-                                int t = ++tick[0];
-                                if (t == 5) {
-                                    runtime.getRecipesGui().showTypes(List.of(ArcanaJeiPlugin.GUIDE));
+                        var2x -> {
+                            Minecraft var3 = Minecraft.getInstance();
+                            if (var3.level != null && var3.player != null) {
+                                int var4x = ++var4[0];
+                                if (var4x == 5) {
+                                    var0.getRecipesGui().showTypes(List.of(ArcanaJeiPlugin.GUIDE));
                                 }
 
-                                if (t == 25) {
-                                    capture(mc, "jei-spell-guide.png");
+                                if (var4x == 25) {
+                                    capture(var3, "jei-spell-guide.png");
                                 }
 
-                                if (t == 35) {
-                                    runtime.getRecipesGui()
+                                if (var4x == 35) {
+                                    var0.getRecipesGui()
                                         .show(
-                                            runtime.getJeiHelpers()
+                                            var0.getJeiHelpers()
                                                 .getFocusFactory()
-                                                .createFocus(
-                                                    RecipeIngredientRole.OUTPUT, VanillaTypes.ITEM_STACK, FrierenArcana.STAFF.get().getDefaultInstance()
-                                                )
+                                                .createFocus(RecipeIngredientRole.OUTPUT, VanillaTypes.ITEM_STACK, StaffView.demo())
                                         );
                                 }
 
-                                if (t == 55) {
-                                    capture(mc, "jei-staff-crafting.png");
+                                if (var4x == 55) {
+                                    capture(var3, "jei-staff-crafting.png");
                                 }
 
-                                if (t == 65) {
-                                    runtime.getRecipesGui()
+                                if (var4x == 65) {
+                                    var0.getRecipesGui()
                                         .showRecipes(
-                                            runtime.getRecipeManager().getRecipeCategory(ArcanaJeiPlugin.GUIDE),
-                                            SpellGuidePages.all().stream().filter(p -> p.spell().kind == ArcanaSpell.Kind.FIREWIND && p.level() == 5).toList(),
+                                            var0.getRecipeManager().getRecipeCategory(ArcanaJeiPlugin.GUIDE),
+                                            SpellGuidePages.all()
+                                                .stream()
+                                                .filter(var0xx -> var0xx.spell().kind == ArcanaSpell.Kind.FIREWIND && var0xx.level() == 5)
+                                                .toList(),
                                             List.of()
                                         );
                                 }
 
-                                if (t == 85) {
-                                    capture(mc, "jei-fire-wind-guide.png");
+                                if (var4x == 85) {
+                                    capture(var3, "jei-fire-wind-guide.png");
                                 }
 
-                                if (t == 95) {
-                                    runtime.getRecipesGui()
+                                if (var4x == 95) {
+                                    var0.getRecipesGui()
                                         .show(
-                                            runtime.getJeiHelpers()
+                                            var0.getJeiHelpers()
                                                 .getFocusFactory()
                                                 .createFocus(
                                                     RecipeIngredientRole.OUTPUT,
@@ -82,17 +84,17 @@ final class JeiClientSmoke {
                                         );
                                 }
 
-                                if (t == 115) {
-                                    capture(mc, "jei-barrier-upgrade.png");
+                                if (var4x == 115) {
+                                    capture(var3, "jei-barrier-upgrade.png");
                                 }
 
-                                if (t == 125) {
-                                    mc.setScreen(null);
+                                if (var4x == 125) {
+                                    var3.setScreen(null);
                                 }
 
-                                if (t == 135) {
+                                if (var4x == 135) {
                                     System.out.println("FRIEREN_JEI_SMOKE completed guide and crafting screens");
-                                    mc.stop();
+                                    var3.stop();
                                 }
                             }
                         }
@@ -101,17 +103,17 @@ final class JeiClientSmoke {
         }
     }
 
-    private static void capture(Minecraft mc, String name) {
-        Path dir = mc.gameDirectory.toPath().resolve("jei-smoke");
+    private static void capture(Minecraft var0, String var1) {
+        Path var2 = var0.gameDirectory.toPath().resolve("jei-smoke");
 
         try {
-            Files.createDirectories(dir);
+            Files.createDirectories(var2);
 
-            try (NativeImage image = Screenshot.takeScreenshot(mc.getMainRenderTarget())) {
-                image.writeToFile(dir.resolve(name));
+            try (NativeImage var3 = Screenshot.takeScreenshot(var0.getMainRenderTarget())) {
+                var3.writeToFile(var2.resolve(var1));
             }
 
-            System.out.println("FRIEREN_JEI_SMOKE screenshot " + name);
+            System.out.println("FRIEREN_JEI_SMOKE screenshot " + var1);
         } catch (Exception var8) {
             throw new IllegalStateException("JEI screenshot failed", var8);
         }

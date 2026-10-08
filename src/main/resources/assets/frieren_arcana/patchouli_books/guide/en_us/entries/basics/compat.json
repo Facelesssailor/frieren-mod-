@@ -11,7 +11,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "This book needs Patchouli. You get one the first time you join a world; craft another from a book and an amethyst shard."
+      "text": "This book is the $(l)Frieren: Magic Compendium$(). You get one the first time you join a world; craft another from a book and an amethyst shard. It works on its own; with Patchouli installed it opens this richer version."
     }
   ]
 }

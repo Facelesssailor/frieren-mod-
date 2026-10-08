@@ -24,7 +24,7 @@ public final class ChargeFx {
             if (var12 != null && var13.level != null) {
                 double var14 = Math.max(0.0, Math.min(1.0, (var4 - 0.7) / 0.6));
                 Vec3 var16 = var2.subtract(var3.scale(0.8));
-                Vec3 var17 = new Vec3(var16.x, SpellCircleFx.ground(var13.level, var16.add(0.0, -1.0, 0.0), null), var16.z);
+                Vec3 var17 = new Vec3(var16.x, SpellCircleFx.ground(var13.level, var16.add(0.0, -1.0, 0.0), var13.player), var16.z);
                 Vec3 var18 = var16.add(0.0, 0.05, 0.0).add(new Vec3(var3.x, 0.0, var3.z).scale(0.35));
                 SpellCircleFx.remote(var0, var1, var12, var17, var18, var6, var14);
             }

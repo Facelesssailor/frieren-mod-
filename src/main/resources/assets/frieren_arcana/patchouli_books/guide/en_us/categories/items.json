@@ -1,6 +1,6 @@
 {
   "name": "Items",
-  "description": "Staffs, barrier devices and sigils, with their recipes.",
+  "description": "The Compendium, barrier devices and the release sigil, with their recipes.",
   "icon": "frieren_arcana:barrier_device_5",
   "sortnum": 4
 }

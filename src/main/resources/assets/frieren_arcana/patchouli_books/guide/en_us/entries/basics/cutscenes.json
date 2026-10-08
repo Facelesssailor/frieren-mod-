@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Two spells play a short cinematic for the caster: the $(l)Barrier Breaker$() (about 25 s) and the $(l)Black Hole$() (about 8 s). While one plays, your movement and mouse are locked so the camera cannot be dragged.",
+      "text": "Two spells play a short cinematic for the caster: the $(l)Barrier Breaker$() (about 30 s) and the $(l)Black Hole$() (about 8 s). While one plays, your movement and mouse are locked so the camera cannot be dragged.",
       "title": "Cutscenes"
     },
     {

@@ -8,6 +8,7 @@ import dev.pete.frierenarcana.BarrierGeometry;
 import dev.pete.frierenarcana.BarrierSlide;
 import dev.pete.frierenarcana.FrierenArcana;
 import dev.pete.frierenarcana.ShipSpace;
+import dev.pete.frierenarcana.StaffView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -195,7 +196,7 @@ public final class ArcanaClient {
                 }
 
                 long var22 = System.nanoTime();
-                FRACTURES.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > 16.1);
+                FRACTURES.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > 23.7);
 
                 for (ArcanaClient.Fracture var12 : FRACTURES) {
                     fracture(var6, var4, var12, var7, (double)(var22 - var12.startNanos) / 1.0E9);
@@ -282,7 +283,7 @@ public final class ArcanaClient {
                         var3.mulPose(Axis.XP.rotationDegrees(90.0F));
                         var1.getItemRenderer()
                             .renderStatic(
-                                FrierenArcana.STAFF.get().getDefaultInstance(),
+                                StaffView.held(var34),
                                 ItemDisplayContext.NONE,
                                 LevelRenderer.getLightColor(var1.level, var34.blockPosition()),
                                 OverlayTexture.NO_OVERLAY,
