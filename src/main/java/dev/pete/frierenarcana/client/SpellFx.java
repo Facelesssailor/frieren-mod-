@@ -292,7 +292,7 @@ public final class SpellFx {
                             zoltraak(var0, var1, var7, handStart(var3, var11), var4, var11, var5, var12, var2 == 2);
                             return true;
                         case 1:
-                            fern(var0, var1, var7, var3, var4, var11, var5, var12);
+                            fern(var0, var1, var7, handStart(var3, var11), var4, var11, var5, var12);
                             return true;
                         case 3:
                         case 6:

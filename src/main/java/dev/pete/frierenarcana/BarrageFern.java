@@ -46,7 +46,9 @@ public final class BarrageFern {
         }
 
         if (var13.isEmpty()) {
-            return ArcanaModes.fire(var0, var1, var2, var3, var4, var6, var7, var8, var9);
+            Vec3 var21 = ArcanaModes.fire(var0, var1, var2, var3, var4, var6, var7 * 0.6F, 99, var9);
+            drawBend(var0, var10, var11, var12, var21 == null ? var11.add(var3.scale(var4)) : var21, var0.tickCount / 3);
+            return var21;
         } else {
             var13.sort((var2x, var3x) -> Double.compare(angle(var2x, var11, var12), angle(var3x, var11, var12)));
             int var14 = Math.min(var13.size(), Math.min(8, 3 + var2));
