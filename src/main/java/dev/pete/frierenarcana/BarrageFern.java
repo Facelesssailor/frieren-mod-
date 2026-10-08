@@ -76,9 +76,9 @@ public final class BarrageFern {
         }
 
         double var8 = var0.getRandom().nextDouble() < 0.5 ? 1.0 : -1.0;
-        Vec3 var10 = var2.add(var3.scale(0.9 + var0.getRandom().nextDouble() * 1.3))
-            .add(var6.scale(var8 * (0.9 + var0.getRandom().nextDouble() * 1.7)))
-            .add(var7.scale(-0.35 + var0.getRandom().nextDouble() * 1.6));
+        Vec3 var10 = var2.add(var3.scale(0.8 + var0.getRandom().nextDouble() * 1.0))
+            .add(var6.scale(var8 * (0.7 + var0.getRandom().nextDouble() * 1.25)))
+            .add(var7.scale(-0.3 + var0.getRandom().nextDouble() * 1.2));
         Vec3 var11 = var4.subtract(var10);
         double var12 = var11.length();
         if (var12 < 0.5) {
