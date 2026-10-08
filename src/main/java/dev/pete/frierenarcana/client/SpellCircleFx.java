@@ -68,19 +68,17 @@ public final class SpellCircleFx {
                         double var18 = ArcanaCinematic.release == 0L ? 0.0 : (double)(System.nanoTime() - ArcanaCinematic.release) / 1.0E9;
                         var11.fade = (float)Math.max(0.0, 1.0 - var18 / 3.5);
                         if ((double)var11.fade > 0.01) {
-                            groundCircle(
-                                var11, new Vec3(var10.x, groundY + 0.06, var10.z), var5, var7 * (1.0 + 0.25 * Math.min(1.0, var18 * 3.0)), var15, var17
+                            PixelFx.flat(
+                                new Vec3(var10.x, groundY + 0.07, var10.z),
+                                new Vec3(0.0, 1.0, 0.0),
+                                4.0 + 3.0 * var15,
+                                4,
+                                0.0,
+                                0.4F,
+                                1.0F,
+                                0.6F,
+                                0.55F * var11.fade * var17
                             );
-                        }
-
-                        if (ArcanaCinematic.release == 0L) {
-                            Vec3 var20 = CinemaDirector.lockedLook();
-                            Vec3 var21 = new Vec3(var20.x, 0.0, var20.z);
-                            var21 = var21.lengthSqr() < 0.01 ? new Vec3(0.0, 0.0, 1.0) : var21.normalize();
-                            var11.fade = (float)ease((var5 - 0.4) / 1.6);
-                            if ((double)var11.fade > 0.01) {
-                                frontCircle(var11, var10.add(0.0, 1.05, 0.0).add(var21.scale(0.85)), var21, var5, var15, var17);
-                            }
                         }
 
                         var11.fade = (float)Math.max(0.0, 1.0 - var18 / 4.0);
@@ -222,19 +220,9 @@ public final class SpellCircleFx {
         var9.camY = var2.y;
         var9.camZ = var2.z;
         float var10 = (float)(0.8 + 0.2 * Math.sin(var5 * 4.0));
-        groundCircle(var9, var3.add(0.0, 0.06, 0.0), var5, ease(var7 * 3.0), var7, var10);
+        PixelFx.flat(var3.add(0.0, 0.07, 0.0), new Vec3(0.0, 1.0, 0.0), 4.0 + 3.0 * var7, 4, 0.0, 0.4F, 1.0F, 0.6F, 0.55F * var10);
+        crystal(var9, var4, var2, (0.08 + 0.1 * var7) * 1.6, var5);
         faceCamera(var9, var4, var2);
-        double var11 = 0.07 + 0.09 * var7;
-        var9.r = 0.35F;
-        var9.g = 1.0F;
-        var9.b = 0.55F;
-        var9.a = 0.3F;
-        var9.disc(var11 * 2.4, 20);
-        var9.r = 0.85F;
-        var9.g = 1.0F;
-        var9.b = 0.92F;
-        var9.a = 0.95F;
-        var9.disc(var11, 20);
         var9.r = 1.0F;
         var9.g = 1.0F;
         var9.b = 1.0F;
@@ -284,7 +272,7 @@ public final class SpellCircleFx {
 
     private static void extras(SpellCircleFx.Ctx var0, Vec3 var1, Vec3 var2, double var3, double var5, float var7) {
         double var8 = var1.y + 1.05;
-        double var10 = 120.0;
+        double var10 = 3.0 + 45.0 * Math.pow(var5, 1.5);
         double var12 = 0.03 + 0.05 * var5;
         var0.r = 0.75F;
         var0.g = 1.0F;
@@ -338,18 +326,9 @@ public final class SpellCircleFx {
         var0.a *= 0.3F;
         var0.seg(-4.0 * var5, 0.0, 4.0 * var5, 0.0, 0.12);
         Vec3 var29 = new Vec3(var1.x, var8, var1.z);
+        double var15 = 0.08 + 0.1 * var5;
+        crystal(var0, var29, var2, var15 * 1.6, var3);
         faceCamera(var0, var29, var2);
-        double var15 = 0.07 + 0.09 * var5;
-        var0.r = 0.35F;
-        var0.g = 1.0F;
-        var0.b = 0.55F;
-        var0.a = 0.3F;
-        var0.disc(var15 * 2.2, 20);
-        var0.r = 0.8F;
-        var0.g = 1.0F;
-        var0.b = 0.9F;
-        var0.a = 0.95F;
-        var0.disc(var15, 20);
         var0.r = 1.0F;
         var0.g = 1.0F;
         var0.b = 1.0F;
@@ -367,6 +346,45 @@ public final class SpellCircleFx {
         }
 
         star(var0, 0.0, 0.0, 0.35 * (0.5 + var5) * (0.8 + 0.2 * Math.sin(var3 * 9.0)), 0.025);
+    }
+
+    static void crystal(SpellCircleFx.Ctx var0, Vec3 var1, Vec3 var2, double var3, double var5) {
+        byte var7 = 6;
+        double var8 = var5 * 1.1;
+        Vec3 var10 = var1.add(0.0, var3 * 1.45, 0.0);
+        Vec3 var11 = var1.add(0.0, -var3 * 1.25, 0.0);
+        Vec3[] var12 = new Vec3[var7];
+
+        for (int var13 = 0; var13 < var7; var13++) {
+            double var14 = var8 + (Math.PI * 2) * (double)var13 / (double)var7;
+            var12[var13] = var1.add(Math.cos(var14) * var3, (var13 % 2 == 0 ? 0.08 : -0.08) * var3, Math.sin(var14) * var3);
+        }
+
+        Vec3 var30 = var2.subtract(var1).normalize();
+
+        for (int var31 = 0; var31 < var7; var31++) {
+            Vec3 var15 = var12[var31];
+            Vec3 var16 = var12[(var31 + 1) % var7];
+
+            for (int var17 = 0; var17 < 2; var17++) {
+                Vec3 var18 = var17 == 0 ? var10 : var11;
+                Vec3 var19 = var16.subtract(var15).cross(var18.subtract(var15)).normalize();
+                double var20 = 0.45 + 0.55 * Math.abs(var19.dot(var30));
+                float var22 = (float)(0.35 + 0.55 * var20);
+                float var23 = 1.0F;
+                float var24 = (float)(0.55 + 0.4 * var20);
+                float var25 = (float)(0.55 + 0.35 * var20);
+
+                for (Vec3 var29 : new Vec3[]{var18, var15, var16, var16}) {
+                    var0.vc
+                        .addVertex(var0.m, (float)(var29.x - var0.camX), (float)(var29.y - var0.camY), (float)(var29.z - var0.camZ))
+                        .setColor(var22, var23, var24, var25 * var0.fade);
+                }
+            }
+        }
+
+        PixelFx.sprite(var1, var3 * 5.0, 4, 0.4F, 1.0F, 0.62F, 0.55F * var0.fade);
+        PixelFx.sprite(var1, var3 * 1.6, 4, 0.9F, 1.0F, 0.95F, 0.9F * var0.fade);
     }
 
     private static double hash(int var0, int var1) {
@@ -389,120 +407,62 @@ public final class SpellCircleFx {
             }
         }
 
-        double var32 = var7 == null ? -1.0 : (double)(var5 - var7.startNanos()) / 1.0E9;
-        double var10 = ArcanaCinematic.release == 0L ? -1.0 : (double)(var5 - ArcanaCinematic.release) / 1.0E9;
-        Vec3 var12 = null;
-        double var13 = 0.0;
-        if (var7 != null) {
-            var12 = var7.field().center();
-            var13 = (double)var7.field().radius();
-        } else if (var10 >= 0.0) {
-            double var15 = Double.POSITIVE_INFINITY;
-
-            for (ArcanaClient.VisualField var18 : ArcanaClient.fields()) {
-                double var19 = var18.center().distanceToSqr(var1);
-                if (var19 < var15) {
-                    var15 = var19;
-                    var12 = var18.center();
-                    var13 = (double)var18.radius();
-                }
-            }
+        double var29 = var7 == null ? -1.0 : (double)(var5 - var7.startNanos()) / 1.0E9 - 1.8;
+        if (ArcanaCinematic.release == 0L) {
+            double var10000 = -1.0;
+        } else {
+            double var38 = (double)(var5 - ArcanaCinematic.release) / 1.0E9;
         }
 
-        if (var12 != null && var10 >= 0.0) {
-            double var33 = var32 < 3.2 ? 1.0 : Math.max(0.0, 1.0 - (var32 - 3.1 - 0.1) / 1.0);
-            double var38 = Math.min(1.0, var10 / 0.6);
-            if (var33 > 0.01) {
-                double var43 = var12.y + var13;
-                var0.r = 0.85F;
-                var0.g = 1.0F;
-                var0.b = 0.9F;
+        if (var7 != null && var29 > 3.4) {
+            Vec3 var12 = var7.field().center();
+            double var13 = (double)var7.field().radius();
+            double var15 = Math.min(1.0, (var29 - 3.1 - 0.3) / 1.2);
+            double var17 = Math.max(0.0, Math.min(1.0, (12.899999999999999 - var29) / 2.5));
 
-                for (int var21 = 0; var21 < 2; var21++) {
-                    var0.cx = var12.x;
-                    var0.cy = var43 - var13 * 0.12;
-                    var0.cz = var12.z;
-                    if (var21 == 0) {
-                        var0.ux = 1.0;
-                        var0.uy = 0.0;
-                        var0.uz = 0.0;
-                    } else {
-                        var0.ux = 0.0;
-                        var0.uy = 0.0;
-                        var0.uz = 1.0;
-                    }
-
-                    var0.vx = 0.0;
-                    var0.vy = 1.0;
-                    var0.vz = 0.0;
-                    var0.a = (float)(0.95 * var33);
-                    var0.seg(0.0, 0.0, 0.0, 90.0 * var38, 0.07);
-                    var0.a = (float)(0.3 * var33);
-                    var0.seg(0.0, 0.0, 0.0, 90.0 * var38, 0.32);
-                }
-
-                Vec3 var46 = new Vec3(var12.x, var43, var12.z);
-                faceCamera(var0, var46, var2);
-                var0.r = 0.5F;
-                var0.g = 1.0F;
-                var0.b = 0.65F;
-                var0.a = (float)(0.35 * var33);
-                var0.disc(1.3 * var38, 20);
-                var0.r = 1.0F;
-                var0.g = 1.0F;
-                var0.b = 1.0F;
-                var0.a = (float)(0.9 * var33);
-                var0.disc(0.35 * var38, 16);
-                star(var0, 0.0, 0.0, 1.6 * var38 * (0.85 + 0.15 * Math.sin(var3 * 14.0)), 0.05);
-            }
-        }
-
-        if (var7 != null && var32 > 3.4) {
-            Vec3 var34 = var7.field().center();
-            double var16 = (double)var7.field().radius();
-            double var40 = Math.min(1.0, (var32 - 3.1 - 0.3) / 1.2);
-            double var20 = Math.max(0.0, Math.min(1.0, (12.899999999999999 - var32) / 2.5));
-
-            for (int var22 = 0; var22 < 90; var22++) {
-                double var23 = hash(var22, 1) * Math.PI * 2.0;
-                double var25 = var16 * (0.15 + 0.85 * Math.sqrt(hash(var22, 2)));
-                double var27 = var34.y + var16 * 0.9 * hash(var22, 3) + (var32 - 3.1 - 0.3) * (0.18 + 0.4 * hash(var22, 4));
-                Vec3 var29 = new Vec3(var34.x + Math.cos(var23 + var32 * 0.05) * var25 * 0.8, var27, var34.z + Math.sin(var23 + var32 * 0.05) * var25 * 0.8);
-                double var30 = 0.5 + 0.5 * Math.sin(var3 * 3.0 + (double)var22);
+            for (int var19 = 0; var19 < 90; var19++) {
+                double var20 = hash(var19, 1) * Math.PI * 2.0;
+                double var22 = var13 * (0.15 + 0.85 * Math.sqrt(hash(var19, 2)));
+                double var24 = var12.y + var13 * 0.9 * hash(var19, 3) + (var29 - 3.1 - 0.3) * (0.18 + 0.4 * hash(var19, 4));
+                Vec3 var26 = new Vec3(var12.x + Math.cos(var20 + var29 * 0.05) * var22 * 0.8, var24, var12.z + Math.sin(var20 + var29 * 0.05) * var22 * 0.8);
+                double var27 = 0.5 + 0.5 * Math.sin(var3 * 3.0 + (double)var19);
                 var0.r = 0.45F;
                 var0.g = 1.0F;
                 var0.b = 0.6F;
-                mote(var0, var29, var2, 0.05 + 0.08 * hash(var22, 5), (float)(var40 * var20 * (0.4 + 0.6 * var30)));
+                mote(var0, var26, var2, 0.05 + 0.08 * hash(var19, 5), (float)(var15 * var17 * (0.4 + 0.6 * var27)));
             }
         }
 
-        if (var7 != null && var32 > 9.8) {
-            double var35 = Math.min(1.0, (var32 - 9.8) / 1.5);
+        if (var7 != null && var29 > 9.8) {
+            double var30 = Math.min(1.0, (var29 - 9.8) / 1.5);
 
-            for (int var39 = 0; var39 < 28; var39++) {
-                double var41 = hash(var39, 6) * Math.PI * 2.0;
-                double var44 = 0.4 + 2.4 * hash(var39, 7);
-                double var47 = var1.y + (hash(var39, 8) * 3.2 + (var32 - 9.8) * 0.3) % 3.2;
-                Vec3 var24 = new Vec3(var1.x + Math.cos(var41) * var44, var47, var1.z + Math.sin(var41) * var44);
+            for (int var14 = 0; var14 < 28; var14++) {
+                double var34 = hash(var14, 6) * Math.PI * 2.0;
+                double var35 = 0.4 + 2.4 * hash(var14, 7);
+                double var36 = var1.y + (hash(var14, 8) * 3.2 + (var29 - 9.8) * 0.3) % 3.2;
+                Vec3 var21 = new Vec3(var1.x + Math.cos(var34) * var35, var36, var1.z + Math.sin(var34) * var35);
                 var0.r = 0.55F;
                 var0.g = 1.0F;
                 var0.b = 0.7F;
-                mote(var0, var24, var2, 0.015 + 0.02 * hash(var39, 9), (float)(var35 * (0.4 + 0.6 * (0.5 + 0.5 * Math.sin(var3 * 2.5 + (double)var39)))));
+                mote(var0, var21, var2, 0.015 + 0.02 * hash(var14, 9), (float)(var30 * (0.4 + 0.6 * (0.5 + 0.5 * Math.sin(var3 * 2.5 + (double)var14)))));
             }
         }
 
-        var0.r = 0.75F;
-        var0.g = 0.9F;
-        var0.b = 1.0F;
+        if (var7 != null && !(var29 < 3.1)) {
+            float var31 = (float)Math.min(1.0, (var29 - 3.1) / 1.5);
+            var0.r = 0.75F;
+            var0.g = 0.9F;
+            var0.b = 1.0F;
 
-        for (int var36 = 0; var36 < 140; var36++) {
-            double var37 = var2.x + (hash(var36, 10) - 0.5) * 30.0;
-            double var42 = var2.z + (hash(var36, 11) - 0.5) * 30.0;
-            double var45 = var2.y + 12.0 - (var3 * (16.0 + 6.0 * hash(var36, 12)) + hash(var36, 13) * 24.0) % 24.0;
-            Vec3 var48 = new Vec3(var37, var45, var42);
-            faceCamera(var0, var48, var2);
-            var0.a = 0.22F;
-            var0.seg(0.0, 0.0, 0.02, -0.7, 0.012);
+            for (int var32 = 0; var32 < 240; var32++) {
+                double var33 = var2.x + (hash(var32, 10) - 0.5) * 30.0;
+                double var16 = var2.z + (hash(var32, 11) - 0.5) * 30.0;
+                double var18 = var2.y + 12.0 - (var3 * (16.0 + 6.0 * hash(var32, 12)) + hash(var32, 13) * 24.0) % 24.0;
+                Vec3 var37 = new Vec3(var33, var18, var16);
+                faceCamera(var0, var37, var2);
+                var0.a = 0.3F * var31;
+                var0.seg(0.0, 0.0, 0.02, -0.8, 0.014);
+            }
         }
     }
 

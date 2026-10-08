@@ -195,7 +195,7 @@ public final class ArcanaClient {
                 }
 
                 long var22 = System.nanoTime();
-                FRACTURES.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > 13.5);
+                FRACTURES.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > 15.3);
 
                 for (ArcanaClient.Fracture var12 : FRACTURES) {
                     fracture(var6, var4, var12, var7, (double)(var22 - var12.startNanos) / 1.0E9);
@@ -347,7 +347,7 @@ public final class ArcanaClient {
             Vec3 var10 = var9.normal();
             Vec3 var11 = var2.center.add(var10.scale(var5 * var5 * (1.0 + (double)(var7++ % 7) * 0.17)));
             Vec3 var12 = var11.add(var10.scale((double)var2.radius));
-            float var13 = (float)(0.11 * Math.max(0.0, 1.0 - var5 / 2.0));
+            float var13 = (float)(0.17 * Math.max(0.0, 1.0 - var5 / 2.0));
 
             for (int var14 = 0; var14 < var9.corners().size(); var14++) {
                 Vec3 var15 = var11.add(var9.corners().get(var14).scale((double)var2.radius));

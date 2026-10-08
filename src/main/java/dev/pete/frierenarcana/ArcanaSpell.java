@@ -263,7 +263,7 @@ public final class ArcanaSpell extends AbstractSpell {
             }
 
             if (this.kind == ArcanaSpell.Kind.PIERCE) {
-                if (ArcanaEvents.flags(var1).getLong("breakerReadyTick") > var1.server.overworld().getGameTime()) {
+                if (ArcanaEvents.flags(var1).getLong("breakerReadyTickRetired") > var1.server.overworld().getGameTime()) {
                     var4 = "cooldown";
                 } else if (targetBarrier(var1) == null) {
                     var4 = "target";

@@ -56,7 +56,7 @@ public final class BarrierLook {
         double var31 = Math.pow(1.0 - var29, 2.2);
         float var33 = var8 >= 0.0F ? 0.6F + 0.04F * Math.min(1.0F, var8) : CinemaDirector.bandTag(var11);
         float var34 = (var33 - 0.6F) / 0.04F;
-        float var35 = (float)((0.045 + 0.3 * var31) * (1.0 + 0.6 * (double)var34)) * var7;
+        float var35 = (float)((0.06 + 0.32 * var31) * (1.0 + 0.6 * (double)var34)) * var7;
         var0.addVertex(var1, (float)(var15 - var5.x), (float)(var17 - var5.y), (float)(var19 - var5.z))
             .setColor((float)var31, 0.9F, var33, Math.min(1.0F, var35));
     }

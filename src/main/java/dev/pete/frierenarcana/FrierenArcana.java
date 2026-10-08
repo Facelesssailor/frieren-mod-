@@ -16,6 +16,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.level.ItemLike;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -38,32 +39,35 @@ public final class FrierenArcana {
     public static final Map<ArcanaSpell.Kind, DeferredHolder<AbstractSpell, ArcanaSpell>> SPELL_MAP;
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB;
 
-    public static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath("frieren_arcana", path);
+    public static ResourceLocation id(String var0) {
+        return ResourceLocation.fromNamespaceAndPath("frieren_arcana", var0);
     }
 
-    public FrierenArcana(IEventBus bus, ModContainer container) {
-        ITEMS.register(bus);
-        SPELLS.register(bus);
-        TABS.register(bus);
-        container.registerConfig(Type.SERVER, ArcanaConfig.SPEC);
-        bus.addListener(ArcanaNetwork::register);
-        bus.addListener(event -> event.enqueueWork(SablePhysicsCompat::register));
+    public FrierenArcana(IEventBus var1, ModContainer var2) {
+        NewMagic.init();
+        ITEMS.register(var1);
+        SPELLS.register(var1);
+        TABS.register(var1);
+        var2.registerConfig(Type.SERVER, ArcanaConfig.SPEC);
+        var1.addListener(ArcanaNetwork::register);
+        var1.addListener(var0 -> var0.enqueueWork(SablePhysicsCompat::register));
         NeoForge.EVENT_BUS.register(ArcanaEvents.class);
     }
 
     static {
-        for (int tier = 1; tier <= 5; tier++) {
-            int t = tier;
+        for (int var0 = 1; var0 <= 5; var0++) {
+            int var1 = var0;
             DEVICES.add(
-                ITEMS.register("barrier_device_" + tier, () -> new BarrierDevice(new Properties().stacksTo(1).rarity(t < 4 ? Rarity.RARE : Rarity.EPIC), t))
+                ITEMS.register(
+                    "barrier_device_" + var0, () -> new BarrierDevice(new Properties().stacksTo(1).rarity(var1 < 4 ? Rarity.RARE : Rarity.EPIC), var1)
+                )
             );
         }
 
         SPELL_MAP = new LinkedHashMap<>();
 
-        for (ArcanaSpell.Kind kind : ArcanaSpell.Kind.values()) {
-            SPELL_MAP.put(kind, SPELLS.register(kind.path, () -> new ArcanaSpell(kind)));
+        for (ArcanaSpell.Kind var3 : ArcanaSpell.Kind.values()) {
+            SPELL_MAP.put(var3, SPELLS.register(var3.path, () -> new ArcanaSpell(var3)));
         }
 
         TAB = TABS.register(
@@ -71,21 +75,21 @@ public final class FrierenArcana {
             () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.frieren_arcana"))
                     .icon(() -> RELEASE.get().getDefaultInstance())
-                    .displayItems((parameters, output) -> {
-                        output.accept(RELEASE.get());
-                        output.accept(STAFF.get());
+                    .displayItems((var0x, var1x) -> {
+                        var1x.accept(RELEASE.get());
+                        var1x.accept(STAFF.get());
 
-                        for (DeferredItem<Item> device : DEVICES) {
-                            output.accept(device.get());
+                        for (DeferredItem var3x : DEVICES) {
+                            var1x.accept((ItemLike)var3x.get());
                         }
 
-                        for (DeferredHolder<AbstractSpell, ArcanaSpell> holder : SPELL_MAP.values()) {
-                            AbstractSpell spell = holder.get();
+                        for (DeferredHolder var8 : SPELL_MAP.values()) {
+                            AbstractSpell var4 = (AbstractSpell)var8.get();
 
-                            for (int level = 1; level <= spell.getMaxLevel(); level++) {
-                                ItemStack scroll = new ItemStack(ItemRegistry.SCROLL.get());
-                                ISpellContainer.createScrollContainer(spell, level, scroll);
-                                output.accept(scroll);
+                            for (int var5 = 1; var5 <= var4.getMaxLevel(); var5++) {
+                                ItemStack var6 = new ItemStack(ItemRegistry.SCROLL.get());
+                                ISpellContainer.createScrollContainer(var4, var5, var6);
+                                var1x.accept(var6);
                             }
                         }
                     })

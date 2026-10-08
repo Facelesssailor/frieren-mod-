@@ -48,6 +48,8 @@ public final class ShieldBreak {
                 return var0 + 1;
             case 10:
                 return var0 + 2;
+            case 18:
+                return var0 + 2;
             default:
                 return var0;
         }

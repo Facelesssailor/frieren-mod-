@@ -2,6 +2,15 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.5.0
+
+- New spells: Black Hole, The Height of Magic, Golem Magic - Stone Fist.
+- Creative tab renamed to "Frieren: Magic"; spell descriptions rewritten.
+
+Code: added NewMagic, NewSpell; changed ArcanaSpell, BarrageFern, BreakerAim, FrierenArcana, ShieldBreak, client.ArcanaClient, client.BarrierLook, client.BreakerFx, client.CinemaDirector, client.CinemaOverlay, client.SpellCircleFx, client.SpellFx.
+
+Resources: added textures/gui/spell_icons/black_hole.png, textures/gui/spell_icons/golem_fist.png, textures/gui/spell_icons/height_of_magic.png; changed shaders/core/arcana_energy.fsh.
+
 ## 1.4.6
 
 - Barrage tuning.

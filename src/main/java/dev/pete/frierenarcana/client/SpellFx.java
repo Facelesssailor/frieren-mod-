@@ -21,7 +21,7 @@ public final class SpellFx {
             case 2:
                 return 1.8;
             case 3:
-                return 3.4;
+                return 4.4;
             case 4:
                 return 1.2;
             case 5:
@@ -29,7 +29,9 @@ public final class SpellFx {
             case 6:
                 return 0.6;
             case 7:
+                return 0.55;
             case 8:
+                return 0.7;
             case 9:
             case 11:
             case 12:
@@ -68,6 +70,7 @@ public final class SpellFx {
             case 16:
             case 18:
             case 19:
+            case 26:
             default:
                 return 1.3;
             case 11:
@@ -89,6 +92,14 @@ public final class SpellFx {
                 return 0.7;
             case 23:
                 return 0.9;
+            case 24:
+                return 5.2;
+            case 25:
+                return 1.4;
+            case 27:
+                return 0.8;
+            case 28:
+                return 2.6;
         }
     }
 
@@ -117,6 +128,52 @@ public final class SpellFx {
 
     private static void line(VertexConsumer var0, Matrix4f var1, Vec3 var2, Vec3 var3, Vec3 var4, double var5, float var7, float var8, float var9, float var10) {
         BreakerFx.ribbon(var0, var1, var2, var3, var4, var5, var7, var8, var9, var10);
+    }
+
+    static void tube(VertexConsumer var0, Matrix4f var1, Vec3 var2, Vec3[] var3, double var4, float var6, float var7, float var8, float var9) {
+        if (!(var9 <= 0.003F) && !(var4 <= 0.0) && var3.length >= 2) {
+            Vec3 var10 = null;
+            Vec3[] var11 = null;
+
+            for (int var12 = 0; var12 < var3.length; var12++) {
+                Vec3 var13 = (var12 + 1 < var3.length ? var3[var12 + 1] : var3[var12]).subtract(var12 > 0 ? var3[var12 - 1] : var3[var12]);
+                if (!(var13.lengthSqr() < 1.0E-10)) {
+                    var13 = var13.normalize();
+                    Vec3 var14 = var10 == null ? perp(var13) : var10.subtract(var13.scale(var10.dot(var13))).normalize();
+                    if (var14.lengthSqr() < 1.0E-6) {
+                        var14 = perp(var13);
+                    }
+
+                    Vec3 var15 = var13.cross(var14).normalize();
+                    var10 = var14;
+                    Vec3[] var16 = new Vec3[12];
+
+                    for (int var17 = 0; var17 < 12; var17++) {
+                        double var18 = (Math.PI * 2) * (double)var17 / 12.0;
+                        var16[var17] = var3[var12].add(var14.scale(Math.cos(var18) * var4)).add(var15.scale(Math.sin(var18) * var4));
+                    }
+
+                    if (var11 != null) {
+                        for (int var23 = 0; var23 < 12; var23++) {
+                            Vec3 var24 = var11[var23];
+                            Vec3 var19 = var11[(var23 + 1) % 12];
+                            Vec3 var20 = var16[(var23 + 1) % 12];
+                            Vec3 var21 = var16[var23];
+                            var0.addVertex(var1, (float)(var24.x - var2.x), (float)(var24.y - var2.y), (float)(var24.z - var2.z))
+                                .setColor(var6, var7, var8, var9);
+                            var0.addVertex(var1, (float)(var19.x - var2.x), (float)(var19.y - var2.y), (float)(var19.z - var2.z))
+                                .setColor(var6, var7, var8, var9);
+                            var0.addVertex(var1, (float)(var20.x - var2.x), (float)(var20.y - var2.y), (float)(var20.z - var2.z))
+                                .setColor(var6, var7, var8, var9);
+                            var0.addVertex(var1, (float)(var21.x - var2.x), (float)(var21.y - var2.y), (float)(var21.z - var2.z))
+                                .setColor(var6, var7, var8, var9);
+                        }
+                    }
+
+                    var11 = var16;
+                }
+            }
+        }
     }
 
     private static void ring(
@@ -296,8 +353,6 @@ public final class SpellFx {
                             fern(var0, var1, var7, handStart(var3, var11), var4, var11, var5, var12);
                             return true;
                         case 3:
-                        case 7:
-                        case 8:
                         case 9:
                         case 11:
                         case 12:
@@ -313,10 +368,63 @@ public final class SpellFx {
                             return true;
                         case 6:
                             fern(var0, var1, var7, var3, var4, var11, Math.min(var5, 0.45), 0.45);
-                            float var19 = env(var5, 0.6, 0.02, 0.35);
-                            castCircle(var0, var1, var7, var3, var11, 0.42, var5, 0.9F, 0.94F, 1.0F, var19);
-                            PixelFx.sprite(var3, 0.9, 4, 0.75F, 0.82F, 1.0F, 0.6F * var19);
-                            PixelFx.sprite(var3, 0.5, 48 + Math.min(3, (int)(var5 * 12.0)), 0.95F, 0.97F, 1.0F, var19 * (float)clamp(1.0 - var5 * 3.0));
+                            float var32 = env(var5, 0.6, 0.02, 0.35);
+                            castCircle(var0, var1, var7, var3, var11, 0.42, var5, 0.9F, 0.94F, 1.0F, var32);
+                            PixelFx.sprite(var3, 0.9, 4, 0.75F, 0.82F, 1.0F, 0.6F * var32);
+                            PixelFx.sprite(var3, 0.5, 48 + Math.min(3, (int)(var5 * 12.0)), 0.95F, 0.97F, 1.0F, var32 * (float)clamp(1.0 - var5 * 3.0));
+                            return true;
+                        case 7:
+                            double var31 = sstep(0.0, 0.35, var5);
+                            float var35 = env(var5, var12, 0.02, 0.2);
+                            Vec3 var37 = handStart(var3, var11);
+                            Vec3 var38 = var37.lerp(var4, var31);
+                            line(var0, var1, var7, var37, var38, 0.55, 0.9F, 0.25F, 0.05F, 0.35F * var35);
+                            line(var0, var1, var7, var37.lerp(var38, 0.4), var38, 0.22, 1.0F, 0.6F, 0.15F, 0.8F * var35);
+                            line(var0, var1, var7, var37.lerp(var38, 0.7), var38, 0.08, 1.0F, 0.92F, 0.6F, var35);
+                            PixelFx.sprite(var38, 1.6, 4, 1.0F, 0.42F, 0.08F, 0.9F * var35);
+                            PixelFx.sprite(var38, 0.75, 4, 0.02F, 0.0F, 0.02F, var35);
+                            PixelFx.sprite(var38, 1.0, 6, 1.0F, 0.55F, 0.12F, var35, var5 * 9.0);
+
+                            for (int var39 = 0; var39 < 10; var39++) {
+                                PixelFx.sprite(
+                                    var37.lerp(var38, hash(var39, 1))
+                                        .add((hash(var39, 2) - 0.5) * 0.5, (hash(var39, 3) - 0.5) * 0.5, (hash(var39, 4) - 0.5) * 0.5),
+                                    0.22,
+                                    13,
+                                    1.0F,
+                                    0.7F,
+                                    0.25F,
+                                    var35
+                                );
+                            }
+
+                            return true;
+                        case 8:
+                            float var30 = env(var5, var12, 0.02, 0.4);
+                            Vec3 var33 = handStart(var3, var11);
+                            Vec3 var34 = perp(var11);
+                            Vec3 var36 = var11.cross(var34).normalize();
+
+                            for (int var18 = 0; var18 < 12; var18++) {
+                                double var19 = hash(var18, 1) * 6.283;
+                                double var21 = 0.2 + 0.9 * hash(var18, 2);
+                                double var23 = clamp(var5 * 2.2 - hash(var18, 3) * 0.3);
+                                double var25 = clamp(var23 + 0.35);
+                                Vec3 var27 = var34.scale(Math.cos(var19) * var21).add(var36.scale(Math.sin(var19) * var21));
+                                Vec3 var28 = var33.lerp(var4, var23).add(var27.scale(1.0 + var23 * 4.0));
+                                Vec3 var29 = var33.lerp(var4, var25).add(var27.scale(1.0 + var25 * 4.0));
+                                PixelFx.streak(var28, var29, 0.5, 40, 1.0F, 1.0F, 1.0F, 0.9F * var30);
+                            }
+
+                            PixelFx.sprite(
+                                var33.add(var11.scale(0.8)),
+                                1.6 + var5 * 6.0,
+                                52 + Math.min(3, (int)(var5 * 6.0)),
+                                0.95F,
+                                0.97F,
+                                1.0F,
+                                0.7F * (float)clamp(1.0 - var5 * 1.5)
+                            );
                             return true;
                         case 10:
                             cut(var0, var1, var7, handStart(var3, var11), var4, var11, var5, var12);
@@ -338,7 +446,7 @@ public final class SpellFx {
                                     Math.min(1.6, var9 * 0.13),
                                     var15 * (float)var17 * (var16 == 0 ? 1.0F : 0.6F),
                                     2,
-                                    var16 == 0 ? 0.05 : 0.03
+                                    var16 == 0 ? 0.1 : 0.06
                                 );
                             }
 
@@ -403,19 +511,16 @@ public final class SpellFx {
             }
         }
 
-        for (int var38 = 0; var38 < var22; var38++) {
-            line(var0, var1, var2, var23[var38], var23[var38 + 1], 0.34 * var16 * var14, 0.7F, 0.77F, 1.0F, 0.28F * var13);
-            line(var0, var1, var2, var23[var38], var23[var38 + 1], 0.14 * var16 * var14, 0.95F, 0.97F, 1.0F, 0.95F * var13);
-            line(var0, var1, var2, var23[var38], var23[var38 + 1], 0.055 * var16 * var14, 1.0F, 1.0F, 1.0F, var13);
-        }
-
-        Vec3 var39 = var23[var22];
-        double var40 = var3.distanceTo(var39);
-        int var41 = (int)(var40 * (var10 ? 2.5 : 1.2));
+        tube(var0, var1, var2, var23, 0.3 * var16 * var14, 0.66F, 0.76F, 1.0F, 0.16F * var13);
+        tube(var0, var1, var2, var23, 0.15 * var16 * var14, 0.86F, 0.92F, 1.0F, 0.45F * var13);
+        tube(var0, var1, var2, var23, 0.065 * var16 * var14, 1.0F, 1.0F, 1.0F, var13);
+        Vec3 var38 = var23[var22];
+        double var39 = var3.distanceTo(var38);
+        int var40 = (int)(var39 * (var10 ? 2.5 : 1.2));
         Vec3 var28 = perp(var5);
         Vec3 var29 = var5.cross(var28).normalize();
 
-        for (int var30 = 0; var30 < var41; var30++) {
+        for (int var30 = 0; var30 < var40; var30++) {
             double var31 = hash(var30, 1);
             double var33 = hash(var30, 2) * 6.28 + var6 * 6.0;
             double var35 = (0.15 + var6 * (var10 ? 1.6 : 0.8)) * var16 * (0.4 + hash(var30, 3));
@@ -428,17 +533,17 @@ public final class SpellFx {
         }
 
         if (var10) {
-            for (int var42 = 0; var42 < 5; var42++) {
-                double var44 = ((double)var42 + 0.5) / 5.0 + var6 * 0.5;
-                var44 -= Math.floor(var44);
-                if (var44 <= var11) {
+            for (int var41 = 0; var41 < 5; var41++) {
+                double var43 = ((double)var41 + 0.5) / 5.0 + var6 * 0.5;
+                var43 -= Math.floor(var43);
+                if (var43 <= var11) {
                     ring(
                         var0,
                         var1,
                         var2,
-                        var3.lerp(var4, var44),
+                        var3.lerp(var4, var43),
                         var5,
-                        0.9 + 0.4 * Math.sin(var6 * 9.0 + (double)var42),
+                        0.9 + 0.4 * Math.sin(var6 * 9.0 + (double)var41),
                         0.05,
                         0.85F,
                         0.9F,
@@ -467,11 +572,11 @@ public final class SpellFx {
             burst(var4, var10 ? 5.0 : 1.8, var6 - (var10 ? 0.14 : 0.05), var10 ? 0.6 : 0.35, 0.92F, 0.95F, 1.0F, var13);
             PixelFx.sprite(var4, var10 ? 3.0 : 1.0, 4, 0.8F, 0.85F, 1.0F, 0.7F * var13);
 
-            for (int var43 = 0; var43 < (var10 ? 18 : 7); var43++) {
-                Vec3 var46 = new Vec3(hash(var43, 6) - 0.5, hash(var43, 7) - 0.3, hash(var43, 8) - 0.5).normalize();
+            for (int var42 = 0; var42 < (var10 ? 18 : 7); var42++) {
+                Vec3 var45 = new Vec3(hash(var42, 6) - 0.5, hash(var42, 7) - 0.3, hash(var42, 8) - 0.5).normalize();
                 double var32 = var6 - 0.05;
                 PixelFx.sprite(
-                    var4.add(var46.scale(var32 * (var10 ? 7.0 : 3.5))).add(0.0, -var32 * var32 * 3.0, 0.0),
+                    var4.add(var45.scale(var32 * (var10 ? 7.0 : 3.5))).add(0.0, -var32 * var32 * 3.0, 0.0),
                     var10 ? 0.4 : 0.22,
                     13,
                     0.9F,
@@ -485,14 +590,15 @@ public final class SpellFx {
 
     private static void fern(VertexConsumer var0, Matrix4f var1, Vec3 var2, Vec3 var3, Vec3 var4, Vec3 var5, double var6, double var8) {
         float var10 = env(var6, var8, 0.02, 0.3);
-        line(var0, var1, var2, var3, var4, 0.16, 0.74F, 0.8F, 1.0F, 0.25F * var10);
-        line(var0, var1, var2, var3, var4, 0.055, 1.0F, 1.0F, 1.0F, 0.95F * var10);
+        Vec3[] var11 = new Vec3[]{var3, var4};
+        tube(var0, var1, var2, var11, 0.11, 0.78F, 0.85F, 1.0F, 0.3F * var10);
+        tube(var0, var1, var2, var11, 0.045, 1.0F, 1.0F, 1.0F, 0.95F * var10);
         PixelFx.sprite(var4, 0.55, 1 + (int)(var6 * 20.0) % 2, 0.9F, 0.93F, 1.0F, var10);
-        double var11 = var3.distanceTo(var4);
+        double var12 = var3.distanceTo(var4);
 
-        for (int var13 = 0; var13 < (int)(var11 * 0.8); var13++) {
+        for (int var14 = 0; var14 < (int)(var12 * 0.8); var14++) {
             PixelFx.sprite(
-                var3.lerp(var4, hash(var13, 3)).add((hash(var13, 4) - 0.5) * 0.3, (hash(var13, 5) - 0.5) * 0.3 + var6 * 0.4, (hash(var13, 6) - 0.5) * 0.3),
+                var3.lerp(var4, hash(var14, 3)).add((hash(var14, 4) - 0.5) * 0.3, (hash(var14, 5) - 0.5) * 0.3 + var6 * 0.4, (hash(var14, 6) - 0.5) * 0.3),
                 0.14,
                 58,
                 0.85F,
@@ -820,6 +926,7 @@ public final class SpellFx {
                 case 16:
                 case 18:
                 case 19:
+                case 26:
                 default:
                     return false;
                 case 11:
@@ -838,29 +945,29 @@ public final class SpellFx {
                     strikes(var0, var1, var9, var3, var12, var5, var10);
                     return true;
                 case 17:
-                    float var19 = env(var5, var10, 0.02, 0.4);
+                    float var21 = env(var5, var10, 0.02, 0.4);
 
-                    for (int var21 = 0; var21 < 30; var21++) {
-                        Vec3 var23 = new Vec3(hash(var21, 1) - 0.5, hash(var21, 2) - 0.2, hash(var21, 3) - 0.5).normalize();
-                        Vec3 var25 = var3.add(var23.scale(var5 * 5.0));
-                        PixelFx.streak(var25.subtract(var23.scale(0.28)), var25.add(var23.scale(0.28)), 0.22, 29, 1.0F, 1.0F, 1.0F, var19);
+                    for (int var25 = 0; var25 < 30; var25++) {
+                        Vec3 var28 = new Vec3(hash(var25, 1) - 0.5, hash(var25, 2) - 0.2, hash(var25, 3) - 0.5).normalize();
+                        Vec3 var30 = var3.add(var28.scale(var5 * 5.0));
+                        PixelFx.streak(var30.subtract(var28.scale(0.28)), var30.add(var28.scale(0.28)), 0.22, 29, 1.0F, 1.0F, 1.0F, var21);
                     }
 
                     return true;
                 case 20:
-                    float var18 = env(var5, var10, 0.1, 0.5);
-                    PixelFx.flat(var3.add(0.0, 0.05, 0.0), UP, 1.2 + 0.1 * Math.sin(var7 * 4.0), 5, var7, 0.7F, 0.95F, 1.0F, 0.8F * var18);
+                    float var20 = env(var5, var10, 0.1, 0.5);
+                    PixelFx.flat(var3.add(0.0, 0.05, 0.0), UP, 1.2 + 0.1 * Math.sin(var7 * 4.0), 5, var7, 0.7F, 0.95F, 1.0F, 0.8F * var20);
 
-                    for (int var20 = 0; var20 < 6; var20++) {
-                        double var22 = var7 * 2.0 + (double)var20 * 1.047;
+                    for (int var24 = 0; var24 < 6; var24++) {
+                        double var27 = var7 * 2.0 + (double)var24 * 1.047;
                         PixelFx.sprite(
-                            var3.add(Math.cos(var22) * 0.55, 0.2 + 0.3 * Math.sin(var7 * 3.0 + (double)var20), Math.sin(var22) * 0.55),
+                            var3.add(Math.cos(var27) * 0.55, 0.2 + 0.3 * Math.sin(var7 * 3.0 + (double)var24), Math.sin(var27) * 0.55),
                             0.25,
                             1,
                             0.8F,
                             1.0F,
                             1.0F,
-                            0.9F * var18
+                            0.9F * var20
                         );
                     }
 
@@ -870,14 +977,14 @@ public final class SpellFx {
                     return true;
                 case 22:
                 case 23:
-                    float var13 = env(var5, var10, 0.02, 0.4);
-                    boolean var14 = var2 == 23;
-                    burst(var3, var14 ? 3.2 : 1.8, var5, var14 ? 0.6 : 0.4, var14 ? 1.0F : 0.75F, var14 ? 1.0F : 0.95F, 1.0F, var13);
-                    PixelFx.sprite(var3, (var14 ? 1.6 : 1.0) + var5 * 3.5, 6, 0.72F, 0.95F, 1.0F, var13 * (float)clamp(1.0 - var5 * 1.6));
-                    PixelFx.sprite(var3, var14 ? 2.8 : 1.6, 4, 0.7F, 0.92F, 1.0F, 0.6F * var13);
-                    int var15 = 2 + var4 * 2;
+                    float var19 = env(var5, var10, 0.02, 0.4);
+                    boolean var23 = var2 == 23;
+                    burst(var3, var23 ? 3.2 : 1.8, var5, var23 ? 0.6 : 0.4, var23 ? 1.0F : 0.75F, var23 ? 1.0F : 0.95F, 1.0F, var19);
+                    PixelFx.sprite(var3, (var23 ? 1.6 : 1.0) + var5 * 3.5, 6, 0.72F, 0.95F, 1.0F, var19 * (float)clamp(1.0 - var5 * 1.6));
+                    PixelFx.sprite(var3, var23 ? 2.8 : 1.6, 4, 0.7F, 0.92F, 1.0F, 0.6F * var19);
+                    int var26 = 2 + var4 * 2;
 
-                    for (int var16 = 0; var16 < var15; var16++) {
+                    for (int var16 = 0; var16 < var26; var16++) {
                         PixelFx.sprite(
                             var3.add((hash(var16, 1) - 0.5) * 1.2, (hash(var16, 2) - 0.5) * 1.2, (hash(var16, 3) - 0.5) * 1.2),
                             0.6 + 0.3 * hash(var16, 4),
@@ -885,16 +992,60 @@ public final class SpellFx {
                             0.8F,
                             0.97F,
                             1.0F,
-                            0.9F * var13,
+                            0.9F * var19,
                             hash(var16, 5) * 6.28
                         );
                     }
 
-                    for (int var24 = 0; var24 < (var14 ? 16 : 8); var24++) {
-                        Vec3 var17 = new Vec3(hash(var24, 6) - 0.5, hash(var24, 7) - 0.5, hash(var24, 8) - 0.5).normalize();
-                        PixelFx.sprite(var3.add(var17.scale(var5 * (double)(var14 ? 5 : 3))), 0.3, 1, var24 % 2 == 0 ? 1.0F : 0.75F, 1.0F, 1.0F, var13);
+                    for (int var29 = 0; var29 < (var23 ? 16 : 8); var29++) {
+                        Vec3 var17 = new Vec3(hash(var29, 6) - 0.5, hash(var29, 7) - 0.5, hash(var29, 8) - 0.5).normalize();
+                        PixelFx.sprite(var3.add(var17.scale(var5 * (double)(var23 ? 5 : 3))), 0.3, 1, var29 % 2 == 0 ? 1.0F : 0.75F, 1.0F, 1.0F, var19);
                     }
 
+                    return true;
+                case 24:
+                    blackHole(var0, var1, var9, var3, var12, var5, var10, var7);
+                    return true;
+                case 25:
+                    float var18 = env(var5, var10, 0.02, 0.6);
+                    burst(var3, 6.0, var5, 0.7, 1.0F, 0.6F, 0.2F, var18);
+                    PixelFx.sprite(var3, 4.0 * (1.0 - var5 / var10) + 1.0, 4, 1.0F, 0.45F, 0.1F, 0.8F * var18);
+                    PixelFx.flat(var3, UP, 2.0 + var5 * 14.0, 52 + Math.min(3, (int)(var5 * 4.0)), 0.0, 1.0F, 0.55F, 0.2F, var18);
+
+                    for (int var22 = 0; var22 < 24; var22++) {
+                        Vec3 var15 = new Vec3(hash(var22, 1) - 0.5, hash(var22, 2) - 0.3, hash(var22, 3) - 0.5).normalize();
+                        PixelFx.sprite(
+                            var3.add(var15.scale(var5 * (6.0 + 4.0 * hash(var22, 4)))).add(0.0, -var5 * var5 * 4.0, 0.0),
+                            0.4 + 0.3 * hash(var22, 5),
+                            var22 % 3 == 0 ? 13 : 33,
+                            1.0F,
+                            var22 % 3 == 0 ? 0.7F : 1.0F,
+                            var22 % 3 == 0 ? 0.3F : 1.0F,
+                            var18,
+                            var5 * 8.0 + (double)var22
+                        );
+                    }
+
+                    return true;
+                case 27:
+                    float var13 = env(var5, var10, 0.02, 0.4);
+                    PixelFx.sprite(var3, 1.2 + var5 * 4.0, 52 + Math.min(3, (int)(var5 * 6.0)), 0.95F, 0.97F, 1.0F, var13);
+
+                    for (int var14 = 0; var14 < 6; var14++) {
+                        PixelFx.sprite(
+                            var3.add((hash(var14, 1) - 0.5) * var5 * 3.0, (hash(var14, 2) - 0.5) * var5 * 2.0, (hash(var14, 3) - 0.5) * var5 * 3.0),
+                            0.9 + var5,
+                            7 + var14 % 4,
+                            0.85F,
+                            0.85F,
+                            0.82F,
+                            0.7F * var13
+                        );
+                    }
+
+                    return true;
+                case 28:
+                    golemFist(var3, var12, var5, var10);
                     return true;
             }
         }
@@ -1355,8 +1506,22 @@ public final class SpellFx {
                 double var22 = !(var20 < 0.08) && (!(var20 > 0.16) || !(var20 < 0.22)) && (!(var20 > 0.3) || !(var20 < 0.34)) ? 0.25 : 1.0;
                 float var24 = (float)(clamp(1.0 - var20 / 0.45) * var22);
                 Vec3 var25 = var12[var13].add((hash(var13, 4) - 0.5) * 4.0, 14.0 + 4.0 * hash(var13, 9), (hash(var13, 5) - 0.5) * 4.0);
-                bolt(var0, var1, var2, var25, var12[var13], var5, var13 * 13 + 5, 1.3, var24, 3, 0.06);
+                bolt(var0, var1, var2, var25, var12[var13], var5, var13 * 13 + 5, 1.3, var24, 3, 0.11);
                 burst(var12[var13].add(0.0, 0.4, 0.0), 2.6, var20, 0.45, 0.82F, 0.6F, 1.0F, var24);
+
+                for (int var26 = 0; var26 < 3; var26++) {
+                    PixelFx.sprite(
+                        var12[var13]
+                            .add((hash(var13 * 3 + var26, 11) - 0.5) * 1.6, 0.5 + var20 * 1.2 + (double)var26 * 0.4, (hash(var13 * 3 + var26, 12) - 0.5) * 1.6),
+                        1.6 + var20 * 3.0,
+                        7 + Math.min(3, (int)(var20 * 6.0)),
+                        0.62F,
+                        0.4F,
+                        0.95F,
+                        0.75F * (float)clamp(1.0 - var20 * 1.6)
+                    );
+                }
+
                 PixelFx.flat(
                     var12[var13].add(0.0, 0.06, 0.0),
                     UP,
@@ -1369,13 +1534,13 @@ public final class SpellFx {
                     (float)clamp(1.0 - var20 * 2.2)
                 );
 
-                for (int var26 = 0; var26 < 5; var26++) {
+                for (int var30 = 0; var30 < 5; var30++) {
                     PixelFx.sprite(
                         var12[var13]
                             .add(
-                                (hash(var13 * 5 + var26, 6) - 0.5) * var20 * 8.0,
+                                (hash(var13 * 5 + var30, 6) - 0.5) * var20 * 8.0,
                                 var20 * 3.0 - var20 * var20 * 8.0 + 0.2,
-                                (hash(var13 * 5 + var26, 7) - 0.5) * var20 * 8.0
+                                (hash(var13 * 5 + var30, 7) - 0.5) * var20 * 8.0
                             ),
                         0.3,
                         1,
@@ -1409,6 +1574,129 @@ public final class SpellFx {
         }
 
         PixelFx.sprite(var3.add(0.0, 1.0, 0.0), var10 * 2.5, 4, 0.7F, 0.45F, 1.0F, 0.16F * env(var5, var7, 0.05, 0.4));
+    }
+
+    private static void blackHole(VertexConsumer var0, Matrix4f var1, Vec3 var2, Vec3 var3, int var4, double var5, double var7, double var9) {
+        float var11 = env(var5, var7, 0.15, 0.4);
+        double var12 = sstep(0.0, 0.5, var5);
+        double var14 = 6.0 + 1.5 * (double)var4;
+        double var16 = (0.7 + 0.15 * (double)var4) * var12 * (1.0 + 0.04 * Math.sin(var9 * 20.0));
+        Vec3 var18 = var2.subtract(var3).normalize();
+        PixelFx.sprite(var3.subtract(var18.scale(0.3)), var16 * 5.5, 4, 1.0F, 0.32F, 0.05F, 0.75F * var11);
+        PixelFx.sprite(var3.subtract(var18.scale(0.2)), var16 * 3.2, 4, 1.0F, 0.62F, 0.18F, 0.9F * var11);
+        PixelFx.sprite(var3.subtract(var18.scale(0.1)), var16 * 2.6, 6, 1.0F, 0.82F, 0.4F, var11, var9 * 3.0);
+        PixelFx.sprite(var3.add(var18.scale(0.15)), var16 * 2.0, 12, 0.0F, 0.0F, 0.0F, var11);
+        PixelFx.sprite(var3.add(var18.scale(0.2)), var16 * 1.75, 58, 0.0F, 0.0F, 0.0F, var11);
+        PixelFx.sprite(var3.add(var18.scale(0.25)), var16 * 1.3, 4, 0.0F, 0.0F, 0.0F, var11);
+
+        for (int var19 = 0; var19 < 14; var19++) {
+            double var20 = (double)var19 * 0.4488 + var9 * 2.4;
+            Vec3 var22 = var3.subtract(var2).normalize();
+            Vec3 var23 = perp(var22);
+            Vec3 var24 = var22.cross(var23).normalize();
+            Vec3 var25 = var3.add(var23.scale(Math.cos(var20) * var16 * 1.15)).add(var24.scale(Math.sin(var20) * var16 * 1.15));
+            PixelFx.sprite(var25, var16 * 0.9, PixelFx.anim(16, 8, var9 + (double)var19 * 0.17, 14.0), 1.0F, 1.0F, 1.0F, var11, var20 - (Math.PI / 2));
+        }
+
+        for (int var31 = 0; var31 < 46; var31++) {
+            double var32 = (var5 * (0.35 + 0.3 * hash(var31, 1)) + hash(var31, 2)) % 1.0;
+            double var33 = var14 * (1.0 - var32) + var16;
+            double var34 = hash(var31, 3) * 6.283 + var32 * 9.0;
+            double var26 = (hash(var31, 4) - 0.5) * var33 * 0.5 * (1.0 - var32);
+            Vec3 var28 = var3.add(Math.cos(var34) * var33, var26, Math.sin(var34) * var33);
+            int var29 = var31 % 4 == 0 ? 13 : (var31 % 4 == 1 ? 46 : 33);
+            float var30 = var29 == 13 ? 1.0F : 0.85F;
+            PixelFx.sprite(
+                var28,
+                var29 == 33 ? 0.45 + 0.4 * hash(var31, 5) : 0.5,
+                var29,
+                var30,
+                var29 == 13 ? 0.65F : 0.8F,
+                var29 == 13 ? 0.25F : 0.75F,
+                (float)Math.sin(var32 * Math.PI) * var11,
+                var32 * 12.0 + (double)var31
+            );
+        }
+
+        ring(var0, var1, var2, var3, UP, var16 * 1.6 + 0.3 * Math.sin(var9 * 5.0), 0.05, 1.0F, 0.55F, 0.15F, 0.7F * var11);
+    }
+
+    private static void golemFist(Vec3 var0, int var1, double var2, double var4) {
+        double var6 = 1.0 + 0.25 * (double)var1;
+        double var8 = sstep(0.0, 0.25, var2);
+        double var10 = sstep(var4 - 0.8, var4, var2);
+        double var12 = (2.6 * var8 - 1.8 * var10) * var6;
+        float var14 = 1.0F - (float)var10 * 0.3F;
+
+        for (int var15 = 0; var15 < 4; var15++) {
+            double var16 = var12 - (double)(var15 + 1) * 0.75 * var6;
+            if (!(var16 < -0.9 * var6)) {
+                stoneBox(var0.add(0.0, var16, 0.0), 0.5 * var6 - (double)var15 * 0.03, 0.15 * (double)var15, 0.04 * (double)var15, 0.9F, var14);
+            }
+        }
+
+        stoneBox(var0.add(0.0, var12 + 0.3 * var6, 0.0), 0.95 * var6, 0.3, 0.12, 1.0F, var14);
+
+        for (int var19 = -1; var19 <= 2; var19++) {
+            stoneBox(var0.add(((double)var19 - 0.5) * 0.5 * var6, var12 + 1.3 * var6, 0.45 * var6), 0.3 * var6, 0.3, 0.12, 0.95F, var14);
+        }
+
+        stoneBox(var0.add(1.05 * var6, var12 + 0.55 * var6, -0.2 * var6), 0.32 * var6, 0.5, 0.3, 0.9F, var14);
+        double var20 = var2 - 0.2;
+        if (var20 > 0.0 && var20 < 1.4) {
+            PixelFx.flat(
+                var0.add(0.0, 0.05, 0.0),
+                UP,
+                (1.5 + var20 * 7.0) * var6,
+                52 + Math.min(3, (int)(var20 * 4.0)),
+                0.0,
+                0.75F,
+                0.68F,
+                0.55F,
+                (float)clamp(1.0 - var20)
+            );
+
+            for (int var17 = 0; var17 < 16; var17++) {
+                Vec3 var18 = new Vec3(hash(var17, 1) - 0.5, 0.0, hash(var17, 2) - 0.5).normalize();
+                PixelFx.sprite(
+                    var0.add(var18.scale((0.8 + var20 * 3.0) * var6)).add(0.0, var20 * (4.0 + 3.0 * hash(var17, 3)) - var20 * var20 * 9.0 + 0.2, 0.0),
+                    0.4 + 0.35 * hash(var17, 4),
+                    33,
+                    1.0F,
+                    1.0F,
+                    1.0F,
+                    (float)clamp(1.4 - var20),
+                    var20 * 7.0 + (double)var17
+                );
+            }
+
+            for (int var21 = 0; var21 < 8; var21++) {
+                PixelFx.sprite(
+                    var0.add((hash(var21, 6) - 0.5) * 3.0 * var6, 0.4 + var20 * 0.6, (hash(var21, 7) - 0.5) * 3.0 * var6),
+                    (1.4 + var20 * 1.5) * var6,
+                    7 + Math.min(3, (int)(var20 * 3.0)),
+                    0.78F,
+                    0.72F,
+                    0.62F,
+                    0.75F * (float)clamp(1.2 - var20)
+                );
+            }
+        }
+
+        if (var10 > 0.0) {
+            for (int var22 = 0; var22 < 10; var22++) {
+                PixelFx.sprite(
+                    var0.add((hash(var22, 8) - 0.5) * 1.6 * var6, var12 + hash(var22, 9) * 2.0 * var6 - var10 * 2.0, (hash(var22, 10) - 0.5) * 1.6 * var6),
+                    0.45,
+                    33,
+                    1.0F,
+                    1.0F,
+                    1.0F,
+                    (float)(1.0 - var10),
+                    var10 * 6.0 + (double)var22
+                );
+            }
+        }
     }
 
     public static boolean aura(VertexConsumer var0, Matrix4f var1, Vec3 var2, double var3, double var5, double var7, float var9) {

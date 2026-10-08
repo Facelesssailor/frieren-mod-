@@ -24,7 +24,7 @@ void main() {
         vec3 p = magicPosition;
         float drift = fbm(p * .035 + vec3(0.0, ArcanaTime * .035, ArcanaTime * .02));
         float soft = noise(p * .11 + vec3(ArcanaTime * .07, 0.0, -ArcanaTime * .05));
-        vec3 col = vec3(.38, 1.0, .62) * (.82 + .28 * drift) + vec3(.40, .22, .30) * fr * fr;
+        vec3 col = vec3(.26, 1.0, .46) * (.82 + .28 * drift) + vec3(.36, .18, .26) * fr * fr;
         float a = vertexColor.a * (.86 + .22 * drift + .08 * soft);
         if (k > 0.01) {
             float film = drift * 2.4 + fr * 1.7 + p.y * .025 + ArcanaTime * .03;

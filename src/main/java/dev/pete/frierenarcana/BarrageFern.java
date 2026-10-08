@@ -11,6 +11,7 @@ import net.minecraft.world.phys.Vec3;
 
 public final class BarrageFern {
     private static final double RANGE = 36.0;
+    private static final double LOCK_COS = Math.cos(Math.toRadians(12.0));
     private static final int STYLE_INVISIBLE = 99;
 
     private BarrageFern() {
@@ -27,7 +28,7 @@ public final class BarrageFern {
             if (var1 instanceof Enemy || var1 instanceof Mob var4 && var4.getTarget() == var0) {
                 Vec3 var7 = var1.getBoundingBox().getCenter().subtract(var3);
                 double var5 = var7.length();
-                return !(var5 < 1.0) && !(var5 > 36.0) && !(var7.normalize().dot(var2) < 0.35) ? var0.hasLineOfSight(var1) : false;
+                return !(var5 < 1.0) && !(var5 > 36.0) && !(var7.normalize().dot(var2) < LOCK_COS) ? var0.hasLineOfSight(var1) : false;
             } else {
                 return false;
             }

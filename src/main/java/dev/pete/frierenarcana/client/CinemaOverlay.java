@@ -24,12 +24,12 @@ public final class CinemaOverlay {
             long var9 = CinemaDirector.fractureNanos();
             if (var9 != 0L) {
                 double var11 = (double)(var1 - var9) / 1.0E9;
-                double var13 = var11 - 3.0;
+                double var13 = var11 - 1.8 - 3.0;
                 if (var13 > 0.0) {
                     var7 = var13 < 0.12 ? var13 / 0.12 * 0.8 : Math.max(0.0, 0.8 * (1.0 - (var13 - 0.12) / 0.7));
                 }
 
-                var5 = Math.max(var5, (var11 - 12.5) / 0.7);
+                var5 = Math.max(var5, (var11 - 14.3) / 0.7);
             }
 
             GuiGraphics var15 = var0.getGuiGraphics();
