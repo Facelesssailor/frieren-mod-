@@ -2,6 +2,12 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.5.3
+
+- Hand-drawn magic circle designs (CircleArt).
+
+Code: added client.CircleArt; changed CircleNet, client.BreakerFx, client.CastCircles, client.CinemaDirector, client.SpellCircleFx, client.SpellFx.
+
 ## 1.5.2
 
 - Spell circle fix.

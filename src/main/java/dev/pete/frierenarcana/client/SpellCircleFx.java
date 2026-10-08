@@ -273,36 +273,6 @@ public final class SpellCircleFx {
 
     private static void extras(SpellCircleFx.Ctx var0, Vec3 var1, Vec3 var2, double var3, double var5, float var7) {
         double var8 = var1.y + 1.05;
-        double var10 = 3.0 + 45.0 * Math.pow(var5, 1.5);
-        double var12 = 0.03 + 0.05 * var5;
-        var0.r = 0.75F;
-        var0.g = 1.0F;
-        var0.b = 0.85F;
-        var0.a = (float)(0.55 + 0.4 * var5);
-
-        for (int var14 = 0; var14 < 2; var14++) {
-            var0.cx = var1.x;
-            var0.cy = var8;
-            var0.cz = var1.z;
-            if (var14 == 0) {
-                var0.ux = 1.0;
-                var0.uy = 0.0;
-                var0.uz = 0.0;
-            } else {
-                var0.ux = 0.0;
-                var0.uy = 0.0;
-                var0.uz = 1.0;
-            }
-
-            var0.vx = 0.0;
-            var0.vy = 1.0;
-            var0.vz = 0.0;
-            var0.seg(0.0, 0.0, 0.0, var10, var12);
-            var0.a *= 0.35F;
-            var0.seg(0.0, 0.0, 0.0, var10, var12 * 3.2);
-            var0.a /= 0.35F;
-        }
-
         var0.cx = var1.x;
         var0.cy = groundY + 0.08;
         var0.cz = var1.z;
@@ -326,12 +296,12 @@ public final class SpellCircleFx {
         var0.seg(-7.0 * var5, 0.0, 7.0 * var5, 0.0, 0.025);
         var0.a *= 0.3F;
         var0.seg(-4.0 * var5, 0.0, 4.0 * var5, 0.0, 0.12);
-        Vec3 var19 = CinemaDirector.lockedLook();
-        Vec3 var15 = new Vec3(var19.x, 0.0, var19.z);
-        var15 = var15.lengthSqr() < 0.01 ? new Vec3(0.0, 0.0, 1.0) : var15.normalize();
-        Vec3 var16 = new Vec3(var1.x, var8, var1.z).add(var15.scale(0.42));
-        double var17 = ArcanaCinematic.release == 0L ? 0.0 : (double)(System.nanoTime() - ArcanaCinematic.release) / 1.0E9;
-        nonEuclid(var0, var16, var15, var2, var5, var3, var17);
+        Vec3 var10 = CinemaDirector.lockedLook();
+        Vec3 var11 = new Vec3(var10.x, 0.0, var10.z);
+        var11 = var11.lengthSqr() < 0.01 ? new Vec3(0.0, 0.0, 1.0) : var11.normalize();
+        Vec3 var12 = new Vec3(var1.x, var8, var1.z).add(var11.scale(0.42));
+        double var13 = ArcanaCinematic.release == 0L ? 0.0 : (double)(System.nanoTime() - ArcanaCinematic.release) / 1.0E9;
+        nonEuclid(var0, var12, var11, var2, var5, var3, var13);
     }
 
     private static double smooth(double var0, double var2, double var4) {

@@ -10,6 +10,7 @@ public final class BreakerFx {
     public static final double BEAM_LIFE = 4.4;
     static final double CRACK_END = 3.0;
     static final double SHATTER = 3.1;
+    public static final double PINCH = 0.4;
 
     private BreakerFx() {
     }
@@ -101,38 +102,43 @@ public final class BreakerFx {
 
     public static void beam(VertexConsumer var0, Matrix4f var1, Vec3 var2, Vec3 var3, double var4) {
         Vec3 var6 = ArcanaClient.camera();
-        if (var6 != null && !(var4 > 4.4)) {
-            double var7 = Math.min(1.0, var4 / 1.8);
-            double var9 = Math.pow(var7, 1.6);
-            float var11 = (float)(var4 < 3.4000000000000004 ? 1.0 : Math.max(0.0, 1.0 - (var4 - 1.8 - 1.6) / 1.0000000000000004));
-            float var12 = (float)(0.9 + 0.1 * Math.sin(var4 * 37.0));
-            Vec3 var13 = var2.lerp(var3, var9);
+        if (var6 != null && !(var4 > 4.4) && !(var4 < 0.4)) {
+            Vec3 var7 = ArcanaCinematic.breakerActive() ? CinemaDirector.lockedLook() : Vec3.ZERO;
+            var7 = new Vec3(var7.x, 0.0, var7.z);
+            var7 = var7.lengthSqr() < 1.0E-4 ? Vec3.ZERO : var7.normalize().scale(0.42);
+            var2 = var2.add(var7.x, -0.57, var7.z);
+            double var8 = Math.min(1.0, (var4 - 0.4) / 1.4);
+            double var10 = Math.pow(var8, 1.6);
+            double var12 = sstep(0.0, 0.6, var4 - 0.4);
+            float var14 = (float)(var4 < 3.4000000000000004 ? 1.0 : Math.max(0.0, 1.0 - (var4 - 1.8 - 1.6) / 1.0000000000000004));
+            float var15 = (float)(0.9 + 0.1 * Math.sin(var4 * 37.0));
+            Vec3 var16 = var2.lerp(var3, var10);
             if (var4 > 1.8) {
-                var13 = var3.add(0.0, Math.min(70.0, (var4 - 1.8) * 55.0), 0.0);
+                var16 = var3.add(0.0, Math.min(70.0, (var4 - 1.8) * 55.0), 0.0);
             }
 
-            Vec3[] var14 = var4 > 1.8 ? new Vec3[]{var2, var3, var13} : new Vec3[]{var2, var13};
-            SpellFx.tube(var0, var1, var6, new Vec3[]{var2, var2.lerp(var13, 0.25)}, 0.9, 0.35F, 1.0F, 0.6F, 0.1F * var11);
-            SpellFx.tube(var0, var1, var6, var14, 0.42, 0.35F, 1.0F, 0.6F, 0.12F * var11 * var12);
-            SpellFx.tube(var0, var1, var6, var14, 0.16, 0.72F, 1.0F, 0.86F, 0.5F * var11);
-            SpellFx.tube(var0, var1, var6, var14, 0.055, 1.0F, 1.0F, 1.0F, 0.98F * var11);
-            sparkle(var0, var1, var6, var13, 1.3 * (double)var12, 0.9F, 1.0F, 0.94F, var11);
-            disc(var0, var1, var6, var13, 0.9, 0.45F, 1.0F, 0.65F, 0.5F * var11);
-            Vec3 var15 = var13.subtract(var2);
+            Vec3[] var17 = var4 > 1.8 ? new Vec3[]{var2, var3, var16} : new Vec3[]{var2, var16};
+            SpellFx.tube(var0, var1, var6, new Vec3[]{var2, var2.lerp(var16, 0.25)}, 0.05 + 0.85 * var12, 0.35F, 1.0F, 0.6F, 0.1F * var14);
+            SpellFx.tube(var0, var1, var6, var17, 0.04 + 0.38 * var12, 0.35F, 1.0F, 0.6F, 0.12F * var14 * var15);
+            SpellFx.tube(var0, var1, var6, var17, 0.16, 0.72F, 1.0F, 0.86F, 0.5F * var14);
+            SpellFx.tube(var0, var1, var6, var17, 0.055, 1.0F, 1.0F, 1.0F, 0.98F * var14);
+            sparkle(var0, var1, var6, var16, 1.3 * (double)var15, 0.9F, 1.0F, 0.94F, var14);
+            disc(var0, var1, var6, var16, 0.9, 0.45F, 1.0F, 0.65F, 0.5F * var14);
+            Vec3 var18 = var16.subtract(var2);
 
-            for (int var16 = 0; var16 < 30; var16++) {
-                double var17 = (hash(var16, 1) + var4 * (0.5 + 0.5 * hash(var16, 2))) % 1.0;
-                Vec3 var19 = var2.add(var15.scale(var17))
-                    .add(Math.sin((double)var16 * 2.3 + var4 * 6.0) * 0.22, 0.0, Math.cos((double)var16 * 1.7 + var4 * 5.0) * 0.22);
-                disc(var0, var1, var6, var19, 0.06 + 0.05 * hash(var16, 3), 0.7F, 1.0F, 0.82F, 0.7F * var11);
+            for (int var19 = 0; var19 < 30; var19++) {
+                double var20 = (hash(var19, 1) + var4 * (0.5 + 0.5 * hash(var19, 2))) % 1.0;
+                Vec3 var22 = var2.add(var18.scale(var20))
+                    .add(Math.sin((double)var19 * 2.3 + var4 * 6.0) * 0.22, 0.0, Math.cos((double)var19 * 1.7 + var4 * 5.0) * 0.22);
+                disc(var0, var1, var6, var22, 0.06 + 0.05 * hash(var19, 3), 0.7F, 1.0F, 0.82F, 0.7F * var14);
             }
 
-            float var20 = (float)(0.85 + 0.15 * Math.sin(var4 * 22.0));
-            sparkle(var0, var1, var6, var2, 1.6 * (double)var20, 0.9F, 1.0F, 0.94F, 0.9F * var11);
+            float var26 = (float)(0.85 + 0.15 * Math.sin(var4 * 22.0));
+            sparkle(var0, var1, var6, var2, 1.6 * (double)var26 * (0.4 + 0.6 * var12), 0.9F, 1.0F, 0.94F, 0.9F * var14);
             if (var4 >= 1.8) {
-                double var21 = var4 - 1.8;
-                sparkle(var0, var1, var6, var3, (2.6 + 0.6 * Math.sin(var4 * 18.0)) * (double)var11, 1.0F, 1.0F, 1.0F, 0.95F * var11);
-                disc(var0, var1, var6, var3, 2.0 + var21 * 2.0, 0.45F, 1.0F, 0.65F, 0.45F * var11);
+                double var27 = var4 - 1.8;
+                sparkle(var0, var1, var6, var3, (2.6 + 0.6 * Math.sin(var4 * 18.0)) * (double)var14, 1.0F, 1.0F, 1.0F, 0.95F * var14);
+                disc(var0, var1, var6, var3, 2.0 + var27 * 2.0, 0.45F, 1.0F, 0.65F, 0.45F * var14);
             }
         }
     }

@@ -25,48 +25,54 @@ public final class CastCircles {
     private CastCircles() {
     }
 
-    private static CastCircles.Style style(String var0) {
+    private static CastCircles.Style st(int var0, double var1, CircleArt.Design var3, float var4, float var5, float var6, float var7, float var8, float var9) {
+        return new CastCircles.Style(var0, var1, new CircleArt.Look(var3, var4, var5, var6, var7, var8, var9));
+    }
+
+    public static CastCircles.Style style(String var0) {
         switch (var0) {
-            case "zoltraak":
-            case "zoltraak_barrage":
-                return new CastCircles.Style(0, 1.15, 0.86F, 0.5F, 1.0F, 6, 2, 1);
             case "zoltraak_heavy":
-                return new CastCircles.Style(0, 3.3, 1.0F, 0.86F, 0.52F, 8, 3, 2);
+                return st(0, 2.6, CircleArt.Design.HEAVY, 1.0F, 0.97F, 0.92F, 0.95F, 0.78F, 0.5F);
             case "nephtear":
-                return new CastCircles.Style(0, 1.35, 0.6F, 0.92F, 1.0F, 6, 2, 0);
+                return st(0, 1.15, CircleArt.Design.ICE, 0.92F, 0.98F, 1.0F, 0.45F, 0.82F, 1.0F);
             case "reamstroha":
-                return new CastCircles.Style(0, 1.3, 0.4F, 0.72F, 1.0F, 5, 2, 1);
+                return st(0, 1.2, CircleArt.Design.WATER, 0.9F, 0.96F, 1.0F, 0.25F, 0.55F, 1.0F);
             case "balgrant":
-                return new CastCircles.Style(1, 2.5, 0.92F, 0.72F, 0.42F, 4, 1, 2);
+                return st(1, 2.5, CircleArt.Design.EARTH, 1.0F, 0.93F, 0.8F, 0.82F, 0.58F, 0.3F);
             case "sorganeil":
-                return new CastCircles.Style(1, 2.1, 0.82F, 0.92F, 0.62F, 5, 2, 1);
+                return st(0, 1.1, CircleArt.Design.BIND, 1.0F, 1.0F, 0.86F, 0.82F, 0.88F, 0.42F);
             case "vollzanbel":
-                return new CastCircles.Style(0, 2.3, 1.0F, 0.55F, 0.25F, 8, 3, 2);
+                return st(1, 2.5, CircleArt.Design.FIRE, 1.0F, 0.93F, 0.8F, 1.0F, 0.45F, 0.12F);
             case "judradjim":
-                return new CastCircles.Style(0, 1.5, 0.92F, 0.96F, 0.42F, 6, 2, 1);
+                return st(0, 1.45, CircleArt.Design.LIGHTNING, 0.96F, 0.92F, 1.0F, 0.58F, 0.32F, 1.0F);
             case "waldgose":
-                return new CastCircles.Style(1, 2.3, 0.62F, 1.0F, 0.82F, 6, 2, 1);
+                return st(1, 2.5, CircleArt.Design.WIND, 0.93F, 1.0F, 0.96F, 0.42F, 0.95F, 0.72F);
             case "daosdorg":
-                return new CastCircles.Style(0, 2.1, 1.0F, 0.62F, 0.32F, 7, 3, 2);
+                return st(1, 2.5, CircleArt.Design.FIRE, 1.0F, 0.88F, 0.75F, 1.0F, 0.28F, 0.08F);
             case "catastrovia":
-                return new CastCircles.Style(2, 3.2, 0.72F, 0.52F, 1.0F, 8, 3, 2);
+                return st(2, 3.2, CircleArt.Design.ARROWS, 1.0F, 0.98F, 0.9F, 1.0F, 0.82F, 0.42F);
             case "goddess_healing":
-                return new CastCircles.Style(1, 2.3, 1.0F, 0.96F, 0.72F, 6, 2, 2);
+                return st(1, 2.3, CircleArt.Design.HOLY, 1.0F, 0.98F, 0.86F, 1.0F, 0.84F, 0.45F);
             case "goddess_cleansing":
-                return new CastCircles.Style(1, 2.1, 0.72F, 1.0F, 0.92F, 6, 2, 1);
+                return st(1, 2.2, CircleArt.Design.HOLY, 0.92F, 1.0F, 0.98F, 0.55F, 0.95F, 0.9F);
             case "goddess_three_spears":
-                return new CastCircles.Style(0, 1.9, 1.0F, 0.92F, 0.52F, 3, 1, 2);
+                return st(0, 1.45, CircleArt.Design.HOLY, 1.0F, 0.98F, 0.86F, 1.0F, 0.84F, 0.45F);
             case "golden_transmutation":
-                return new CastCircles.Style(1, 2.8, 1.0F, 0.86F, 0.32F, 8, 3, 2);
+                return st(1, 2.6, CircleArt.Design.GOLD, 1.0F, 0.95F, 0.75F, 1.0F, 0.78F, 0.25F);
             case "dragate":
-                return new CastCircles.Style(0, 1.25, 0.82F, 0.76F, 0.66F, 4, 1, 1);
+                return st(0, 1.05, CircleArt.Design.EARTH, 1.0F, 0.95F, 0.86F, 0.75F, 0.62F, 0.45F);
             case "reelseiden":
-                return new CastCircles.Style(0, 1.15, 0.82F, 1.0F, 1.0F, 5, 2, 0);
-            case "examination_barrier":
-            case "defensive_barrier":
-                return new CastCircles.Style(1, 2.7, 0.62F, 1.0F, 0.8F, 6, 2, 2);
+                return st(0, 0.95, CircleArt.Design.CUT, 0.97F, 0.97F, 1.0F, 0.7F, 0.75F, 1.0F);
             case "jubelade":
-                return new CastCircles.Style(0, 1.5, 1.0F, 0.72F, 0.82F, 6, 2, 1);
+                return st(0, 1.25, CircleArt.Design.PETAL, 1.0F, 0.95F, 0.97F, 1.0F, 0.55F, 0.72F);
+            case "examination_barrier":
+                return st(1, 2.7, CircleArt.Design.BARRIER, 0.9F, 1.0F, 0.94F, 0.35F, 1.0F, 0.55F);
+            case "defensive_barrier":
+                return st(1, 2.7, CircleArt.Design.BARRIER, 0.92F, 0.97F, 1.0F, 0.45F, 0.75F, 1.0F);
+            case "flower_field":
+                return st(1, 2.4, CircleArt.Design.FLOWER, 1.0F, 0.97F, 0.97F, 1.0F, 0.7F, 0.82F);
+            case "jilwer":
+                return st(1, 1.2, CircleArt.Design.SPEED, 0.94F, 1.0F, 0.96F, 0.6F, 1.0F, 0.8F);
             default:
                 return null;
         }
@@ -103,11 +109,6 @@ public final class CastCircles {
         }
     }
 
-    private static double ease(double var0) {
-        var0 = Math.max(0.0, Math.min(1.0, var0));
-        return 1.0 - Math.pow(1.0 - var0, 3.0);
-    }
-
     @SubscribeEvent
     public static void render(RenderLevelStageEvent var0) {
         if (var0.getStage() == Stage.AFTER_TRANSLUCENT_BLOCKS && !ACTIVE.isEmpty()) {
@@ -127,73 +128,23 @@ public final class CastCircles {
                     var8.m = var0.getPoseStack().last().pose();
                     var8.vc = var7.getBuffer(ArcanaRenderTypes.MAGIC);
                     ArcanaShaders.prepare((double)((float)var2.getGameTime() + var5) / 20.0, var6);
-                    boolean var9 = false;
 
-                    for (CastCircles.Active var11 : ACTIVE) {
-                        Player var12 = var2.getPlayerByUUID(var11.player);
-                        CastCircles.Style var13 = style(var11.spell);
-                        if (var12 != null && var13 != null) {
-                            double var14 = (double)(var3 - var11.start) / 1.0E9;
-                            double var16 = (double)(var11.end - var3) / 1.0E9;
-                            double var18 = ease(var14 / 0.35);
-                            double var20 = Math.min(1.0, var16 / 0.4);
-                            if (!(var18 <= 0.02) && !(var20 <= 0.0)) {
-                                double var22 = var13.radius() * var18;
-                                Vec3 var24 = var12.getViewVector(var5);
-                                Vec3 var25 = var12.getPosition(var5);
-                                if (var13.mode() == 0) {
-                                    Vec3 var26 = var12.getEyePosition(var5);
-                                    double var27 = 1.5 + var13.radius() * 0.5;
-                                    var8.cx = var26.x + var24.x * var27;
-                                    var8.cy = var26.y - 0.2 + var24.y * var27;
-                                    var8.cz = var26.z + var24.z * var27;
-                                    double var29 = -var24.z;
-                                    double var31 = var24.x;
-                                    double var33 = Math.sqrt(var29 * var29 + var31 * var31);
-                                    if (var33 < 1.0E-4) {
-                                        var29 = 1.0;
-                                        var31 = 0.0;
-                                        var33 = 1.0;
-                                    }
-
-                                    var29 /= var33;
-                                    var31 /= var33;
-                                    double var35 = var24.y * var31;
-                                    double var37 = var24.z * var29 - var24.x * var31;
-                                    double var39 = -var24.y * var29;
-                                    double var41 = Math.sqrt(var35 * var35 + var37 * var37 + var39 * var39);
-                                    var35 /= var41;
-                                    var37 /= var41;
-                                    var39 /= var41;
-                                    if (var37 < 0.0) {
-                                        var35 = -var35;
-                                        var37 = -var37;
-                                        var39 = -var39;
-                                    }
-
-                                    var8.ux = var29;
-                                    var8.uy = 0.0;
-                                    var8.uz = var31;
-                                    var8.vx = var35;
-                                    var8.vy = var37;
-                                    var8.vz = var39;
-                                } else {
-                                    var8.cx = var25.x;
-                                    var8.cy = var25.y + (var13.mode() == 1 ? 0.06 : (double)var12.getEyeHeight() + 1.2);
-                                    var8.cz = var25.z;
-                                    var8.ux = 1.0;
-                                    var8.uy = 0.0;
-                                    var8.uz = 0.0;
-                                    var8.vx = 0.0;
-                                    var8.vy = 0.0;
-                                    var8.vz = 1.0;
-                                }
-
-                                double var44 = var14 + (double)(var11.start % 1000L) * 0.001;
-                                float var28 = (float)((0.78 + 0.22 * Math.sin(var14 * 5.0)) * var20);
-                                layers(var8, var22, var44, var13, var28);
-                                var9 = true;
-                            }
+                    for (CastCircles.Active var10 : ACTIVE) {
+                        Player var11 = var2.getPlayerByUUID(var10.player);
+                        if (var11 != null) {
+                            double var12 = (double)(var3 - var10.start) / 1.0E9;
+                            double var14 = (double)(var10.end - var3) / 1.0E9;
+                            draw(
+                                var8,
+                                var10.spell,
+                                var11.getEyePosition(var5),
+                                var11.getViewVector(var5),
+                                var11.getPosition(var5),
+                                (double)var11.getEyeHeight(),
+                                var12,
+                                var14,
+                                (int)(var10.player.getLeastSignificantBits() & 65535L)
+                            );
                         }
                     }
 
@@ -205,48 +156,81 @@ public final class CastCircles {
         }
     }
 
-    private static void layers(SpellCircleFx.Ctx var0, double var1, double var3, CastCircles.Style var5, float var6) {
-        float var7 = var5.r();
-        float var8 = var5.g();
-        float var9 = var5.b();
-        var0.r = var7 * 0.5F;
-        var0.g = var8 * 0.5F;
-        var0.b = var9 * 0.5F;
-        var0.a = 0.1F * var6;
-        var0.disc(var1 * 0.97, 40);
-        var0.r = Math.min(1.0F, var7 + 0.2F);
-        var0.g = Math.min(1.0F, var8 + 0.2F);
-        var0.b = Math.min(1.0F, var9 + 0.2F);
-        var0.a = 0.92F * var6;
-        var0.ring(var1, 0.045 + 0.02 * var1);
-        var0.ring(var1 * 0.93, 0.02);
-        var0.r = var7;
-        var0.g = var8;
-        var0.b = var9;
-        var0.a = 0.8F * var6;
-        var0.dashes(var1 * 0.85, 0.035, 30, var3 * 0.4, 0.55);
-        var0.ring(var1 * 0.72, 0.022);
-        var0.runes(var1 * 0.78, 18, -var3 * 0.3, 0.05 * var1, 0.016);
-        var0.ticks(var1 * 0.68, var1 * 0.72, 60, var3 * 0.12, 0.01);
-        var0.a = 0.9F * var6;
-        var0.star(var1 * 0.62, var5.points(), var5.skip(), var3 * 0.5, 0.028);
-        var0.polygon(var1 * 0.62, var5.points(), var3 * 0.5, 0.016);
-        if (var5.ring() >= 1) {
-            var0.ring(var1 * 0.34, 0.03);
-            var0.polygon(var1 * 0.34, Math.max(3, var5.points() / 2), -var3 * 0.8, 0.022);
-        }
+    public static void draw(SpellCircleFx.Ctx var0, String var1, Vec3 var2, Vec3 var3, Vec3 var4, double var5, double var7, double var9, int var11) {
+        CastCircles.Style var12 = style(var1);
+        if (var12 != null) {
+            double var13 = Math.min(1.0, var7 / 0.45);
+            float var15 = (float)Math.max(0.0, Math.min(1.0, var9 / 0.35));
+            if (!(var15 <= 0.0F)) {
+                double var16 = var12.radius();
+                if (var12.mode() == 0) {
+                    double var18 = 0.9 + 0.35 * var16;
+                    var0.cx = var2.x + var3.x * var18;
+                    var0.cy = var2.y - 0.25 + var3.y * var18;
+                    var0.cz = var2.z + var3.z * var18;
+                    double var20 = -var3.z;
+                    double var22 = var3.x;
+                    double var24 = Math.sqrt(var20 * var20 + var22 * var22);
+                    if (var24 < 1.0E-4) {
+                        var20 = 1.0;
+                        var22 = 0.0;
+                        var24 = 1.0;
+                    }
 
-        if (var5.ring() >= 2) {
-            var0.ring(var1 * 0.46, 0.018);
-            var0.runes(var1 * 0.4, 10, var3 * 0.5, 0.035 * var1, 0.012);
-        }
+                    var20 /= var24;
+                    var22 /= var24;
+                    double var26 = var3.y * var22;
+                    double var28 = var3.z * var20 - var3.x * var22;
+                    double var30 = -var3.y * var20;
+                    double var32 = Math.sqrt(var26 * var26 + var28 * var28 + var30 * var30);
+                    var26 /= var32;
+                    var28 /= var32;
+                    var30 /= var32;
+                    if (var28 < 0.0) {
+                        var26 = -var26;
+                        var28 = -var28;
+                        var30 = -var30;
+                    }
 
-        var0.ring(var1 * 0.14, 0.02);
-        var0.r = Math.min(1.0F, var7 + 0.3F);
-        var0.g = Math.min(1.0F, var8 + 0.3F);
-        var0.b = Math.min(1.0F, var9 + 0.3F);
-        var0.a = 0.35F * var6;
-        var0.disc(var1 * 0.08, 16);
+                    var0.ux = var20;
+                    var0.uy = 0.0;
+                    var0.uz = var22;
+                    var0.vx = var26;
+                    var0.vy = var28;
+                    var0.vz = var30;
+                } else {
+                    var0.cx = var4.x;
+                    var0.cy = var4.y + (var12.mode() == 1 ? 0.06 : var5 + 1.4);
+                    var0.cz = var4.z;
+                    var0.ux = 1.0;
+                    var0.uy = 0.0;
+                    var0.uz = 0.0;
+                    var0.vx = 0.0;
+                    var0.vy = 0.0;
+                    var0.vz = 1.0;
+                }
+
+                var0.fade = 1.0F;
+                CircleArt.draw(var0, var12.look(), var16, var7 + (double)(var11 % 97) * 0.13, var13, var15, var11 + var1.hashCode());
+                Vec3 var34 = new Vec3(var0.cx, var0.cy, var0.cz);
+                CircleArt.Look var19 = var12.look();
+                if (var12.mode() == 0) {
+                    PixelFx.sprite(var34, var16 * 2.6, 4, var19.gr(), var19.gg(), var19.gb(), 0.22F * var15 * (float)var13);
+                } else {
+                    PixelFx.flat(
+                        var34.add(0.0, 0.01, 0.0),
+                        new Vec3(0.0, 1.0, 0.0),
+                        var16 * 2.6,
+                        4,
+                        0.0,
+                        var19.gr(),
+                        var19.gg(),
+                        var19.gb(),
+                        0.3F * var15 * (float)var13
+                    );
+                }
+            }
+        }
     }
 
     private static final class Active {
@@ -263,6 +247,6 @@ public final class CastCircles {
         }
     }
 
-    private static record Style(int mode, double radius, float r, float g, float b, int points, int skip, int ring) {
+    public static record Style(int mode, double radius, CircleArt.Look look) {
     }
 }
