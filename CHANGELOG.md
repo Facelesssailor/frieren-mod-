@@ -2,6 +2,12 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.5.2
+
+- Spell circle fix.
+
+Code: changed client.SpellCircleFx.
+
 ## 1.5.1
 
 - Black Hole cutscene; Barrier Breaker and Black Hole descriptions.
