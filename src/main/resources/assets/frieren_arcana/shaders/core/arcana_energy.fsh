@@ -15,7 +15,7 @@ void main() {
     vec4 c=vertexColor*ColorModulator;
     float n=noise(magicPosition*.75+vec3(0,-ArcanaTime*.23,ArcanaTime*.09));
     float fine=noise(magicPosition*3.2+ArcanaTime*.13);
-    c.rgb *= .89+.11*n;
+    c.rgb *= (.89+.11*n)*1.14;
     c.a *= .78+.22*n;
     c.rgb += vec3(.012,.018,.025)*fine*c.a;
     if(c.a<.002)discard;

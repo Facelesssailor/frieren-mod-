@@ -2,6 +2,14 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.3.4
+
+- First cutscene director for the Barrier Breaker (CinemaDirector); dome shader update.
+
+Code: added client.CinemaDirector; changed client.ArcanaCinematic, client.ArcanaClient.
+
+Resources: changed shaders/core/arcana_energy.fsh.
+
 ## 1.3.3
 
 - Spell circles drawn around the caster while casting (SpellCircleFx).

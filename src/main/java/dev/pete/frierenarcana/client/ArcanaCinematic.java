@@ -9,12 +9,7 @@ import net.minecraft.client.player.Input;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.decoration.ArmorStand;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.ClipContext.Block;
-import net.minecraft.world.level.ClipContext.Fluid;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.HitResult.Type;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -31,13 +26,13 @@ import net.neoforged.neoforge.client.event.ScreenEvent.Opening;
     value = {Dist.CLIENT}
 )
 public final class ArcanaCinematic {
-    private static ArmorStand camera;
-    private static Entity originalCamera;
-    private static CameraType originalType;
-    private static long started;
-    private static long release;
-    private static boolean breaker;
-    private static Vec3 previous = Vec3.ZERO;
+    public static ArmorStand camera;
+    public static Entity originalCamera;
+    public static CameraType originalType;
+    public static long started;
+    public static long release;
+    public static boolean breaker;
+    public static Vec3 previous = Vec3.ZERO;
 
     public static boolean active() {
         return camera != null;
@@ -96,58 +91,8 @@ public final class ArcanaCinematic {
     }
 
     @SubscribeEvent
-    public static void tick(Post event) {
-        Minecraft mc = Minecraft.getInstance();
-
-        while (ArcanaKeys.SKIP.consumeClick()) {
-            skip();
-        }
-
-        if (active()) {
-            if (mc.player != null && mc.level == camera.level() && mc.player.isAlive() && mc.screen == null) {
-                double age = (double)(System.nanoTime() - started) / 1.0E9;
-                double after = release == 0L ? 0.0 : (double)(System.nanoTime() - release) / 1.0E9;
-                if (!(age > 14.0) && !(after > 3.6)) {
-                    Vec3 focus = mc.player.position().add(0.0, 1.3, 0.0);
-                    Vec3 look = mc.player.getLookAngle().normalize();
-                    Vec3 horizontal = new Vec3(look.x, 0.0, look.z).normalize();
-                    if (horizontal.lengthSqr() < 0.1) {
-                        horizontal = new Vec3(0.0, 0.0, 1.0);
-                    }
-
-                    Vec3 side = new Vec3(-horizontal.z, 0.0, horizontal.x);
-                    double progress = Math.min(1.0, age / (double)(breaker ? 5 : 8));
-                    double orbit = Math.sin(progress * Math.PI * 0.65) * 0.8;
-                    Vec3 desired = focus.subtract(horizontal.scale(release == 0L ? 3.6 - progress * 1.5 : 6.0))
-                        .add(side.scale(1.7 + orbit))
-                        .add(0.0, release == 0L ? -0.25 + progress * 0.75 : 0.7, 0.0);
-                    BlockHitResult hit = mc.level.clip(new ClipContext(focus, desired, Block.VISUAL, Fluid.NONE, mc.player));
-                    if (hit.getType() != Type.MISS) {
-                        desired = hit.getLocation().lerp(focus, 0.12);
-                    }
-
-                    Vec3 position = previous.lerp(desired, 0.24);
-                    previous = position;
-                    camera.xo = camera.getX();
-                    camera.yo = camera.getY();
-                    camera.zo = camera.getZ();
-                    camera.yRotO = camera.getYRot();
-                    camera.xRotO = camera.getXRot();
-                    camera.yHeadRotO = camera.getYHeadRot();
-                    camera.setPos(position.x, position.y - (double)camera.getEyeHeight(), position.z);
-                    Vec3 target = focus.add(look.scale(release == 0L ? 0.2 : 3.0));
-                    Vec3 delta = target.subtract(position);
-                    camera.setYRot((float)(Math.toDegrees(Math.atan2(delta.z, delta.x)) - 90.0));
-                    camera.setXRot((float)(-Math.toDegrees(Math.atan2(delta.y, delta.horizontalDistance()))));
-                    camera.setYHeadRot(camera.getYRot());
-                    camera.setYBodyRot(camera.getYRot());
-                } else {
-                    restore();
-                }
-            } else {
-                restore();
-            }
-        }
+    public static void tick(Post var0) {
+        CinemaDirector.tick(var0);
     }
 
     @SubscribeEvent

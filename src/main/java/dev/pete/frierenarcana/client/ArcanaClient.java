@@ -366,7 +366,7 @@ public final class ArcanaClient {
     private static void beam(VertexConsumer out, Matrix4f m, ArcanaClient.Beam beam, double age) {
         Vec3 d = beam.end.subtract(beam.start).normalize();
         if (!(d.lengthSqr() < 0.1)) {
-            float duration = beam.style == 3 ? 1.2F : (beam.style == 2 ? 1.4F : 0.35F);
+            float duration = beam.style == 3 ? 1.4F : (beam.style == 2 ? 1.6F : 0.5F);
             float alpha = (float)Math.pow(Math.max(0.0, 1.0 - age / (double)duration), 0.65);
             if (beam.style == 15) {
                 Vec3 delta = beam.end.subtract(beam.start);
@@ -438,7 +438,7 @@ public final class ArcanaClient {
 
                 sigil(out, m, beam.start, d, beam.style == 2 ? 1.65 : 0.4, age * 2.0, r, g, b, alpha * 0.85F);
                 if (beam.style == 2) {
-                    orientedRing(out, m, beam.end, d, 0.2 + age * 6.0, 0.025, r, g, b, alpha * 0.35F);
+                    orientedRing(out, m, beam.end, d, 0.2 + age * 6.0, 0.025, r, g, b, alpha * 0.5F);
                 }
 
                 for (int j = 0; j < 12; j++) {
@@ -856,6 +856,10 @@ public final class ArcanaClient {
 
     public static List fields() {
         return FIELDS;
+    }
+
+    public static List fractures() {
+        return FRACTURES;
     }
 
     private static record Beam(Vec3 start, Vec3 end, int style, long startNanos) {
