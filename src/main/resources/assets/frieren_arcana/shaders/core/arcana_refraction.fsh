@@ -23,6 +23,9 @@ void main() {
     float stat = step(0.86, n) * (0.35 + 0.65 * rnd(cell.yx + tick));
     float scan = 0.94 + 0.06 * sin(gl_FragCoord.y * 1.7 + ArcanaTime * 40.0);
     vec3 glass = mix(spectrum * scan, vec3(.03, .55, .26), .16);
+    // holographic facets: purple / cyan / pink / green shifting per shard, like the falling barrier in the anime
+    vec3 holo = .5 + .5 * cos(6.2831 * (vec3(0., .33, .67) + vertexColor.r * 1.7 + uv.x * .9 + uv.y * .6 + ArcanaTime * .06));
+    glass = mix(glass, glass * .55 + holo * .75, .42);
     glass += vec3(.06, .95, .42) * stat * 0.6;
     fragColor = vec4(glass, clamp(vertexColor.a + stat * 0.25, 0.0, 1.0)) * ColorModulator;
 }

@@ -133,11 +133,136 @@ public final class SpellCircleFx {
                         var13.b = 0.95F;
                         var13.a = (float)(0.15 + 0.5 * var46) * var32;
                         var13.disc(var33 * (0.05 + 0.1 * var46), 24);
+                        extras(var13, var2.getPosition(var4), var28, var30, var46, var32);
                         var29.endBatch(ArcanaRenderTypes.MAGIC);
                     }
                 }
             }
         }
+    }
+
+    private static void faceCamera(SpellCircleFx.Ctx var0, Vec3 var1, Vec3 var2) {
+        var0.cx = var1.x;
+        var0.cy = var1.y;
+        var0.cz = var1.z;
+        double var3 = var2.x - var1.x;
+        double var5 = var2.y - var1.y;
+        double var7 = var2.z - var1.z;
+        double var9 = Math.sqrt(var3 * var3 + var5 * var5 + var7 * var7);
+        var3 /= var9;
+        var5 /= var9;
+        var7 /= var9;
+        double var11 = -var7;
+        double var13 = var3;
+        double var15 = Math.sqrt(var11 * var11 + var3 * var3);
+        if (var15 < 1.0E-4) {
+            var11 = 1.0;
+            var13 = 0.0;
+            var15 = 1.0;
+        }
+
+        var11 /= var15;
+        var13 /= var15;
+        double var17 = var5 * var13;
+        double var19 = var7 * var11 - var3 * var13;
+        double var21 = -var5 * var11;
+        double var23 = Math.sqrt(var17 * var17 + var19 * var19 + var21 * var21);
+        var0.ux = var11;
+        var0.uy = 0.0;
+        var0.uz = var13;
+        var0.vx = var17 / var23;
+        var0.vy = var19 / var23;
+        var0.vz = var21 / var23;
+    }
+
+    private static void star(SpellCircleFx.Ctx var0, double var1, double var3, double var5, double var7) {
+        var0.seg(var1 - var5, var3, var1 + var5, var3, var7);
+        var0.seg(var1, var3 - var5, var1, var3 + var5, var7);
+        var0.seg(var1 - var5 * 0.45, var3 - var5 * 0.45, var1 + var5 * 0.45, var3 + var5 * 0.45, var7 * 0.7);
+        var0.seg(var1 - var5 * 0.45, var3 + var5 * 0.45, var1 + var5 * 0.45, var3 - var5 * 0.45, var7 * 0.7);
+    }
+
+    private static void extras(SpellCircleFx.Ctx var0, Vec3 var1, Vec3 var2, double var3, double var5, float var7) {
+        double var8 = var1.y + 1.05;
+        double var10 = 120.0;
+        double var12 = 0.03 + 0.05 * var5;
+        var0.r = 0.75F;
+        var0.g = 1.0F;
+        var0.b = 0.85F;
+        var0.a = (float)(0.55 + 0.4 * var5);
+
+        for (int var14 = 0; var14 < 2; var14++) {
+            var0.cx = var1.x;
+            var0.cy = var8;
+            var0.cz = var1.z;
+            if (var14 == 0) {
+                var0.ux = 1.0;
+                var0.uy = 0.0;
+                var0.uz = 0.0;
+            } else {
+                var0.ux = 0.0;
+                var0.uy = 0.0;
+                var0.uz = 1.0;
+            }
+
+            var0.vx = 0.0;
+            var0.vy = 1.0;
+            var0.vz = 0.0;
+            var0.seg(0.0, 0.0, 0.0, var10, var12);
+            var0.a *= 0.35F;
+            var0.seg(0.0, 0.0, 0.0, var10, var12 * 3.2);
+            var0.a /= 0.35F;
+        }
+
+        var0.cx = var1.x;
+        var0.cy = var1.y + 0.05;
+        var0.cz = var1.z;
+        var0.ux = 1.0;
+        var0.uy = 0.0;
+        var0.uz = 0.0;
+        var0.vx = 0.0;
+        var0.vy = 0.0;
+        var0.vz = 1.0;
+        var0.r = 0.6F;
+        var0.g = 1.0F;
+        var0.b = 0.7F;
+        var0.a = 0.55F * var7;
+        var0.ring(0.9 + 0.15 * Math.sin(var3 * 3.0), 0.04);
+        var0.ring(1.5, 0.02);
+        Vec3 var28 = new Vec3(var1.x, var8, var1.z);
+        faceCamera(var0, var28, var2);
+        double var15 = 0.07 + 0.09 * var5;
+        var0.r = 0.35F;
+        var0.g = 1.0F;
+        var0.b = 0.55F;
+        var0.a = 0.3F;
+        var0.disc(var15 * 2.2, 20);
+        var0.r = 0.8F;
+        var0.g = 1.0F;
+        var0.b = 0.9F;
+        var0.a = 0.95F;
+        var0.disc(var15, 20);
+        var0.r = 1.0F;
+        var0.g = 1.0F;
+        var0.b = 1.0F;
+
+        for (int var17 = 0; var17 < 10; var17++) {
+            double var18 = (double)var17 * 12.9898;
+            double var20 = (var3 * 0.9 + (double)var17 * 0.37) % 1.0;
+            double var22 = var18 * 7.13 % (Math.PI * 2);
+            double var24 = 0.25 + 1.3 * (var18 * 3.7 % 1.0);
+            double var26 = Math.sin(var20 * Math.PI);
+            var0.a = (float)(0.9 * var26);
+            star(
+                var0,
+                Math.cos(var22) * var24,
+                Math.sin(var22) * var24 * 0.8,
+                (0.04 + 0.12 * ((double)(var17 % 3) / 2.0)) * var26 * (0.6 + var5),
+                0.012 + 0.012 * var26
+            );
+        }
+
+        star(var0, 0.0, 0.0, 0.35 * (0.5 + var5) * (0.8 + 0.2 * Math.sin(var3 * 9.0)), 0.025);
     }
 
     static final class Ctx {

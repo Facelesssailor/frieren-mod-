@@ -2,6 +2,14 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.3.6
+
+- Cutscene camera and spell-circle tuning; shader updates.
+
+Code: changed client.CinemaDirector, client.SpellCircleFx.
+
+Resources: changed shaders/core/arcana_energy.fsh, shaders/core/arcana_refraction.fsh.
+
 ## 1.3.5
 
 - Fern-style Zoltraak barrage (BarrageFern).

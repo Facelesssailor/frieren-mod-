@@ -19,7 +19,7 @@ public final class CinemaDirector {
     private static int shot = -1;
     private static long fractureSeen = 0L;
     private static final double SHATTER_LIFE = 3.2;
-    private static final double END_AFTER_SHATTER = 3.55;
+    private static final double END_AFTER_SHATTER = 4.3;
 
     private CinemaDirector() {
     }
@@ -102,21 +102,35 @@ public final class CinemaDirector {
                 }
 
                 double var40 = fractureSeen == 0L ? -1.0 : (double)(var3 - fractureSeen) / 1.0E9;
-                if (!(var5 > 22.0) && (fractureSeen == 0L || !(var40 > 3.55)) && (fractureSeen != 0L || ArcanaCinematic.release == 0L || !(var7 > 2.6))) {
+                if (!(var5 > 22.0) && (fractureSeen == 0L || !(var40 > 4.3)) && (fractureSeen != 0L || ArcanaCinematic.release == 0L || !(var7 > 2.6))) {
                     Vec3 var41;
                     Vec3 var42;
                     byte var43;
                     if (ArcanaCinematic.release == 0L) {
-                        var43 = 0;
-                        double var44 = Math.min(1.0, var5 / (ArcanaCinematic.breaker ? 5.0 : 8.0));
-                        double var52 = Math.sin(var44 * Math.PI * 0.65) * 0.8;
-                        Vec3 var56 = var10.scale(-Math.cos(var52)).add(var11.scale(Math.sin(var52)));
-                        var41 = var12.add(var56.scale(5.4 - 1.5 * var44)).add(0.0, -0.25 + 0.85 * var44, 0.0);
-                        var42 = var12.add(0.0, 0.2, 0.0).add(var10.scale(0.4));
+                        if (var5 < 1.8) {
+                            var43 = 10;
+                            var41 = var12.add(var10.scale(1.55)).add(var11.scale(0.25)).add(0.0, -0.3, 0.0);
+                            var42 = var12.add(0.0, -0.5, 0.0);
+                        } else if (var5 < 4.2) {
+                            var43 = 11;
+                            var41 = var12.add(var10.scale(9.0)).add(var11.scale(6.0)).add(0.0, 0.6, 0.0);
+                            var42 = var12.add(0.0, 3.2, 0.0);
+                        } else {
+                            var43 = 0;
+                            double var44 = Math.min(1.0, (var5 - 4.2) / 4.0);
+                            double var52 = Math.sin(var44 * Math.PI * 0.65) * 0.8;
+                            Vec3 var56 = var10.scale(-Math.cos(var52)).add(var11.scale(Math.sin(var52)));
+                            var41 = var12.add(var56.scale(5.4 - 1.5 * var44)).add(0.0, -0.25 + 0.85 * var44, 0.0);
+                            var42 = var12.add(0.0, 0.2, 0.0).add(var10.scale(0.4));
+                        }
                     } else if (var13 == null) {
                         var43 = 1;
                         var41 = var12.add(var10.scale(-5.0)).add(var11.scale(1.7)).add(0.0, 1.2 + 0.25 * Math.min(var7, 2.0), 0.0);
                         var42 = var17 != null ? var17 : var12.add(var9.scale(24.0));
+                    } else if (var40 > 2.75) {
+                        var43 = 4;
+                        var41 = var12.add(var10.scale(2.9)).add(var11.scale(0.5)).add(0.0, 0.05, 0.0);
+                        var42 = var12.add(0.0, -0.05, 0.0);
                     } else if (var40 < 0.9) {
                         var43 = 2;
                         Vec3 var45 = var12.subtract(var17);
@@ -143,7 +157,9 @@ public final class CinemaDirector {
                     }
 
                     boolean var51 = var43 != shot;
-                    Vec3 var54 = !var51 && ArcanaCinematic.previous != null ? ArcanaCinematic.previous.lerp(var41, var43 == 3 ? 0.12 : 0.24) : var41;
+                    Vec3 var54 = !var51 && ArcanaCinematic.previous != null
+                        ? ArcanaCinematic.previous.lerp(var41, var43 != 3 && var43 != 11 ? 0.24 : 0.12)
+                        : var41;
                     shot = var43;
                     ArcanaCinematic.previous = var54;
                     ArmorStand var55 = ArcanaCinematic.camera;
