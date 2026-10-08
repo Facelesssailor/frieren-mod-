@@ -336,7 +336,7 @@ public final class ArcanaClient {
                         double fresnel = Math.pow(1.0 - Math.abs(n.dot(drawCamera.subtract(point).normalize())), 2.5);
                         double shimmer = 0.5 + 0.5 * Math.sin(n.y * 32.0 - time * 1.2 + Math.sin(n.x * 9.0 + n.z * 11.0) * 0.7);
                         float alpha = (float)(0.1 + 0.4 * fresnel + 0.035 * shimmer) * fade;
-                        vertex(out, m, point, 0.72F + (float)shimmer * 0.12F, 0.82F, 0.96F, alpha);
+                        vertex(out, m, point, 0.3F + (float)shimmer * 0.12F, 0.9F, CinemaDirector.bandTag(), alpha);
                     }
                 }
             }

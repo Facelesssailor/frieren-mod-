@@ -18,18 +18,21 @@ void main() {
     c.rgb *= (.89+.11*n)*1.14;
     c.a *= .78+.22*n;
     c.rgb += vec3(.012,.018,.025)*fine*c.a;
-    // Barrier shell (sphere vertices are tagged by their exact pale-blue colour): thin iridescent horizontal
-    // bands in green / violet / pale gold, like the dome in the anime.
-    if (abs(vertexColor.g - 0.82) < 0.004 && abs(vertexColor.b - 0.96) < 0.01) {
-        float y = magicPosition.y;
-        float wob = noise(vec3(magicPosition.x * .05, y * .08, magicPosition.z * .05) + ArcanaTime * .03) * 1.6;
-        float fine = pow(sin(y * 3.3 + wob * 2.0) * .5 + .5, 7.0);
-        float mid = pow(sin(y * 1.15 - wob) * .5 + .5, 3.0);
-        float hue = sin(y * .42 + wob * .8 + ArcanaTime * .05) * .5 + .5;
-        vec3 green = vec3(.42, 1.0, .58), violet = vec3(.72, .42, 1.0), gold = vec3(1.0, .98, .66);
-        vec3 band = mix(mix(green, violet, smoothstep(.25, .75, hue)), gold, mid * .35);
-        c.rgb = mix(c.rgb, band, .50 + .35 * fine);
-        c.a *= .45 + .75 * fine + .35 * mid;
+    // Barrier shell: tagged by green .90 and a blue channel of .60-.64. Plain translucent green normally; the thin
+    // iridescent bands (green / violet / pale gold) fade in only while Frieren's spell is running (blue encodes strength).
+    if (abs(vertexColor.g - 0.90) < 0.008 && vertexColor.b > 0.585 && vertexColor.b < 0.655) {
+        float k = clamp((vertexColor.b - 0.598) / 0.04, 0.0, 1.0);
+        if (k > 0.02) {
+            float y = magicPosition.y;
+            float wob = noise(vec3(magicPosition.x * .05, y * .08, magicPosition.z * .05) + ArcanaTime * .03) * 1.6;
+            float fine = pow(sin(y * 3.3 + wob * 2.0) * .5 + .5, 7.0);
+            float mid = pow(sin(y * 1.15 - wob) * .5 + .5, 3.0);
+            float hue = sin(y * .42 + wob * .8 + ArcanaTime * .05) * .5 + .5;
+            vec3 green = vec3(.42, 1.0, .58), violet = vec3(.72, .42, 1.0), gold = vec3(1.0, .98, .66);
+            vec3 band = mix(mix(green, violet, smoothstep(.25, .75, hue)), gold, mid * .35);
+            c.rgb = mix(c.rgb, band, k * (.50 + .35 * fine));
+            c.a *= mix(1.0, .45 + .75 * fine + .35 * mid, k);
+        }
     }
     if(c.a<.002)discard;
     fragColor=c;

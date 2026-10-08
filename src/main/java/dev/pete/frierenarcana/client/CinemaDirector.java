@@ -17,11 +17,16 @@ public final class CinemaDirector {
     private static float lockPitch;
     private static Vec3 lockLook = new Vec3(0.0, 0.0, 1.0);
     private static int shot = -1;
+    private static float bands = 0.0F;
     private static long fractureSeen = 0L;
     private static final double SHATTER_LIFE = 3.2;
     private static final double END_AFTER_SHATTER = 4.3;
 
     private CinemaDirector() {
+    }
+
+    public static float bandTag() {
+        return 0.6F + 0.04F * bands;
     }
 
     public static void tick(Post var0) {
@@ -34,12 +39,16 @@ public final class CinemaDirector {
         if (!ArcanaCinematic.active()) {
             lockedFor = -1L;
             shot = -1;
+            bands = 0.0F;
         } else {
             LocalPlayer var2 = var1.player;
             if (var2 != null && var1.level != null && ArcanaCinematic.camera.level() == var1.level && var2.isAlive() && var1.screen == null) {
                 long var3 = System.nanoTime();
                 double var5 = (double)(var3 - ArcanaCinematic.started) / 1.0E9;
                 double var7 = ArcanaCinematic.release == 0L ? 0.0 : (double)(var3 - ArcanaCinematic.release) / 1.0E9;
+                bands = ArcanaCinematic.release == 0L
+                    ? (float)(0.25 + 0.45 * Math.min(1.0, var5 / 5.0))
+                    : (float)Math.min(1.0, 0.75 + 0.25 * Math.min(1.0, var7 / 1.5));
                 if (lockedFor != ArcanaCinematic.started) {
                     lockedFor = ArcanaCinematic.started;
                     lockYaw = var2.getYRot();
@@ -99,6 +108,10 @@ public final class CinemaDirector {
                             }
                         }
                     }
+                }
+
+                if (var13 != null) {
+                    bands = 1.0F;
                 }
 
                 double var40 = fractureSeen == 0L ? -1.0 : (double)(var3 - fractureSeen) / 1.0E9;

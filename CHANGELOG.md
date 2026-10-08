@@ -2,6 +2,14 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.3.7
+
+- Cutscene and dome look tuning.
+
+Code: changed client.ArcanaClient, client.CinemaDirector, client.SpellCircleFx.
+
+Resources: changed shaders/core/arcana_energy.fsh.
+
 ## 1.3.6
 
 - Cutscene camera and spell-circle tuning; shader updates.
