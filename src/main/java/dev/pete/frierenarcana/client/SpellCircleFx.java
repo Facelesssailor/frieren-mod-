@@ -1,6 +1,7 @@
 package dev.pete.frierenarcana.client;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -27,6 +28,9 @@ public final class SpellCircleFx {
     static final double CHARGE_SECONDS = 10.0;
     private static long groundFor = -1L;
     private static double groundY;
+    private static final double[][] TV = new double[16][4];
+    private static final int[][] TE;
+    private static final int[][] TF;
 
     private SpellCircleFx() {
     }
@@ -221,7 +225,7 @@ public final class SpellCircleFx {
         var9.camZ = var2.z;
         float var10 = (float)(0.8 + 0.2 * Math.sin(var5 * 4.0));
         PixelFx.flat(var3.add(0.0, 0.07, 0.0), new Vec3(0.0, 1.0, 0.0), 4.0 + 3.0 * var7, 4, 0.0, 0.4F, 1.0F, 0.6F, 0.55F * var10);
-        crystal(var9, var4, var2, (0.08 + 0.1 * var7) * 1.6, var5);
+        nonEuclid(var9, var4, var2, var7, var5, 0.0);
         faceCamera(var9, var4, var2);
         var9.r = 1.0F;
         var9.g = 1.0F;
@@ -325,27 +329,118 @@ public final class SpellCircleFx {
         var0.seg(-7.0 * var5, 0.0, 7.0 * var5, 0.0, 0.025);
         var0.a *= 0.3F;
         var0.seg(-4.0 * var5, 0.0, 4.0 * var5, 0.0, 0.12);
-        Vec3 var29 = new Vec3(var1.x, var8, var1.z);
-        double var15 = 0.08 + 0.1 * var5;
-        crystal(var0, var29, var2, var15 * 1.6, var3);
-        faceCamera(var0, var29, var2);
+        Vec3 var31 = CinemaDirector.lockedLook();
+        Vec3 var15 = new Vec3(var31.x, 0.0, var31.z);
+        var15 = var15.lengthSqr() < 0.01 ? new Vec3(0.0, 0.0, 1.0) : var15.normalize();
+        Vec3 var16 = new Vec3(var1.x, var8, var1.z).add(var15.scale(0.42));
+        double var17 = ArcanaCinematic.release == 0L ? 0.0 : (double)(System.nanoTime() - ArcanaCinematic.release) / 1.0E9;
+        nonEuclid(var0, var16, var2, var5, var3, var17);
+        faceCamera(var0, var16, var2);
         var0.r = 1.0F;
         var0.g = 1.0F;
         var0.b = 1.0F;
 
-        for (int var17 = 0; var17 < 10; var17++) {
-            double var18 = (double)var17 * 12.9898;
-            double var20 = (var3 * 0.9 + (double)var17 * 0.37) % 1.0;
-            double var22 = var18 * 7.13 % (Math.PI * 2);
-            double var24 = 0.25 + 1.3 * (var18 * 3.7 % 1.0);
-            double var26 = Math.sin(var20 * Math.PI);
-            var0.a = (float)(0.9 * var26);
-            Vec3 var28 = var29.add(new Vec3(var0.ux, var0.uy, var0.uz).scale(Math.cos(var22) * var24))
-                .add(new Vec3(var0.vx, var0.vy, var0.vz).scale(Math.sin(var22) * var24 * 0.8));
-            PixelFx.sprite(var28, (0.18 + 0.4 * ((double)(var17 % 3) / 2.0)) * var26 * (0.6 + var5), 1 + var17 % 3, 1.0F, 1.0F, 1.0F, var0.a);
+        for (int var19 = 0; var19 < 10; var19++) {
+            double var20 = (double)var19 * 12.9898;
+            double var22 = (var3 * 0.9 + (double)var19 * 0.37) % 1.0;
+            double var24 = var20 * 7.13 % (Math.PI * 2);
+            double var26 = 0.25 + 1.3 * (var20 * 3.7 % 1.0);
+            double var28 = Math.sin(var22 * Math.PI);
+            var0.a = (float)(0.9 * var28);
+            Vec3 var30 = var16.add(new Vec3(var0.ux, var0.uy, var0.uz).scale(Math.cos(var24) * var26))
+                .add(new Vec3(var0.vx, var0.vy, var0.vz).scale(Math.sin(var24) * var26 * 0.8));
+            PixelFx.sprite(var30, (0.18 + 0.4 * ((double)(var19 % 3) / 2.0)) * var28 * (0.6 + var5), 1 + var19 % 3, 1.0F, 1.0F, 1.0F, var0.a);
         }
 
         star(var0, 0.0, 0.0, 0.35 * (0.5 + var5) * (0.8 + 0.2 * Math.sin(var3 * 9.0)), 0.025);
+    }
+
+    private static void tesseract(SpellCircleFx.Ctx var0, Vec3 var1, Vec3 var2, double var3, double var5, double var7, boolean var9, float var10) {
+        double var11 = var5 * 0.9 * var7;
+        double var13 = var5 * 0.63 * var7;
+        double var15 = var5 * 0.41 * var7;
+        double var17 = var5 * 0.27 * var7;
+        Vec3[] var19 = new Vec3[16];
+
+        for (int var20 = 0; var20 < 16; var20++) {
+            double var21 = TV[var20][0];
+            double var23 = TV[var20][1];
+            double var25 = TV[var20][2];
+            double var27 = TV[var20][3];
+            double var29 = var21 * Math.cos(var11) - var27 * Math.sin(var11);
+            var27 = var21 * Math.sin(var11) + var27 * Math.cos(var11);
+            double var48 = var23 * Math.cos(var13) - var27 * Math.sin(var13);
+            var27 = var23 * Math.sin(var13) + var27 * Math.cos(var13);
+            double var49 = var25 * Math.cos(var15) - var27 * Math.sin(var15);
+            var27 = var25 * Math.sin(var15) + var27 * Math.cos(var15);
+            double var50 = var29 * Math.cos(var17) - var49 * Math.sin(var17);
+            var25 = var29 * Math.sin(var17) + var49 * Math.cos(var17);
+            double var31 = 2.2 / (3.0 - var27);
+            var19[var20] = var1.add(var50 * var31 * var3, var48 * var31 * var3, var25 * var31 * var3);
+        }
+
+        Vec3 var34 = var2.subtract(var1).normalize();
+
+        for (int var36 = 0; var36 < TF.length; var36++) {
+            int[] var22 = TF[var36];
+            Vec3 var40 = var19[var22[1]].subtract(var19[var22[0]]).cross(var19[var22[3]].subtract(var19[var22[0]]));
+            double var24 = var40.lengthSqr() < 1.0E-12 ? 0.0 : Math.abs(var40.normalize().dot(var34));
+            double var26 = 0.5 + 0.5 * Math.sin(var5 * 2.3 + (double)var36 * 1.7);
+            float var28;
+            float var30;
+            float var51;
+            float var52;
+            if (!var9 && var36 % 3 != 0) {
+                if (var36 % 3 == 1) {
+                    var28 = 0.04F;
+                    var51 = (float)(0.3 + 0.25 * var24);
+                    var30 = 0.12F;
+                    var52 = 0.42F;
+                } else {
+                    var28 = (float)(0.25 + 0.4 * var26 * var24);
+                    var51 = 1.0F;
+                    var30 = (float)(0.45 + 0.3 * var26);
+                    var52 = (float)(0.16 + 0.3 * var24 * var26);
+                }
+            } else {
+                var28 = 0.01F;
+                var51 = (float)(0.05 + 0.08 * var26);
+                var30 = 0.03F;
+                var52 = 0.55F;
+            }
+
+            var52 *= var10 * var0.fade;
+
+            for (int var32 = 0; var32 < 4; var32++) {
+                Vec3 var33 = var19[var22[var32]];
+                var0.vc
+                    .addVertex(var0.m, (float)(var33.x - var0.camX), (float)(var33.y - var0.camY), (float)(var33.z - var0.camZ))
+                    .setColor(var28, var51, var30, var52);
+            }
+        }
+
+        for (int[] var42 : TE) {
+            BreakerFx.ribbon(
+                var0.vc, var0.m, var2, var19[var42[0]], var19[var42[1]], 0.035 * var3 + 0.006, 0.55F, 1.0F, 0.7F, (var9 ? 0.55F : 0.9F) * var10 * var0.fade
+            );
+        }
+    }
+
+    static void nonEuclid(SpellCircleFx.Ctx var0, Vec3 var1, Vec3 var2, double var3, double var5, double var7) {
+        double var9 = Math.pow(Math.min(1.0, var3), 1.3);
+        double var11 = Math.min(1.0, var7 / 0.35);
+        double var13 = (0.42 - 0.33 * var9) * (1.0 - var11) * (1.0 + 0.06 * Math.sin(var5 * 7.0));
+        if (var13 <= 0.004) {
+            if (var7 < 0.6) {
+                PixelFx.sprite(var1, 1.2 * (1.0 - var7 / 0.6), 3, 0.9F, 1.0F, 0.94F, var0.fade);
+            }
+        } else {
+            double var15 = 1.0 + 3.0 * var9;
+            tesseract(var0, var1, var2, var13, var5, var15, false, 1.0F);
+            tesseract(var0, var1, var2, var13 * 0.55, -var5 * 1.3, var15 * 1.4, true, 0.9F);
+            PixelFx.sprite(var1, var13 * 2.0, 4, 0.1F, 0.55F, 0.25F, 0.35F * var0.fade);
+            PixelFx.sprite(var1, var13 * (0.5 + var9), 4, 0.8F, 1.0F, 0.85F, (float)(0.3 + 0.6 * var9) * var0.fade);
+        }
     }
 
     static void crystal(SpellCircleFx.Ctx var0, Vec3 var1, Vec3 var2, double var3, double var5) {
@@ -464,6 +559,39 @@ public final class SpellCircleFx {
                 var0.seg(0.0, 0.0, 0.02, -0.8, 0.014);
             }
         }
+    }
+
+    static {
+        for (int var0 = 0; var0 < 16; var0++) {
+            for (int var1 = 0; var1 < 4; var1++) {
+                TV[var0][var1] = (var0 >> var1 & 1) == 0 ? -1.0 : 1.0;
+            }
+        }
+
+        ArrayList var5 = new ArrayList();
+        ArrayList var6 = new ArrayList();
+
+        for (int var2 = 0; var2 < 16; var2++) {
+            for (int var3 = 0; var3 < 4; var3++) {
+                int var4 = var2 ^ 1 << var3;
+                if (var2 < var4) {
+                    var5.add(new int[]{var2, var4});
+                }
+            }
+        }
+
+        for (int var7 = 0; var7 < 4; var7++) {
+            for (int var8 = var7 + 1; var8 < 4; var8++) {
+                for (int var9 = 0; var9 < 16; var9++) {
+                    if ((var9 >> var7 & 1) == 0 && (var9 >> var8 & 1) == 0) {
+                        var6.add(new int[]{var9, var9 | 1 << var7, var9 | 1 << var7 | 1 << var8, var9 | 1 << var8});
+                    }
+                }
+            }
+        }
+
+        TE = var5.toArray(new int[0][]);
+        TF = var6.toArray(new int[0][]);
     }
 
     static final class Ctx {

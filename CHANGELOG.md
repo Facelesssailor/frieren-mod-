@@ -2,6 +2,12 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.5.1
+
+- Black Hole cutscene; Barrier Breaker and Black Hole descriptions.
+
+Code: added client.BlackHoleCinema; changed NewMagic, client.CastCircles, client.CinemaDirector, client.SpellCircleFx, client.SpellFx.
+
 ## 1.5.0
 
 - New spells: Black Hole, The Height of Magic, Golem Magic - Stone Fist.

@@ -73,7 +73,10 @@ public final class CastCircles {
     }
 
     public static boolean receive(CompoundTag var0) {
-        if ("barrage".equals(var0.getString("kind"))) {
+        if ("blackhole".equals(var0.getString("kind"))) {
+            BlackHoleCinema.start(var0);
+            return true;
+        } else if ("barrage".equals(var0.getString("kind"))) {
             BarrageClient.state(var0.getBoolean("active"));
             return true;
         } else if (!"circle".equals(var0.getString("kind"))) {
