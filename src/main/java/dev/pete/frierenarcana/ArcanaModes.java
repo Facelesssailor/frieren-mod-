@@ -102,14 +102,18 @@ public final class ArcanaModes {
     }
 
     public static void startBarrage(ServerPlayer var0, int var1) {
-        CompoundTag var2 = ArcanaEvents.flags(var0);
-        var2.putBoolean("barrage", true);
-        var2.putInt("barrageLevel", var1);
-        var2.putFloat("barrageMana", MagicData.getPlayerMagicData(var0).getMana());
-        var0.displayClientMessage(Component.translatable("message.frieren_arcana.barrage_on"), true);
+        if (!BarrageNet.blocked(var0)) {
+            CompoundTag var2 = ArcanaEvents.flags(var0);
+            var2.putBoolean("barrage", true);
+            var2.putInt("barrageLevel", var1);
+            var2.putFloat("barrageMana", MagicData.getPlayerMagicData(var0).getMana());
+            var0.displayClientMessage(Component.translatable("message.frieren_arcana.barrage_on"), true);
+            BarrageNet.started(var0);
+        }
     }
 
     public static void stopBarrage(ServerPlayer var0) {
+        BarrageNet.stopping(var0);
         ArcanaEvents.flags(var0).putBoolean("barrage", false);
     }
 
@@ -118,7 +122,7 @@ public final class ArcanaModes {
         if (var1.getBoolean("barrage")) {
             MagicData var2 = MagicData.getPlayerMagicData(var0);
             if (var0.isAlive() && !var0.isSpectator() && !var2.isCasting() && equipped(var0, ArcanaSpell.Kind.BARRAGE) != null) {
-                float var3 = ArcanaConfig.BARRAGE_DRAIN.get().floatValue() / 20.0F;
+                float var3 = ArcanaConfig.BARRAGE_DRAIN.get().floatValue() / 20.0F * 0.3F;
                 float var4 = Math.min(var2.getMana(), var1.getFloat("barrageMana"));
                 if (var4 < var3) {
                     var2.setMana(0.0F);

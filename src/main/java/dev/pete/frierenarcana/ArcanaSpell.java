@@ -372,7 +372,7 @@ public final class ArcanaSpell extends AbstractSpell {
                             var6,
                             this,
                             var2,
-                            var6.getLookAngle(),
+                            ZoltraakAim.dir(var6),
                             128.0,
                             2.0F,
                             (float)ArcanaConfig.HEAVY_DAMAGE.get().doubleValue() * this.getEntityPowerMultiplier(var6),
@@ -444,7 +444,7 @@ public final class ArcanaSpell extends AbstractSpell {
 
     private void fireZoltraak(ServerPlayer var1, int var2) {
         ArcanaModes.stopBarrage(var1);
-        ArcanaModes.fire(var1, this, var2, var1.getLookAngle(), 64.0, 0.0F, this.getSpellPower(var2, var1), 0, false);
+        ArcanaModes.fire(var1, this, var2, ZoltraakAim.dir(var1), 64.0, 0.25F, this.getSpellPower(var2, var1), 0, false);
     }
 
     @Override
@@ -463,7 +463,7 @@ public final class ArcanaSpell extends AbstractSpell {
         }
 
         if (this.kind == ArcanaSpell.Kind.BARRAGE) {
-            var3.add(Component.translatable("info.frieren_arcana.barrage_drain", ArcanaConfig.BARRAGE_DRAIN.get()));
+            var3.add(Component.translatable("info.frieren_arcana.barrage_drain", ZoltraakAim.barrageDrain(ArcanaConfig.BARRAGE_DRAIN.get())));
         }
 
         if (this.kind == ArcanaSpell.Kind.HEAVY) {

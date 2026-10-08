@@ -60,7 +60,7 @@
   "info.frieren_arcana.device_release": "Use again to dismiss your examination field for free.",
   "item.frieren_arcana.flight_staff": "Arcana Flight Staff",
   "spell.frieren_arcana.zoltraak_barrage": "Zoltraak — Barrage",
-  "spell.frieren_arcana.zoltraak_barrage.guide": "Toggle four focused shots per second. Continuously drains mana and suppresses regeneration until stopped or exhausted. Keep the spell equipped.",
+  "spell.frieren_arcana.zoltraak_barrage.guide": "Toggle a rapid stream of about seven focused shots per second, Fern-style. Continuously drains mana and suppresses regeneration until stopped or exhausted. Keep the spell equipped.",
   "death.attack.frieren_arcana.zoltraak_barrage": "%1$s was overcome by %2$s’s Zoltraak — Barrage",
   "spell.frieren_arcana.zoltraak_heavy": "Zoltraak — Heavy Blast",
   "spell.frieren_arcana.zoltraak_heavy.guide": "A wide, multi-target beam with an endgame mana requirement and a long minimum charge. Terrain and barriers stop it. No terrain destruction.",

@@ -2,6 +2,12 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.4.3
+
+- Barrage networking and aim assist (BarrageNet, ZoltraakAim, BarrageClient); barrage guide text.
+
+Code: added BarrageNet, ZoltraakAim, client.BarrageClient; changed ArcanaModes, ArcanaSpell, client.CastCircles, client.SpellFx.
+
 ## 1.4.2
 
 - Defensive barriers break with their own effect (ShieldBreak).
