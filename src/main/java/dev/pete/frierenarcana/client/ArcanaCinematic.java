@@ -38,10 +38,10 @@ public final class ArcanaCinematic {
         return camera != null;
     }
 
-    public static void charge(UUID caster, boolean charging, boolean piercing) {
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.player != null && mc.level != null && caster.equals(mc.player.getUUID())) {
-            if (!charging) {
+    public static void charge(UUID var0, boolean var1, boolean var2) {
+        Minecraft var3 = Minecraft.getInstance();
+        if (var3.player != null && var3.level != null && var0.equals(var3.player.getUUID())) {
+            if (!var1) {
                 if (active()) {
                     release = System.nanoTime();
                 }
@@ -50,18 +50,18 @@ public final class ArcanaCinematic {
                     restore();
                 }
 
-                breaker = piercing;
+                breaker = var2;
                 started = System.nanoTime();
                 release = 0L;
-                originalCamera = mc.getCameraEntity();
-                originalType = mc.options.getCameraType();
-                Vec3 from = mc.gameRenderer.getMainCamera().getPosition();
-                camera = new ArmorStand(mc.level, from.x, from.y, from.z);
+                originalCamera = var3.getCameraEntity();
+                originalType = var3.options.getCameraType();
+                Vec3 var4 = var3.gameRenderer.getMainCamera().getPosition();
+                camera = new ArmorStand(var3.level, var4.x, var4.y, var4.z);
                 camera.setInvisible(true);
                 camera.setNoGravity(true);
-                previous = from;
-                mc.options.setCameraType(CameraType.FIRST_PERSON);
-                mc.setCameraEntity(camera);
+                previous = var4;
+                var3.options.setCameraType(CameraType.FIRST_PERSON);
+                var3.setCameraEntity(camera);
             }
         }
     }
@@ -74,13 +74,13 @@ public final class ArcanaCinematic {
 
     public static void restore() {
         if (camera != null) {
-            Minecraft mc = Minecraft.getInstance();
-            if (mc.getCameraEntity() == camera) {
-                mc.setCameraEntity((Entity)(originalCamera == null ? mc.player : originalCamera));
+            Minecraft var0 = Minecraft.getInstance();
+            if (var0.getCameraEntity() == camera) {
+                var0.setCameraEntity((Entity)(originalCamera == null ? var0.player : originalCamera));
             }
 
             if (originalType != null) {
-                mc.options.setCameraType(originalType);
+                var0.options.setCameraType(originalType);
             }
 
             camera.discard();
@@ -96,70 +96,70 @@ public final class ArcanaCinematic {
     }
 
     @SubscribeEvent
-    public static void input(MovementInputUpdateEvent event) {
+    public static void input(MovementInputUpdateEvent var0) {
         if (active()) {
-            Input input = event.getInput();
-            input.forwardImpulse = 0.0F;
-            input.leftImpulse = 0.0F;
-            input.jumping = false;
-            input.shiftKeyDown = false;
-            input.up = false;
-            input.down = false;
-            input.left = false;
-            input.right = false;
+            Input var1 = var0.getInput();
+            var1.forwardImpulse = 0.0F;
+            var1.leftImpulse = 0.0F;
+            var1.jumping = false;
+            var1.shiftKeyDown = false;
+            var1.up = false;
+            var1.down = false;
+            var1.left = false;
+            var1.right = false;
         }
     }
 
     @SubscribeEvent
-    public static void opening(Opening event) {
-        if (active() && event.getNewScreen() instanceof PauseScreen) {
+    public static void opening(Opening var0) {
+        if (active() && var0.getNewScreen() instanceof PauseScreen) {
             skip();
-            event.setCanceled(true);
-        } else if (active() && event.getNewScreen() != null) {
+            var0.setCanceled(true);
+        } else if (active() && var0.getNewScreen() != null) {
             restore();
         }
     }
 
     @SubscribeEvent
-    public static void hand(RenderHandEvent event) {
+    public static void hand(RenderHandEvent var0) {
         if (active()) {
-            event.setCanceled(true);
+            var0.setCanceled(true);
         }
     }
 
     @SubscribeEvent
-    public static void layer(Pre event) {
+    public static void layer(Pre var0) {
         if (active()) {
-            event.setCanceled(true);
+            var0.setCanceled(true);
         }
     }
 
     @SubscribeEvent
-    public static void interaction(InteractionKeyMappingTriggered event) {
+    public static void interaction(InteractionKeyMappingTriggered var0) {
         if (active()) {
-            event.setCanceled(true);
-            event.setSwingHand(false);
+            var0.setCanceled(true);
+            var0.setSwingHand(false);
         }
     }
 
     @SubscribeEvent
-    public static void logout(LoggingOut event) {
+    public static void logout(LoggingOut var0) {
         restore();
     }
 
     @SubscribeEvent
-    public static void hud(net.neoforged.neoforge.client.event.RenderGuiEvent.Post event) {
+    public static void hud(net.neoforged.neoforge.client.event.RenderGuiEvent.Post var0) {
         if (active()) {
-            GuiGraphics graphics = event.getGuiGraphics();
-            int h = graphics.guiHeight();
-            int w = graphics.guiWidth();
-            graphics.fill(0, 0, w, Math.max(12, h / 13), -553186539);
-            graphics.fill(0, h - Math.max(16, h / 13), w, h, -553186539);
-            graphics.drawCenteredString(
+            GuiGraphics var1 = var0.getGuiGraphics();
+            int var2 = var1.guiHeight();
+            int var3 = var1.guiWidth();
+            var1.fill(0, 0, var3, Math.max(12, var2 / 13), -553186539);
+            var1.fill(0, var2 - Math.max(16, var2 / 13), var3, var2, -553186539);
+            var1.drawCenteredString(
                 Minecraft.getInstance().font,
                 Component.translatable("cinematic.frieren_arcana.skip", ArcanaKeys.SKIP.getTranslatedKeyMessage()),
-                w / 2,
-                h - 13,
+                var3 / 2,
+                var2 - 13,
                 14149631
             );
         }

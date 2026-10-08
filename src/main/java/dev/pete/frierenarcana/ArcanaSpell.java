@@ -29,32 +29,31 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ClipContext.Block;
 import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public final class ArcanaSpell extends AbstractSpell {
     public final ArcanaSpell.Kind kind;
 
-    public ArcanaSpell(ArcanaSpell.Kind kind) {
-        this.kind = kind;
-        this.baseManaCost = kind.cost;
-        this.manaCostPerLevel = kind.levels > 1 && kind != ArcanaSpell.Kind.LIFT ? 10 : 0;
+    public ArcanaSpell(ArcanaSpell.Kind var1) {
+        this.kind = var1;
+        this.baseManaCost = var1.cost;
+        this.manaCostPerLevel = var1.levels > 1 && var1 != ArcanaSpell.Kind.LIFT ? 10 : 0;
         this.baseSpellPower = 8;
         this.spellPowerPerLevel = 3;
-        this.castTime = kind == ArcanaSpell.Kind.LIFT
+        this.castTime = var1 == ArcanaSpell.Kind.LIFT
             ? 140
             : (
-                kind == ArcanaSpell.Kind.PIERCE
+                var1 == ArcanaSpell.Kind.PIERCE
                     ? 100
                     : (
-                        kind == ArcanaSpell.Kind.HEAVY
+                        var1 == ArcanaSpell.Kind.HEAVY
                             ? 160
                             : (
-                                kind == ArcanaSpell.Kind.GOLD
+                                var1 == ArcanaSpell.Kind.GOLD
                                     ? 100
                                     : (
-                                        kind != ArcanaSpell.Kind.EXAM && kind != ArcanaSpell.Kind.INFERNO
-                                            ? (kind == ArcanaSpell.Kind.THUNDER ? 30 : (kind == ArcanaSpell.Kind.JUDGMENT ? 20 : 0))
+                                        var1 != ArcanaSpell.Kind.EXAM && var1 != ArcanaSpell.Kind.INFERNO
+                                            ? (var1 == ArcanaSpell.Kind.THUNDER ? 30 : (var1 == ArcanaSpell.Kind.JUDGMENT ? 20 : 0))
                                             : 40
                                     )
                             )
@@ -78,8 +77,8 @@ public final class ArcanaSpell extends AbstractSpell {
     }
 
     @Override
-    public int getCastTime(int level) {
-        return this.kind == ArcanaSpell.Kind.LIFT ? 140 + 20 * (level - 1) : super.getCastTime(level);
+    public int getCastTime(int var1) {
+        return this.kind == ArcanaSpell.Kind.LIFT ? 140 + 20 * (var1 - 1) : super.getCastTime(var1);
     }
 
     @Override
@@ -100,15 +99,15 @@ public final class ArcanaSpell extends AbstractSpell {
     }
 
     @Override
-    public int getManaCost(int level) {
-        return this.kind == ArcanaSpell.Kind.HEAVY ? ArcanaConfig.HEAVY_COST.get() : super.getManaCost(level);
+    public int getManaCost(int var1) {
+        return this.kind == ArcanaSpell.Kind.HEAVY ? ArcanaConfig.HEAVY_COST.get() : super.getManaCost(var1);
     }
 
     @Override
-    public int getEffectiveCastTime(int level, LivingEntity caster) {
+    public int getEffectiveCastTime(int var1, LivingEntity var2) {
         return this.kind == ArcanaSpell.Kind.HEAVY
-            ? Math.max(ArcanaConfig.HEAVY_CHARGE.get() * 20, super.getEffectiveCastTime(level, caster))
-            : super.getEffectiveCastTime(level, caster);
+            ? Math.max(ArcanaConfig.HEAVY_CHARGE.get() * 20, super.getEffectiveCastTime(var1, var2))
+            : super.getEffectiveCastTime(var1, var2);
     }
 
     @Override
@@ -119,51 +118,51 @@ public final class ArcanaSpell extends AbstractSpell {
     }
 
     @Override
-    public void onServerPreCast(Level level, int spellLevel, LivingEntity entity, MagicData data) {
-        CircleNet.cast(entity, this, spellLevel);
-        if (this.kind == ArcanaSpell.Kind.PIERCE && entity instanceof ServerPlayer p) {
-            CompoundTag f = ArcanaEvents.flags(p);
-            f.putBoolean("hovering", true);
-            f.putBoolean("hoverOldGravity", p.isNoGravity());
-            p.setNoGravity(true);
-            ArcanaNetwork.charge(p, true);
+    public void onServerPreCast(Level var1, int var2, LivingEntity var3, MagicData var4) {
+        CircleNet.cast(var3, this, var2);
+        if (this.kind == ArcanaSpell.Kind.PIERCE && var3 instanceof ServerPlayer var5) {
+            CompoundTag var6 = ArcanaEvents.flags(var5);
+            var6.putBoolean("hovering", true);
+            var6.putBoolean("hoverOldGravity", var5.isNoGravity());
+            var5.setNoGravity(true);
+            ArcanaNetwork.charge(var5, true);
         }
 
-        if (this.kind == ArcanaSpell.Kind.HEAVY && entity instanceof ServerPlayer p) {
-            ArcanaModes.stopBarrage(p);
+        if (this.kind == ArcanaSpell.Kind.HEAVY && var3 instanceof ServerPlayer var7) {
+            ArcanaModes.stopBarrage(var7);
         }
 
-        super.onServerPreCast(level, spellLevel, entity, data);
+        super.onServerPreCast(var1, var2, var3, var4);
     }
 
     @Override
-    public void onServerCastTick(Level level, int spellLevel, LivingEntity entity, MagicData data) {
-        if (this.kind == ArcanaSpell.Kind.PIERCE && entity instanceof ServerPlayer p) {
-            p.setDeltaMovement(0.0, 0.015, 0.0);
-            p.hurtMarked = true;
-            p.fallDistance = 0.0F;
+    public void onServerCastTick(Level var1, int var2, LivingEntity var3, MagicData var4) {
+        if (this.kind == ArcanaSpell.Kind.PIERCE && var3 instanceof ServerPlayer var5) {
+            var5.setDeltaMovement(0.0, 0.015, 0.0);
+            var5.hurtMarked = true;
+            var5.fallDistance = 0.0F;
         }
 
-        if (this.kind == ArcanaSpell.Kind.LIFT && entity instanceof ServerPlayer p) {
-            AdvancedMagic.liftTick(p, spellLevel, data);
+        if (this.kind == ArcanaSpell.Kind.LIFT && var3 instanceof ServerPlayer var6) {
+            AdvancedMagic.liftTick(var6, var2, var4);
         }
     }
 
     @Override
-    public void onServerCastComplete(Level level, int spellLevel, LivingEntity entity, MagicData data, boolean cancelled) {
-        if (this.kind == ArcanaSpell.Kind.PIERCE && entity instanceof ServerPlayer p) {
-            ArcanaEvents.endHover(p);
+    public void onServerCastComplete(Level var1, int var2, LivingEntity var3, MagicData var4, boolean var5) {
+        if (this.kind == ArcanaSpell.Kind.PIERCE && var3 instanceof ServerPlayer var6) {
+            ArcanaEvents.endHover(var6);
         }
 
-        if (this.kind == ArcanaSpell.Kind.HEAVY && entity instanceof ServerPlayer p) {
-            ArcanaNetwork.charge(p, false);
+        if (this.kind == ArcanaSpell.Kind.HEAVY && var3 instanceof ServerPlayer var7) {
+            ArcanaNetwork.charge(var7, false);
         }
 
-        if (this.kind == ArcanaSpell.Kind.LIFT && entity instanceof ServerPlayer p) {
-            AdvancedMagic.releaseLift(p);
+        if (this.kind == ArcanaSpell.Kind.LIFT && var3 instanceof ServerPlayer var8) {
+            AdvancedMagic.releaseLift(var8);
         }
 
-        super.onServerCastComplete(level, spellLevel, entity, data, cancelled);
+        super.onServerCastComplete(var1, var2, var3, var4, var5);
     }
 
     @Override
@@ -171,122 +170,126 @@ public final class ArcanaSpell extends AbstractSpell {
         return this.kind == ArcanaSpell.Kind.PIERCE ? ArcanaConfig.PIERCE_COOLDOWN.get() * 20 : super.getSpellCooldown();
     }
 
-    public int radius(int level) {
+    public int radius(int var1) {
         return this.kind == ArcanaSpell.Kind.EXAM
-            ? Math.min(56, ArcanaConfig.EXAM_RADIUS.get() + 2 * (level - 1))
-            : ArcanaConfig.DEFENSE_RADIUS.get() + level - 1;
+            ? Math.min(56, ArcanaConfig.EXAM_RADIUS.get() + 2 * (var1 - 1))
+            : ArcanaConfig.DEFENSE_RADIUS.get() + var1 - 1;
     }
 
-    public boolean active(ServerPlayer p) {
+    public boolean active(ServerPlayer var1) {
         return switch (this.kind) {
-            case EXAM, DEFENSE -> BarrierData.owns(p, this.kind == ArcanaSpell.Kind.DEFENSE);
+            case EXAM, DEFENSE -> BarrierData.owns(var1, this.kind == ArcanaSpell.Kind.DEFENSE);
             default -> false;
-            case SIGHT, FLIGHT, CONCEAL -> ArcanaEvents.flags(p).getBoolean(this.kind.path);
-            case BARRAGE -> ArcanaEvents.flags(p).getBoolean("barrage");
+            case SIGHT, FLIGHT, CONCEAL -> ArcanaEvents.flags(var1).getBoolean(this.kind.path);
+            case BARRAGE -> ArcanaEvents.flags(var1).getBoolean("barrage");
         };
     }
 
-    public int cost(int level, ServerPlayer p) {
-        if (this.active(p)) {
+    public int cost(int var1, ServerPlayer var2) {
+        if (this.active(var2)) {
             return 0;
         } else {
-            return this.kind == ArcanaSpell.Kind.PIERCE ? (int)Math.ceil(p.getAttributeValue(AttributeRegistry.MAX_MANA)) : this.getManaCost(level);
+            return this.kind == ArcanaSpell.Kind.PIERCE ? (int)Math.ceil(var2.getAttributeValue(AttributeRegistry.MAX_MANA)) : this.getManaCost(var1);
         }
     }
 
     @Override
-    public CastResult canBeCastedBy(int level, CastSource source, MagicData magic, Player p) {
-        if (p instanceof ServerPlayer sp && this.active(sp)) {
+    public CastResult canBeCastedBy(int var1, CastSource var2, MagicData var3, Player var4) {
+        if (var4 instanceof ServerPlayer var5 && this.active(var5)) {
             return new CastResult(Type.SUCCESS);
         }
 
-        return super.canBeCastedBy(level, source, magic, p);
+        return super.canBeCastedBy(var1, var2, var3, var4);
     }
 
-    public boolean ready(ServerPlayer p, int level, boolean feedback) {
-        if (this.active(p)) {
+    public boolean ready(ServerPlayer var1, int var2, boolean var3) {
+        if (this.active(var1)) {
             return true;
         } else {
-            String error = null;
-            float mana = MagicData.getPlayerMagicData(p).getMana();
-            if ((double)mana + 0.01 < (this.kind == ArcanaSpell.Kind.PIERCE ? p.getAttributeValue(AttributeRegistry.MAX_MANA) : (double)this.cost(level, p))) {
-                error = this.kind == ArcanaSpell.Kind.PIERCE ? "full_mana" : "mana";
+            String var4 = null;
+            float var5 = MagicData.getPlayerMagicData(var1).getMana();
+            if ((double)var5 + 0.01
+                < (this.kind == ArcanaSpell.Kind.PIERCE ? var1.getAttributeValue(AttributeRegistry.MAX_MANA) : (double)this.cost(var2, var1))) {
+                var4 = this.kind == ArcanaSpell.Kind.PIERCE ? "full_mana" : "mana";
             }
 
-            if (ExpandedMagic.held(p)) {
-                error = "bound";
+            if (ExpandedMagic.held(var1)) {
+                var4 = "bound";
             }
 
-            if (this.kind == ArcanaSpell.Kind.FLIGHT && !ArcanaModes.hasStaff(p)) {
-                error = "staff";
+            if (this.kind == ArcanaSpell.Kind.FLIGHT && !ArcanaModes.hasStaff(var1)) {
+                var4 = "staff";
             }
 
-            if (this.kind == ArcanaSpell.Kind.BARRAGE && ArcanaModes.equipped(p, ArcanaSpell.Kind.BARRAGE) == null) {
-                error = "book";
+            if (this.kind == ArcanaSpell.Kind.BARRAGE && ArcanaModes.equipped(var1, ArcanaSpell.Kind.BARRAGE) == null) {
+                var4 = "book";
             }
 
-            if ((this.kind == ArcanaSpell.Kind.BIND || this.kind == ArcanaSpell.Kind.GOLD) && ExpandedMagic.target(p, 24.0) == null) {
-                error = "living_target";
+            if ((this.kind == ArcanaSpell.Kind.BIND || this.kind == ArcanaSpell.Kind.GOLD) && ExpandedMagic.target(var1, 24.0) == null) {
+                var4 = "living_target";
             }
 
-            if (this.kind == ArcanaSpell.Kind.HEAVY && p.getAttributeValue(AttributeRegistry.MAX_MANA) < (double)ArcanaConfig.HEAVY_CAPACITY.get().intValue()) {
-                error = "endgame";
+            if (this.kind == ArcanaSpell.Kind.HEAVY
+                && var1.getAttributeValue(AttributeRegistry.MAX_MANA) < (double)ArcanaConfig.HEAVY_CAPACITY.get().intValue()) {
+                var4 = "endgame";
             }
 
-            if (this.kind == ArcanaSpell.Kind.WATER && !ExpandedMagic.nearWater(p)) {
-                error = "water";
+            if (this.kind == ArcanaSpell.Kind.WATER && !ExpandedMagic.nearWater(var1)) {
+                var4 = "water";
             }
 
-            if (this.kind == ArcanaSpell.Kind.PETALS && !AdvancedMagic.hasFlowers(p)) {
-                error = "flowers";
+            if (this.kind == ArcanaSpell.Kind.PETALS && !AdvancedMagic.hasFlowers(var1)) {
+                var4 = "flowers";
             }
 
-            if (this.kind == ArcanaSpell.Kind.FIREWIND && !AdvancedMagic.hasWind(p)) {
-                error = "wind";
+            if (this.kind == ArcanaSpell.Kind.FIREWIND && !AdvancedMagic.hasWind(var1)) {
+                var4 = "wind";
             }
 
             if (this.kind == ArcanaSpell.Kind.LIFT
-                && (!MagicData.getPlayerMagicData(p).isCasting() || !MagicData.getPlayerMagicData(p).getCastingSpellId().equals(this.getSpellId()))
-                && AdvancedMagic.liftTarget(p, level) == null) {
-                error = "item_target";
+                && (!MagicData.getPlayerMagicData(var1).isCasting() || !MagicData.getPlayerMagicData(var1).getCastingSpellId().equals(this.getSpellId()))
+                && AdvancedMagic.liftTarget(var1, var2) == null) {
+                var4 = "item_target";
             }
 
             if (this.kind == ArcanaSpell.Kind.HEAVY) {
                 long var7;
-                int var10000 = (var7 = ArcanaEvents.flags(p).getLong("heavyReadyTick") - p.server.overworld().getGameTime()) == 0L ? 0 : (var7 < 0L ? -1 : 1);
+                int var10000 = (var7 = ArcanaEvents.flags(var1).getLong("heavyReadyTick") - var1.server.overworld().getGameTime()) == 0L
+                    ? 0
+                    : (var7 < 0L ? -1 : 1);
                 if (0 > 0) {
-                    error = "cooldown";
+                    var4 = "cooldown";
                 }
             }
 
             if (this.kind == ArcanaSpell.Kind.PIERCE) {
-                if (ArcanaEvents.flags(p).getLong("breakerReadyTick") > p.server.overworld().getGameTime()) {
-                    error = "cooldown";
-                } else if (targetBarrier(p) == null) {
-                    error = "target";
+                if (ArcanaEvents.flags(var1).getLong("breakerReadyTick") > var1.server.overworld().getGameTime()) {
+                    var4 = "cooldown";
+                } else if (targetBarrier(var1) == null) {
+                    var4 = "target";
                 }
             }
 
             if (this.kind == ArcanaSpell.Kind.EXAM || this.kind == ArcanaSpell.Kind.DEFENSE) {
-                String barrierError = BarrierData.get(p.serverLevel())
-                    .validate(p.serverLevel(), BlockPos.containing(ShipSpace.world(p)), this.radius(level), this.kind == ArcanaSpell.Kind.DEFENSE);
-                if (barrierError != null) {
-                    error = barrierError;
+                String var6 = BarrierData.get(var1.serverLevel())
+                    .validate(var1.serverLevel(), BlockPos.containing(ShipSpace.world(var1)), this.radius(var2), this.kind == ArcanaSpell.Kind.DEFENSE);
+                if (var6 != null) {
+                    var4 = var6;
                 }
             }
 
-            if (error != null && feedback) {
-                p.displayClientMessage(Component.translatable("message.frieren_arcana.error." + error), true);
+            if (var4 != null && var3) {
+                var1.displayClientMessage(Component.translatable("message.frieren_arcana.error." + var4), true);
             }
 
-            return error == null;
+            return var4 == null;
         }
     }
 
     @Override
-    public boolean checkPreCastConditions(Level level, int spellLevel, LivingEntity entity, MagicData magic) {
-        if (entity instanceof ServerPlayer p && this.ready(p, spellLevel, true)) {
-            return this.kind != ArcanaSpell.Kind.LIFT || AdvancedMagic.prepareLift(p, spellLevel, magic);
+    public boolean checkPreCastConditions(Level var1, int var2, LivingEntity var3, MagicData var4) {
+        if (var3 instanceof ServerPlayer var5 && this.ready(var5, var2, true)) {
+            return this.kind != ArcanaSpell.Kind.LIFT || AdvancedMagic.prepareLift(var5, var2, var4);
         }
 
         return false;
@@ -304,80 +307,80 @@ public final class ArcanaSpell extends AbstractSpell {
     }
 
     @Override
-    public void onCast(Level level, int spellLevel, LivingEntity entity, CastSource source, MagicData magic) {
-        if (entity instanceof ServerPlayer p) {
-            CompoundTag flags = ArcanaEvents.flags(p);
-            if (flags.getBoolean("castApproved")) {
-                flags.remove("castApproved");
+    public void onCast(Level var1, int var2, LivingEntity var3, CastSource var4, MagicData var5) {
+        if (var3 instanceof ServerPlayer var6) {
+            CompoundTag var7 = ArcanaEvents.flags(var6);
+            if (var7.getBoolean("castApproved")) {
+                var7.remove("castApproved");
                 switch (this.kind) {
                     case EXAM:
                     case DEFENSE:
-                        if (this.active(p)) {
-                            BarrierData.releaseOwned(p, this.kind == ArcanaSpell.Kind.DEFENSE);
+                        if (this.active(var6)) {
+                            BarrierData.releaseOwned(var6, this.kind == ArcanaSpell.Kind.DEFENSE);
                         } else {
-                            BarrierData.get(p.serverLevel()).create(p.serverLevel(), p, this.radius(spellLevel), this.kind == ArcanaSpell.Kind.DEFENSE);
+                            BarrierData.get(var6.serverLevel()).create(var6.serverLevel(), var6, this.radius(var2), this.kind == ArcanaSpell.Kind.DEFENSE);
                         }
                         break;
                     case PIERCE:
-                        BarrierData.Field field = targetBarrier(p);
-                        if (field == null) {
+                        BarrierData.Field var15 = targetBarrier(var6);
+                        if (var15 == null) {
                             return;
                         }
 
-                        magic.setMana(0.0F);
-                        ArcanaEvents.syncMana(p);
-                        ArcanaCooldowns.begin(p, this, source);
-                        Vec3 start = ShipSpace.world(level, p.getEyePosition());
-                        Vec3 direction = p.getLookAngle();
-                        Vec3 relative = start.subtract(field.center);
-                        double t = BarrierGeometry.firstHit(
-                            relative.x, relative.y, relative.z, direction.x * 128.0, direction.y * 128.0, direction.z * 128.0, (double)field.radius
+                        var5.setMana(0.0F);
+                        ArcanaEvents.syncMana(var6);
+                        ArcanaCooldowns.begin(var6, this, var4);
+                        Vec3 var9 = ShipSpace.world(var1, var6.getEyePosition());
+                        Vec3 var10 = var6.getLookAngle();
+                        Vec3 var11 = var9.subtract(var15.center);
+                        double var12 = BarrierGeometry.firstHit(
+                            var11.x, var11.y, var11.z, var10.x * 128.0, var10.y * 128.0, var10.z * 128.0, (double)var15.radius
                         );
-                        Vec3 impact = start.add(direction.scale(Double.isFinite(t) ? 128.0 * t : 8.0));
-                        ArcanaNetwork.beam(p.serverLevel(), start, impact, true);
-                        ArcanaNetwork.shatter(p.serverLevel(), field, impact);
-                        BarrierData.get(p.serverLevel()).remove(p.serverLevel(), field.id, false);
-                        p.serverLevel().playSound(null, BlockPos.containing(impact), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 4.0F, 0.55F);
+                        Vec3 var14 = var9.add(var10.scale(Double.isFinite(var12) ? 128.0 * var12 : 8.0));
+                        ArcanaNetwork.beam(var6.serverLevel(), var9, var14, true);
+                        ArcanaNetwork.shatter(var6.serverLevel(), var15, var14);
+                        BarrierData.get(var6.serverLevel()).remove(var6.serverLevel(), var15.id, false);
+                        var6.serverLevel().playSound(null, BlockPos.containing(var14), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 4.0F, 0.55F);
                         break;
                     case SIGHT:
                     case FLIGHT:
                     case CONCEAL:
-                        boolean enabled = !flags.getBoolean(this.kind.path);
-                        flags.putBoolean(this.kind.path, enabled);
+                        boolean var8 = !var7.getBoolean(this.kind.path);
+                        var7.putBoolean(this.kind.path, var8);
                         if (this.kind == ArcanaSpell.Kind.FLIGHT) {
-                            ArcanaEvents.updateFlight(p);
+                            ArcanaEvents.updateFlight(var6);
                         }
 
-                        p.displayClientMessage(
-                            Component.translatable(enabled ? "message.frieren_arcana.enabled" : "message.frieren_arcana.disabled", this.getDisplayName(p)),
+                        var6.displayClientMessage(
+                            Component.translatable(var8 ? "message.frieren_arcana.enabled" : "message.frieren_arcana.disabled", this.getDisplayName(var6)),
                             true
                         );
-                        ArcanaNetwork.syncSight(p);
+                        ArcanaNetwork.syncSight(var6);
                         break;
                     case ZOLTRAAK:
-                        this.fireZoltraak(p, spellLevel);
+                        this.fireZoltraak(var6, var2);
                         break;
                     case BARRAGE:
-                        if (this.active(p)) {
-                            ArcanaModes.stopBarrage(p);
+                        if (this.active(var6)) {
+                            ArcanaModes.stopBarrage(var6);
                         } else {
-                            ArcanaModes.startBarrage(p, spellLevel);
+                            ArcanaModes.startBarrage(var6, var2);
                         }
                         break;
                     case HEAVY:
                         ArcanaModes.fire(
-                            p,
+                            var6,
                             this,
-                            spellLevel,
-                            p.getLookAngle(),
+                            var2,
+                            var6.getLookAngle(),
                             128.0,
                             2.0F,
-                            (float)ArcanaConfig.HEAVY_DAMAGE.get().doubleValue() * this.getEntityPowerMultiplier(p),
+                            (float)ArcanaConfig.HEAVY_DAMAGE.get().doubleValue() * this.getEntityPowerMultiplier(var6),
                             2,
                             true
                         );
                         String var10001 = "heavyReadyTick";
-                        long var10002 = p.server.overworld().getGameTime() + 1200L;
+                        long var10002 = var6.server.overworld().getGameTime() + 1200L;
                         break;
                     case ICE:
                     case WATER:
@@ -389,7 +392,7 @@ public final class ArcanaSpell extends AbstractSpell {
                     case HEAL:
                     case CLEANSE:
                     case GOLD:
-                        ExpandedMagic.cast(this, p, spellLevel);
+                        ExpandedMagic.cast(this, var6, var2);
                         break;
                     case INFERNO:
                     case THUNDER:
@@ -400,74 +403,74 @@ public final class ArcanaSpell extends AbstractSpell {
                     case STONE:
                     case LIFT:
                     case SPEARS:
-                        AdvancedMagic.cast(this, p, spellLevel);
+                        AdvancedMagic.cast(this, var6, var2);
                 }
 
-                super.onCast(level, spellLevel, entity, source, magic);
+                super.onCast(var1, var2, var3, var4, var5);
             }
         }
     }
 
-    public static BarrierData.Field targetBarrier(ServerPlayer p) {
-        Vec3 start = ShipSpace.world(p.level(), p.getEyePosition());
-        Vec3 end = start.add(p.getLookAngle().scale(128.0));
-        BarrierData data = BarrierData.get(p.serverLevel());
-        BarrierData.Field best = null;
-        double bestT = Double.POSITIVE_INFINITY;
-        Vec3 delta = end.subtract(start);
+    public static BarrierData.Field targetBarrier(ServerPlayer var0) {
+        Vec3 var1 = ShipSpace.world(var0.level(), var0.getEyePosition());
+        Vec3 var2 = var1.add(var0.getLookAngle().scale(128.0));
+        BarrierData var3 = BarrierData.get(var0.serverLevel());
+        BarrierData.Field var4 = null;
+        double var5 = Double.POSITIVE_INFINITY;
+        Vec3 var7 = var2.subtract(var1);
 
-        for (BarrierData.Field f : data.fields()) {
-            Vec3 r = start.subtract(f.center);
-            double t = BarrierGeometry.firstHit(r.x, r.y, r.z, delta.x, delta.y, delta.z, (double)f.radius);
-            if (t < bestT) {
-                bestT = t;
-                best = f;
+        for (BarrierData.Field var9 : var3.fields()) {
+            Vec3 var10 = var1.subtract(var9.center);
+            double var11 = BarrierGeometry.firstHit(var10.x, var10.y, var10.z, var7.x, var7.y, var7.z, (double)var9.radius);
+            if (var11 < var5) {
+                var5 = var11;
+                var4 = var9;
             }
         }
 
-        if (best == null) {
+        if (var4 == null) {
             return null;
         } else {
-            HitResult solid = p.level().clip(new ClipContext(start, end, Block.COLLIDER, Fluid.NONE, p));
-            if (solid.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK
-                && solid instanceof BlockHitResult block
-                && solid.getLocation().distanceTo(start) + 2.0 < bestT * 128.0) {
+            BlockHitResult var13 = var0.level().clip(new ClipContext(var1, var2, Block.COLLIDER, Fluid.NONE, var0));
+            if (var13.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK
+                && var13 instanceof BlockHitResult var14
+                && var13.getLocation().distanceTo(var1) + 2.0 < var5 * 128.0) {
                 return null;
             }
 
-            return best;
+            return var4;
         }
     }
 
-    private void fireZoltraak(ServerPlayer p, int level) {
-        ArcanaModes.stopBarrage(p);
-        ArcanaModes.fire(p, this, level, p.getLookAngle(), 64.0, 0.0F, this.getSpellPower(level, p), 0, false);
+    private void fireZoltraak(ServerPlayer var1, int var2) {
+        ArcanaModes.stopBarrage(var1);
+        ArcanaModes.fire(var1, this, var2, var1.getLookAngle(), 64.0, 0.0F, this.getSpellPower(var2, var1), 0, false);
     }
 
     @Override
-    public List<MutableComponent> getUniqueInfo(int level, LivingEntity caster) {
-        List<MutableComponent> info = new ArrayList<>();
-        info.add(Component.translatable("spell.frieren_arcana." + this.kind.path + ".summary"));
+    public List<MutableComponent> getUniqueInfo(int var1, LivingEntity var2) {
+        ArrayList var3 = new ArrayList();
+        var3.add(Component.translatable("spell.frieren_arcana." + this.kind.path + ".summary"));
         if (this.kind == ArcanaSpell.Kind.EXAM || this.kind == ArcanaSpell.Kind.DEFENSE) {
-            info.add(Component.translatable("ui.irons_spellbooks.radius", this.radius(level)));
+            var3.add(Component.translatable("ui.irons_spellbooks.radius", this.radius(var1)));
         }
 
         if (this.kind == ArcanaSpell.Kind.PIERCE) {
-            info.add(Component.translatable("info.frieren_arcana.breaker_cost"));
-            info.add(Component.translatable("info.frieren_arcana.breaker_skip"));
+            var3.add(Component.translatable("info.frieren_arcana.breaker_cost"));
+            var3.add(Component.translatable("info.frieren_arcana.breaker_skip"));
         } else {
-            info.add(Component.translatable("info.frieren_arcana.cost", this.getManaCost(level)));
+            var3.add(Component.translatable("info.frieren_arcana.cost", this.getManaCost(var1)));
         }
 
         if (this.kind == ArcanaSpell.Kind.BARRAGE) {
-            info.add(Component.translatable("info.frieren_arcana.barrage_drain", ArcanaConfig.BARRAGE_DRAIN.get()));
+            var3.add(Component.translatable("info.frieren_arcana.barrage_drain", ArcanaConfig.BARRAGE_DRAIN.get()));
         }
 
         if (this.kind == ArcanaSpell.Kind.HEAVY) {
-            info.add(Component.translatable("info.frieren_arcana.heavy", ArcanaConfig.HEAVY_CAPACITY.get(), ArcanaConfig.HEAVY_CHARGE.get()));
+            var3.add(Component.translatable("info.frieren_arcana.heavy", ArcanaConfig.HEAVY_CAPACITY.get(), ArcanaConfig.HEAVY_CHARGE.get()));
         }
 
-        return info;
+        return var3;
     }
 
     public static enum Kind {

@@ -2,6 +2,12 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.3.8
+
+- Spell, barrier-hook and cutscene fixes.
+
+Code: changed ArcanaModes, ArcanaSpell, BarrierHooks, client.ArcanaCinematic, client.ArcanaClient, client.CinemaDirector.
+
 ## 1.3.7
 
 - Cutscene and dome look tuning.

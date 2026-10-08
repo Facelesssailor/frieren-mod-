@@ -13,102 +13,102 @@ public final class BarrierHooks {
     private BarrierHooks() {
     }
 
-    public static Vec3 movement(Entity e, Vec3 movement) {
-        if (e.level().isClientSide) {
-            return ArcanaClient.movement(e, movement);
-        } else if (ExpandedMagic.held(e)) {
+    public static Vec3 movement(Entity var0, Vec3 var1) {
+        if (var0.level().isClientSide) {
+            return ArcanaClient.movement(var0, var1);
+        } else if (ExpandedMagic.held(var0)) {
             return Vec3.ZERO;
         } else {
-            if (e.level() instanceof ServerLevel level && !e.isRemoved() && !(movement.lengthSqr() < 1.0E-10)) {
-                Vec3 start = ShipSpace.world(level, e.getBoundingBox().getCenter());
-                Vec3 end = ShipSpace.world(level, e.getBoundingBox().getCenter().add(movement));
-                BarrierData.Field field = BarrierData.get(level).firstBoundary(start, end, e instanceof Projectile);
-                if (field == null) {
-                    return movement;
+            if (var0.level() instanceof ServerLevel var2 && !var0.isRemoved() && !(var1.lengthSqr() < 1.0E-10)) {
+                Vec3 var10 = ShipSpace.world(var2, var0.getBoundingBox().getCenter());
+                Vec3 var4 = ShipSpace.world(var2, var0.getBoundingBox().getCenter().add(var1));
+                BarrierData.Field var5 = BarrierData.get(var2).firstBoundary(var10, var4, var0 instanceof Projectile);
+                if (var5 == null) {
+                    return var1;
                 }
 
-                if (e instanceof Projectile) {
-                    e.discard();
+                if (var0 instanceof Projectile) {
+                    var0.discard();
                     return Vec3.ZERO;
                 }
 
-                Vec3 rel = start.subtract(field.center);
-                Vec3 delta = end.subtract(start);
-                double t = BarrierGeometry.firstHit(rel.x, rel.y, rel.z, delta.x, delta.y, delta.z, (double)field.radius);
-                return BarrierSlide.slide(e, rel, movement, t, (double)field.radius);
+                Vec3 var6 = var10.subtract(var5.center);
+                Vec3 var7 = var4.subtract(var10);
+                double var8 = BarrierGeometry.firstHit(var6.x, var6.y, var6.z, var7.x, var7.y, var7.z, (double)var5.radius);
+                return BarrierSlide.slide(var0, var6, var1, var8, (double)var5.radius);
             }
 
-            return movement;
+            return var1;
         }
     }
 
-    public static boolean teleportBlocked(Entity e, double x, double y, double z) {
-        if (!(e.level() instanceof ServerLevel level) || !e.isAddedToLevel() && e.tickCount < 1 || e.isRemoved()) {
+    public static boolean teleportBlocked(Entity var0, double var1, double var3, double var5) {
+        if (!(var0.level() instanceof ServerLevel var7) || !var0.isAddedToLevel() && var0.tickCount < 1 || var0.isRemoved()) {
             return false;
         }
 
-        if (ExpandedMagic.blocksPosition(e, new Vec3(x, y, z))) {
+        if (ExpandedMagic.blocksPosition(var0, new Vec3(var1, var3, var5))) {
             return true;
         } else {
-            boolean blocked = BarrierData.get(level).crosses(ShipSpace.world(e), ShipSpace.world(level, new Vec3(x, y, z)), e instanceof Projectile);
-            if (blocked && e instanceof Projectile) {
-                e.discard();
+            boolean var9 = BarrierData.get(var7).crosses(ShipSpace.world(var0), ShipSpace.world(var7, new Vec3(var1, var3, var5)), var0 instanceof Projectile);
+            if (var9 && var0 instanceof Projectile) {
+                var0.discard();
             }
 
-            return blocked;
+            return var9;
         }
     }
 
-    public static Vec3 clip(Level level, Vec3 from, Vec3 to) {
-        Vec3 start = ShipSpace.world(level, from);
-        Vec3 end = ShipSpace.world(level, to);
-        double t = Double.POSITIVE_INFINITY;
-        if (level instanceof ServerLevel server) {
-            BarrierData.Field field = BarrierData.get(server).firstBoundary(start, end, true);
-            if (field != null) {
-                t = hit(field.center, field.radius, start, end);
+    public static Vec3 clip(Level var0, Vec3 var1, Vec3 var2) {
+        Vec3 var3 = ShipSpace.world(var0, var1);
+        Vec3 var4 = ShipSpace.world(var0, var2);
+        double var5 = Double.POSITIVE_INFINITY;
+        if (var0 instanceof ServerLevel var7) {
+            BarrierData.Field var8 = BarrierData.get(var7).firstBoundary(var3, var4, true);
+            if (var8 != null) {
+                var5 = hit(var8.center, var8.radius, var3, var4);
             }
         } else {
-            t = ArcanaClient.boundaryHit(start, end, true);
+            var5 = ArcanaClient.boundaryHit(var3, var4, true);
         }
 
-        return Double.isFinite(t) ? from.lerp(to, Math.max(0.0, t - 1.0E-5)) : to;
+        return Double.isFinite(var5) ? var1.lerp(var2, Math.max(0.0, var5 - 1.0E-5)) : var2;
     }
 
-    private static double hit(Vec3 center, int radius, Vec3 start, Vec3 end) {
-        Vec3 r = start.subtract(center);
-        Vec3 d = end.subtract(start);
-        return BarrierGeometry.firstHit(r.x, r.y, r.z, d.x, d.y, d.z, (double)radius);
+    private static double hit(Vec3 var0, int var1, Vec3 var2, Vec3 var3) {
+        Vec3 var4 = var2.subtract(var0);
+        Vec3 var5 = var3.subtract(var2);
+        return BarrierGeometry.firstHit(var4.x, var4.y, var4.z, var5.x, var5.y, var5.z, (double)var1);
     }
 
-    public static boolean clipProjectile(Projectile projectile) {
-        Vec3 from = projectile.position();
-        Vec3 to = from.add(projectile.getDeltaMovement());
-        Vec3 end = clip(projectile.level(), from, to);
-        if (end.distanceToSqr(to) < 1.0E-10) {
+    public static boolean clipProjectile(Projectile var0) {
+        Vec3 var1 = var0.position();
+        Vec3 var2 = var1.add(var0.getDeltaMovement());
+        Vec3 var3 = clip(var0.level(), var1, var2);
+        if (var3.distanceToSqr(var2) < 1.0E-10) {
             return false;
         } else {
-            projectile.setDeltaMovement(end.subtract(from));
+            var0.setDeltaMovement(var3.subtract(var1));
             return true;
         }
     }
 
-    public static boolean rainBlocked(Level level, BlockPos pos) {
-        return level instanceof ServerLevel serverLevel
-            ? BarrierData.get(serverLevel).containsConfining(ShipSpace.world(level, Vec3.atCenterOf(pos)))
-            : ArcanaClient.rainBlocked(ShipSpace.world(level, Vec3.atCenterOf(pos)));
+    public static boolean rainBlocked(Level var0, BlockPos var1) {
+        return var0 instanceof ServerLevel var2
+            ? BarrierData.get(var2).containsConfining(ShipSpace.world(var0, Vec3.atCenterOf(var1)))
+            : ArcanaClient.rainBlocked(ShipSpace.world(var0, Vec3.atCenterOf(var1)));
     }
 
-    public static boolean transitionBlocked(Entity e, DimensionTransition transition) {
-        if (ExpandedMagic.held(e)) {
+    public static boolean transitionBlocked(Entity var0, DimensionTransition var1) {
+        if (ExpandedMagic.held(var0)) {
             return true;
-        } else if (e.level() instanceof ServerLevel source) {
-            ServerLevel var6 = transition.newLevel();
-            Vec3 from = ShipSpace.world(e);
-            Vec3 to = ShipSpace.world(var6, transition.pos());
-            return source == var6
-                ? BarrierData.get(source).crosses(from, to, false)
-                : BarrierData.get(source).containsConfining(from) || BarrierData.get(var6).containsConfining(to);
+        } else if (var0.level() instanceof ServerLevel var2) {
+            ServerLevel var6 = var1.newLevel();
+            Vec3 var4 = ShipSpace.world(var0);
+            Vec3 var5 = ShipSpace.world(var6, var1.pos());
+            return var2 == var6
+                ? BarrierData.get(var2).crosses(var4, var5, false)
+                : BarrierData.get(var2).containsConfining(var4) || BarrierData.get(var6).containsConfining(var5);
         } else {
             return false;
         }
