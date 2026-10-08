@@ -331,7 +331,7 @@ public final class ArcanaSpell extends AbstractSpell {
                         ArcanaEvents.syncMana(var6);
                         ArcanaCooldowns.begin(var6, this, var4);
                         Vec3 var9 = ShipSpace.world(var1, var6.getEyePosition());
-                        Vec3 var10 = var6.getLookAngle();
+                        Vec3 var10 = BreakerAim.direction(var6);
                         Vec3 var11 = var9.subtract(var15.center);
                         double var12 = BarrierGeometry.firstHit(
                             var11.x, var11.y, var11.z, var10.x * 128.0, var10.y * 128.0, var10.z * 128.0, (double)var15.radius
@@ -411,7 +411,7 @@ public final class ArcanaSpell extends AbstractSpell {
         }
     }
 
-    public static BarrierData.Field targetBarrier(ServerPlayer var0) {
+    public static BarrierData.Field targetBarrierLook(ServerPlayer var0) {
         Vec3 var1 = ShipSpace.world(var0.level(), var0.getEyePosition());
         Vec3 var2 = var1.add(var0.getLookAngle().scale(128.0));
         BarrierData var3 = BarrierData.get(var0.serverLevel());
@@ -471,6 +471,10 @@ public final class ArcanaSpell extends AbstractSpell {
         }
 
         return var3;
+    }
+
+    public static BarrierData.Field targetBarrier(ServerPlayer var0) {
+        return BreakerAim.target(var0);
     }
 
     public static enum Kind {

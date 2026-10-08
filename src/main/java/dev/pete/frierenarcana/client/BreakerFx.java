@@ -87,29 +87,14 @@ public final class BreakerFx {
 
     static void disc(VertexConsumer var0, Matrix4f var1, Vec3 var2, Vec3 var3, double var4, float var6, float var7, float var8, float var9) {
         if (!(var9 <= 0.003F) && !(var4 <= 0.0)) {
-            Vec3[] var10 = basis(var3, var2);
-            byte var11 = 18;
-
-            for (int var12 = 0; var12 < var11; var12++) {
-                double var13 = (Math.PI * 2) * (double)var12 / (double)var11;
-                double var15 = (Math.PI * 2) * (double)(var12 + 1) / (double)var11;
-                Vec3 var17 = var3.add(var10[0].scale(Math.cos(var13) * var4)).add(var10[1].scale(Math.sin(var13) * var4));
-                Vec3 var18 = var3.add(var10[0].scale(Math.cos(var15) * var4)).add(var10[1].scale(Math.sin(var15) * var4));
-                v(var0, var1, var2, var3.x, var3.y, var3.z, var6, var7, var8, var9);
-                v(var0, var1, var2, var17.x, var17.y, var17.z, var6, var7, var8, var9 * 0.0F);
-                v(var0, var1, var2, var18.x, var18.y, var18.z, var6, var7, var8, var9 * 0.0F);
-                v(var0, var1, var2, var18.x, var18.y, var18.z, var6, var7, var8, var9 * 0.0F);
-            }
+            PixelFx.sprite(var3, var4 * 2.3, 4, var6, var7, var8, Math.min(1.0F, var9 * 1.4F));
         }
     }
 
     static void sparkle(VertexConsumer var0, Matrix4f var1, Vec3 var2, Vec3 var3, double var4, float var6, float var7, float var8, float var9) {
         if (!(var9 <= 0.003F) && !(var4 <= 0.0)) {
-            Vec3[] var10 = basis(var3, var2);
-            double var11 = var4 * 0.08;
-            ribbon(var0, var1, var2, var3.subtract(var10[0].scale(var4)), var3.add(var10[0].scale(var4)), var11, var6, var7, var8, var9);
-            ribbon(var0, var1, var2, var3.subtract(var10[1].scale(var4)), var3.add(var10[1].scale(var4)), var11, var6, var7, var8, var9);
-            disc(var0, var1, var2, var3, var4 * 0.35, var6, var7, var8, var9 * 0.8F);
+            int var10 = var4 < 0.25 ? 0 : (var4 < 0.6 ? 1 : (var4 < 1.2 ? 2 : 3));
+            PixelFx.sprite(var3, var4 * 2.1, var10, var6, var7, var8, var9);
         }
     }
 

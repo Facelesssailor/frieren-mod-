@@ -2,6 +2,14 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.4.1
+
+- Pixel-art effect sprites (PixelFx); Barrier Breaker aiming (BreakerAim).
+
+Code: added BreakerAim, client.PixelFx; changed ArcanaSpell, client.BreakerFx, client.CinemaDirector, client.SpellCircleFx, client.SpellFx.
+
+Resources: added textures/fx/pixel_fx.png.
+
 ## 1.4.0
 
 - New spell effects renderer (SpellFx).

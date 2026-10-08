@@ -73,6 +73,16 @@ public final class SpellCircleFx {
                             );
                         }
 
+                        if (ArcanaCinematic.release == 0L) {
+                            Vec3 var20 = CinemaDirector.lockedLook();
+                            Vec3 var21 = new Vec3(var20.x, 0.0, var20.z);
+                            var21 = var21.lengthSqr() < 0.01 ? new Vec3(0.0, 0.0, 1.0) : var21.normalize();
+                            var11.fade = (float)ease((var5 - 0.4) / 1.6);
+                            if ((double)var11.fade > 0.01) {
+                                frontCircle(var11, var10.add(0.0, 1.05, 0.0).add(var21.scale(0.85)), var21, var5, var15, var17);
+                            }
+                        }
+
                         var11.fade = (float)Math.max(0.0, 1.0 - var18 / 4.0);
                         extras(var11, var10, var9, var5, var15, var17);
                         var11.fade = 1.0F;
@@ -160,6 +170,48 @@ public final class SpellCircleFx {
         var0.a = (float)(0.2 + 0.6 * var6) * var8;
         var0.ring(var9 * (0.05 + 0.06 * var6), 0.03);
         var0.glow = 0.0;
+    }
+
+    static void frontCircle(SpellCircleFx.Ctx var0, Vec3 var1, Vec3 var2, double var3, double var5, float var7) {
+        var0.cx = var1.x;
+        var0.cy = var1.y;
+        var0.cz = var1.z;
+        var0.ux = -var2.z;
+        var0.uy = 0.0;
+        var0.uz = var2.x;
+        var0.vx = 0.0;
+        var0.vy = 1.0;
+        var0.vz = 0.0;
+        double var8 = 0.55 + 0.35 * var5;
+        var0.glow = 3.5;
+        var0.r = 0.7F;
+        var0.g = 1.0F;
+        var0.b = 0.84F;
+        var0.a = 0.85F * var7;
+        var0.ring(var8, 0.022);
+        var0.ring(var8 * 0.9, 0.01);
+        var0.dashes(var8 * 0.83, 0.016, 32, var3 * 0.6, 0.5);
+        var0.r = 0.82F;
+        var0.g = 1.0F;
+        var0.b = 0.92F;
+        var0.a = 0.75F * var7;
+        var0.ring(var8 * 0.74, 0.01);
+        var0.ring(var8 * 0.6, 0.01);
+        var0.runes(var8 * 0.67, 18, -var3 * 0.4, 0.04 * var8, 0.008);
+        var0.r = 0.55F;
+        var0.g = 1.0F;
+        var0.b = 0.7F;
+        var0.a = 0.8F * var7;
+        var0.star(var8 * 0.56, 6, 2, var3 * 0.7, 0.012);
+        var0.polygon(var8 * 0.56, 6, -var3 * 0.5, 0.008);
+        var0.polygon(var8 * 0.3, 4, var3 * 1.1, 0.01);
+        var0.glow = 0.0;
+
+        for (int var10 = 0; var10 < 6; var10++) {
+            double var11 = var3 * 0.7 + (Math.PI * 2) * (double)var10 / 6.0;
+            Vec3 var13 = var1.add(new Vec3(var0.ux, 0.0, var0.uz).scale(Math.cos(var11) * var8 * 0.56)).add(0.0, Math.sin(var11) * var8 * 0.56, 0.0);
+            PixelFx.sprite(var13, 0.14, 1, 0.85F, 1.0F, 0.9F, var0.a * var0.fade);
+        }
     }
 
     static void remote(VertexConsumer var0, Matrix4f var1, Vec3 var2, Vec3 var3, Vec3 var4, double var5, double var7) {
@@ -285,8 +337,8 @@ public final class SpellCircleFx {
         var0.seg(-7.0 * var5, 0.0, 7.0 * var5, 0.0, 0.025);
         var0.a *= 0.3F;
         var0.seg(-4.0 * var5, 0.0, 4.0 * var5, 0.0, 0.12);
-        Vec3 var28 = new Vec3(var1.x, var8, var1.z);
-        faceCamera(var0, var28, var2);
+        Vec3 var29 = new Vec3(var1.x, var8, var1.z);
+        faceCamera(var0, var29, var2);
         double var15 = 0.07 + 0.09 * var5;
         var0.r = 0.35F;
         var0.g = 1.0F;
@@ -309,13 +361,9 @@ public final class SpellCircleFx {
             double var24 = 0.25 + 1.3 * (var18 * 3.7 % 1.0);
             double var26 = Math.sin(var20 * Math.PI);
             var0.a = (float)(0.9 * var26);
-            star(
-                var0,
-                Math.cos(var22) * var24,
-                Math.sin(var22) * var24 * 0.8,
-                (0.04 + 0.12 * ((double)(var17 % 3) / 2.0)) * var26 * (0.6 + var5),
-                0.012 + 0.012 * var26
-            );
+            Vec3 var28 = var29.add(new Vec3(var0.ux, var0.uy, var0.uz).scale(Math.cos(var22) * var24))
+                .add(new Vec3(var0.vx, var0.vy, var0.vz).scale(Math.sin(var22) * var24 * 0.8));
+            PixelFx.sprite(var28, (0.18 + 0.4 * ((double)(var17 % 3) / 2.0)) * var26 * (0.6 + var5), 1 + var17 % 3, 1.0F, 1.0F, 1.0F, var0.a);
         }
 
         star(var0, 0.0, 0.0, 0.35 * (0.5 + var5) * (0.8 + 0.2 * Math.sin(var3 * 9.0)), 0.025);
@@ -327,11 +375,8 @@ public final class SpellCircleFx {
     }
 
     private static void mote(SpellCircleFx.Ctx var0, Vec3 var1, Vec3 var2, double var3, float var5) {
-        faceCamera(var0, var1, var2);
-        var0.a = var5 * 0.35F;
-        var0.disc(var3 * 2.4, 8);
-        var0.a = var5;
-        var0.disc(var3, 8);
+        PixelFx.sprite(var1, var3 * 4.5, 4, var0.r, var0.g, var0.b, var5 * 0.8F);
+        PixelFx.sprite(var1, var3 * 1.6, 58, Math.min(1.0F, var0.r + 0.3F), 1.0F, Math.min(1.0F, var0.b + 0.3F), var5);
     }
 
     private static void scene(SpellCircleFx.Ctx var0, Vec3 var1, Vec3 var2, double var3) {
