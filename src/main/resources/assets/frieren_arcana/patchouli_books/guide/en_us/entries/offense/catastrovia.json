@@ -1,0 +1,24 @@
+{
+  "name": "Catastravia — Lights of Judgment",
+  "icon": "frieren_arcana:textures/gui/spell_icons/catastrovia.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 9,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Catastravia — Lights of Judgment",
+      "text": "$(o)Rain of exploding light arrows.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Denken's rain of exploding arrows of light, falling from a circle above onto your line of fire. Five levels. Terrain and barriers stop it. Damage: 1.8× spell power to everything along the line of fire."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Epic and up$(br)$(l)Levels:$() 5$(br)$(l)Mana:$() 90 (+10 per level)$(br)$(l)Cooldown:$() 10 s$(br)$(l)Cast:$() Long, 1 s$(br)$(l)Effect:$() 1.8x spell power to everything along the line of fire$(br)$(o)Before gear bonuses: 14.4 at level 1, 36.0 at level 5.$()"
+    }
+  ]
+}

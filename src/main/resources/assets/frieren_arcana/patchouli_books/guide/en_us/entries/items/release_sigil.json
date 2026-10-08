@@ -1,0 +1,18 @@
+{
+  "name": "Barrier Release Sigil",
+  "icon": "frieren_arcana:release_sigil",
+  "category": "frieren_arcana:items",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "frieren_arcana:release_sigil",
+      "title": "Barrier Release Sigil",
+      "text": "Use it to dismiss every barrier you own in this dimension at once."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "frieren_arcana:release_sigil"
+    }
+  ]
+}

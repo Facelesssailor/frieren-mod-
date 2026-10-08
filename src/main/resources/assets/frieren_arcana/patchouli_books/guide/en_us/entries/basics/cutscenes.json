@@ -1,0 +1,17 @@
+{
+  "name": "Cutscenes",
+  "icon": "minecraft:spyglass",
+  "category": "frieren_arcana:basics",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Two spells play a short cinematic for the caster: the $(l)Barrier Breaker$() (about 25 s) and the $(l)Black Hole$() (about 8 s). While one plays, your movement and mouse are locked so the camera cannot be dragged.",
+      "title": "Cutscenes"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Press $(l)K$() or $(l)Esc$() to skip at any time. Skipping only ends the camera: the spell still happens exactly the same for everyone."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Breaking Defensive Magic",
+  "icon": "frieren_arcana:textures/gui/spell_icons/defensive_barrier.png",
+  "category": "frieren_arcana:barriers",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Defensive barriers have a level from their spell level (1-5). A spell striking one compares its level with the shield's:$(li)clearly stronger: the shield shatters from the point of impact",
+      "title": "Breaking Defensive Magic"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)about equal: the spell is cancelled in a white flash and the shield wears$(li)weaker: the shield holds, cracking more with each hit"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Physical spells (Balgrant, Doragate, golem fist) count as two levels higher. Your own shield never blocks your own spells.$(br2)Examination barriers cannot be broken this way: only the Barrier Breaker can open one."
+    }
+  ]
+}

@@ -354,8 +354,8 @@ public final class SpellFx {
         Vec3 var8 = ArcanaClient.camera();
         VertexConsumer var9 = CUR_VC;
         if (var8 != null && var9 != null && !(var7 <= 0.004F) && !(var2 <= 0.01)) {
-            if (Math.abs(var5 - 0.9F) < 0.006F) {
-                var5 = 0.915F;
+            if (Math.abs(var5 - 0.9F) < 0.012F) {
+                var5 = 0.925F;
             }
 
             Matrix4f var10 = CUR_M;
@@ -426,6 +426,11 @@ public final class SpellFx {
             CUR_M = var1;
             Vec3 var7 = ArcanaClient.camera();
             if (var7 == null) {
+                return true;
+            } else if (var2 == 7) {
+                CUR_VC = var0;
+                CUR_M = var1;
+                blackHoleShot(var0, var1, var7, var3, var4, var5);
                 return true;
             } else {
                 Vec3 var8 = var4.subtract(var3);
@@ -792,8 +797,8 @@ public final class SpellFx {
         float var16
     ) {
         if (!(var16 <= 0.01F) && !(var5 <= 0.0)) {
-            if (Math.abs(var11 - 0.9F) < 0.006F) {
-                var11 = 0.915F;
+            if (Math.abs(var11 - 0.9F) < 0.012F) {
+                var11 = 0.925F;
             }
 
             Vec3 var17 = perp(var4);
@@ -812,8 +817,8 @@ public final class SpellFx {
                 float var31 = Math.min(1.0F, var10 * var30 + 0.25F * (1.0F - var30));
                 float var32 = Math.min(1.0F, var11 * var30 + 0.25F * (1.0F - var30));
                 float var33 = Math.min(1.0F, var12 * var30 + 0.3F * (1.0F - var30));
-                if (Math.abs(var32 - 0.9F) < 0.006F) {
-                    var32 = 0.915F;
+                if (Math.abs(var32 - 0.9F) < 0.012F) {
+                    var32 = 0.925F;
                 }
 
                 Vec3[][] var34 = new Vec3[][]{
@@ -2151,8 +2156,9 @@ public final class SpellFx {
         float var15 = (float)Math.max(0.0, Math.min(1.0, (0.92 - 0.75 * var0) * var10 * var12));
         float var16 = (float)Math.max(0.0, Math.min(1.0, (0.7 - 0.85 * var0) * var10 * var12));
         float var17 = (float)Math.max(0.0, Math.min(1.0, (1.0 - var0 * 0.9) * (0.6 + 0.4 * var10) * var12));
-        if (Math.abs(var15 - 0.9F) < 0.006F) {
-            var15 = 0.915F;
+        var16 = Math.min(var16, 0.6F * var15);
+        if (Math.abs(var15 - 0.9F) < 0.012F) {
+            var15 = 0.925F;
         }
 
         return new float[]{var14, var15, var16, var17};

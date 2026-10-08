@@ -50,11 +50,11 @@ public final class BlackHoleCinema {
     public static void start(CompoundTag var0) {
         Minecraft var1 = Minecraft.getInstance();
         if (var1.player != null) {
-            a = new Vec3(var0.getDouble("ax"), var0.getDouble("ay"), var0.getDouble("az"));
-            b = new Vec3(var0.getDouble("bx"), var0.getDouble("by"), var0.getDouble("bz"));
-            travel = SpellFx.bhTravel(a.distanceTo(b));
-            rise = BlackHoleShape.rise(var1.level, b);
             if (!ArcanaCinematic.active()) {
+                a = new Vec3(var0.getDouble("ax"), var0.getDouble("ay"), var0.getDouble("az"));
+                b = new Vec3(var0.getDouble("bx"), var0.getDouble("by"), var0.getDouble("bz"));
+                travel = SpellFx.bhTravel(a.distanceTo(b));
+                rise = BlackHoleShape.rise(var1.level, b);
                 ArcanaCinematic.charge(var1.player.getUUID(), true, false);
                 start = System.nanoTime();
                 on = true;

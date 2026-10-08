@@ -1,0 +1,24 @@
+{
+  "name": "Sorganeil — Sight Binding",
+  "icon": "frieren_arcana:textures/gui/spell_icons/sorganeil.png",
+  "category": "frieren_arcana:support",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Sorganeil — Sight Binding",
+      "text": "$(o)Binds a target while you watch it.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Wirbel's binding: paralyses one target while you keep it in sight; losing sight of it, death or logout releases it. Three levels extend the maximum hold. Deals no damage; holds the target for 4 + 2 × level seconds while you keep it in sight."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Rare and up$(br)$(l)Levels:$() 3$(br)$(l)Mana:$() 40 (+10 per level)$(br)$(l)Cooldown:$() 12 s$(br)$(l)Cast:$() Instant$(br)$(l)Effect:$() No damage; holds the target 4 + 2 x level s while you keep it in sight"
+    }
+  ]
+}

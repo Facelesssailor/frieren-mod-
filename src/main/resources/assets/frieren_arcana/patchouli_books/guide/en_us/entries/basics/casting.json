@@ -1,0 +1,25 @@
+{
+  "name": "Learning and Casting",
+  "icon": "irons_spellbooks:scroll",
+  "category": "frieren_arcana:basics",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "All spells in this book are Iron's Spells 'n Spellbooks spells. Find or craft their scrolls, scribe them into a spellbook at an Inscription Table, equip the book and cast with Iron's $(l)Cast Selected Spell$() key (V by default) or the spell wheel (R).",
+      "title": "Learning and Casting"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Each spell has a minimum rarity: a scroll of lower rarity cannot hold it. Higher spell levels raise damage, radius and duration and cost a little more mana."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Spells with a $(l)Long$() cast keep you casting for their cast time first. $(l)Toggle$() spells turn on with one cast and off with the next. Barrage stops when you cast it again, release right-click with a staff, or press Stop."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Tooltips in the spellbook show each spell's damage at your current spell power."
+    }
+  ]
+}

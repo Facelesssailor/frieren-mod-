@@ -1,0 +1,28 @@
+{
+  "name": "Golem Magic — Stone Fist",
+  "icon": "frieren_arcana:textures/gui/spell_icons/golem_fist.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 16,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Golem Magic — Stone Fist",
+      "text": "$(o)A stone fist erupts from the ground.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Golem magic like the exam's golem bottles: a huge stone fist bursts from the ground at your target and launches everything above it. Physical mass breaks defensive magic quickly. Three levels. Damage:"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "1.5× spell power within 2.2 + 0.5 × level blocks, launching targets upward."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Rare and up$(br)$(l)Levels:$() 3$(br)$(l)Mana:$() 55 (+15 per level)$(br)$(l)Cooldown:$() 9 s$(br)$(l)Cast:$() Instant$(br)$(l)Effect:$() 1.5x spell power within 2.2 + 0.5 x level blocks$(br)$(o)Before gear bonuses: 12.0 at level 1, 21.0 at level 3.$()"
+    }
+  ]
+}

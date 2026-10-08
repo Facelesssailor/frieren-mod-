@@ -1,0 +1,24 @@
+{
+  "name": "Field of Flowers",
+  "icon": "frieren_arcana:textures/gui/spell_icons/flower_field.png",
+  "category": "frieren_arcana:support",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Field of Flowers",
+      "text": "$(o)Creates a cosmetic flower field.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Flamme's spell to create a field of flowers, passed on to Frieren. Blossoms open across the ground for 15 seconds. Three levels widen the field. No blocks are placed."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Common and up$(br)$(l)Levels:$() 3$(br)$(l)Mana:$() 10 (+10 per level)$(br)$(l)Cooldown:$() 3 s$(br)$(l)Cast:$() Instant"
+    }
+  ]
+}

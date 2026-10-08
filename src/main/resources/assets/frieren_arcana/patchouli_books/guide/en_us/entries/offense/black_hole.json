@@ -1,0 +1,28 @@
+{
+  "name": "Black Hole",
+  "icon": "frieren_arcana:textures/gui/spell_icons/black_hole.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Black Hole",
+      "text": "$(o)A collapsing black hole that drags foes in.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The Spiegel copy's spell from ep. 26: a black core in a blazing corona forms at your fingertips, flies slowly along your aim dragging creatures and rubble after it, crushes the rubble into a red-cracked mass, then collapses in a blast."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Plays a short cutscene for the caster (K / Esc skips). Three levels widen the pull. Damage: 0.35× spell power every half second to anything inside it, then 1.6× spell power within 5 blocks when it collapses."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Epic and up$(br)$(l)Levels:$() 3$(br)$(l)Mana:$() 110 (+15 per level)$(br)$(l)Cooldown:$() 22 s$(br)$(l)Cast:$() Instant$(br)$(l)Effect:$() 0.35x spell power every 0.5 s inside it, 1.6x when it collapses (5-block blast)$(br)$(o)Before gear bonuses: 12.8 at level 1, 22.4 at level 3.$()"
+    }
+  ]
+}

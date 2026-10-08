@@ -1,0 +1,24 @@
+{
+  "name": "The Height of Magic",
+  "icon": "frieren_arcana:textures/gui/spell_icons/height_of_magic.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "The Height of Magic",
+      "text": "$(o)Invisible telekinetic repulsion.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Frieren's telekinetic repulsion (ep. 26): no mana can be sensed and nothing is seen but the air bending. Throws every foe in front of you across the field. One legendary level. Damage: 0.5× spell power to everything thrown."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Legendary and up$(br)$(l)Levels:$() 1$(br)$(l)Mana:$() 70$(br)$(l)Cooldown:$() 12 s$(br)$(l)Cast:$() Instant$(br)$(l)Effect:$() 0.5x spell power to everything thrown$(br)$(o)Before gear bonuses: 4.0.$()"
+    }
+  ]
+}

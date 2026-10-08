@@ -1,0 +1,24 @@
+{
+  "name": "Reelseiden — Cutting Magic",
+  "icon": "frieren_arcana:textures/gui/spell_icons/reelseiden.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Reelseiden — Cutting Magic",
+      "text": "$(o)Sweeping cutting magic.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Übel's cutting magic: a near-invisible slash that cuts what you can imagine cutting, about five blocks. Five levels. Cannot cut barriers or terrain. Damage: 2.4× spell power to everything in the cut (5 blocks)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Epic and up$(br)$(l)Levels:$() 5$(br)$(l)Mana:$() 60 (+10 per level)$(br)$(l)Cooldown:$() 6 s$(br)$(l)Cast:$() Instant$(br)$(l)Effect:$() 2.4x spell power to everything in the 5-block cut$(br)$(o)Before gear bonuses: 19.2 at level 1, 48.0 at level 5.$()"
+    }
+  ]
+}

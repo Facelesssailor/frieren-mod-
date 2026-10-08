@@ -1,0 +1,17 @@
+{
+  "name": "Compatibility",
+  "icon": "minecraft:comparator",
+  "category": "frieren_arcana:basics",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Requires Iron's Spells 'n Spellbooks 3.16, Iron's Lib, GeckoLib, Curios and Player Animator. Tested against Sable, Create Aeronautics ships, Zoltraak Cinematic and Frieren Void.",
+      "title": "Compatibility"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "This book needs Patchouli. You get one the first time you join a world; craft another from a book and an amethyst shard."
+    }
+  ]
+}

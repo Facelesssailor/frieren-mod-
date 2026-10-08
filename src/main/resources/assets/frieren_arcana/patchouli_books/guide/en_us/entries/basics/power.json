@@ -1,0 +1,21 @@
+{
+  "name": "Spell Power and Damage",
+  "icon": "minecraft:amethyst_shard",
+  "category": "frieren_arcana:basics",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Spell power for these spells is 8 at level 1, plus 3 for each level after, multiplied by your Iron's spell power and school power bonuses from gear and attributes.",
+      "title": "Spell Power and Damage"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Each spell's damage is a multiple of that power, shown on its page and in its tooltip. Magic resistance and Iron's own damage rules apply as usual."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Physical spells (Balgrant, Doragate and the golem fist) count as stronger against defensive magic, as in the anime: defensive barriers are weak to mass.$(br2)Terrain and barriers block beams. Spells never grief terrain unless noted."
+    }
+  ]
+}

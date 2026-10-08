@@ -1,0 +1,18 @@
+{
+  "name": "Flight Staff",
+  "icon": "frieren_arcana:flight_staff",
+  "category": "frieren_arcana:items",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "frieren_arcana:flight_staff",
+      "title": "Flight Staff",
+      "text": "A simple staff. Holding any staff in either hand lets you use Flight Magic and fire the barrage from the hand."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "frieren_arcana:flight_staff"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "Spell Circles",
+  "icon": "frieren_arcana:textures/gui/spell_icons/zoltraak.png",
+  "category": "frieren_arcana:basics",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Casting draws a magic circle in the anime's style: a double outer ring, a band of ancient script, a fine tick ring and node circles, with a figure in the middle that shows the spell's family.",
+      "title": "Spell Circles"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Aimed spells draw it in front of you, area spells on the ground, Catastravia overhead and Judradjim high in the sky above its target. The golem's circle is a violet sunburst that opens under the target before the fist breaks through."
+    }
+  ]
+}

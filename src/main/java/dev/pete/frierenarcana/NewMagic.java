@@ -16,6 +16,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent.Post;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -61,6 +62,11 @@ public final class NewMagic {
         var8.putDouble("bz", var3.z);
         PacketDistributor.sendToPlayer(var1, new ArcanaNetwork.Payload(var8));
         var2.playSound(null, BlockPos.containing(var7), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.2F, 0.4F);
+    }
+
+    @SubscribeEvent
+    public static void stopped(ServerStoppedEvent var0) {
+        HOLES.clear();
     }
 
     @SubscribeEvent

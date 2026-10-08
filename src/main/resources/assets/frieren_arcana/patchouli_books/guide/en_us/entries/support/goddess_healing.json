@@ -1,0 +1,24 @@
+{
+  "name": "Goddess Magic — Healing",
+  "icon": "frieren_arcana:textures/gui/spell_icons/goddess_healing.png",
+  "category": "frieren_arcana:support",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Goddess Magic — Healing",
+      "text": "$(o)Healing and brief regeneration.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Goddess (priest) magic as used by Heiter and Sein: warm scripture light heals you and grants brief regeneration. Three levels. Heals 4 + 4 × level health, plus Regeneration."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Rare and up$(br)$(l)Levels:$() 3$(br)$(l)Mana:$() 50 (+10 per level)$(br)$(l)Cooldown:$() 15 s$(br)$(l)Cast:$() Instant$(br)$(l)Effect:$() Heals 4 + 4 x level health, plus Regeneration"
+    }
+  ]
+}

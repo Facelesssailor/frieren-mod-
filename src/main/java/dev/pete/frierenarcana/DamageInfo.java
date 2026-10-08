@@ -41,7 +41,7 @@ public final class DamageInfo {
             case "zoltraak":
                 return line("damage_first", n(var4));
             case "zoltraak_barrage":
-                return line("damage_per_shot", n(var4 * 0.55));
+                return line("damage_per_shot", n(var4 * 0.55 * 0.6));
             case "zoltraak_heavy":
                 double var8 = 100.0;
 

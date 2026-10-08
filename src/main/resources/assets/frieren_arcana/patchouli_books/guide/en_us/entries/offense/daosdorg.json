@@ -1,0 +1,24 @@
+{
+  "name": "Daosdorg — Fire-Wind",
+  "icon": "frieren_arcana:textures/gui/spell_icons/daosdorg.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Daosdorg — Fire-Wind",
+      "text": "$(o)Ignites your recent Tornado.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Denken's follow-up: within four seconds of your Waldgose, turn its cyclone into a roaring fire tornado. Five levels. Does not set blocks on fire. Damage: 1.8× spell power within 3 + level blocks of the Waldgose, and burning for 3 + level seconds."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Fire$(br)$(l)Rarity:$() Epic and up$(br)$(l)Levels:$() 5$(br)$(l)Mana:$() 95 (+10 per level)$(br)$(l)Cooldown:$() 14 s$(br)$(l)Cast:$() Instant$(br)$(l)Effect:$() 1.8x spell power within 3 + level blocks of your Waldgose, burning 3 + level s$(br)$(o)Before gear bonuses: 14.4 at level 1, 36.0 at level 5.$()"
+    }
+  ]
+}

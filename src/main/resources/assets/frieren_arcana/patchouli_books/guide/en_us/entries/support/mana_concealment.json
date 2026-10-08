@@ -1,0 +1,24 @@
+{
+  "name": "Mana Concealment",
+  "icon": "frieren_arcana:textures/gui/spell_icons/mana_concealment.png",
+  "category": "frieren_arcana:support",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Mana Concealment",
+      "text": "$(o)Suppresses your apparent mana aura.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Toggle suppression of your visible mana aura. Your actual mana remains usable. Persists through logout."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Rare and up$(br)$(l)Levels:$() 1$(br)$(l)Mana:$() 20$(br)$(l)Cooldown:$() 2 s$(br)$(l)Cast:$() Toggle"
+    }
+  ]
+}

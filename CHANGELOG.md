@@ -2,6 +2,15 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.5.7
+
+- Patchouli guide book content.
+- Keybindings no longer block Iron's cast key (KeyCompat); new key to throw a levitated target.
+
+Code: added client.KeyCompat; changed CircleNet, DamageInfo, NewMagic, client.BlackHoleCinema, client.CinemaDirector, client.CircleArt, client.SpellCircleFx, client.SpellFx.
+
+Resources: added patchouli_books/guide/en_us/categories/barriers.json, patchouli_books/guide/en_us/categories/basics.json, patchouli_books/guide/en_us/categories/items.json, patchouli_books/guide/en_us/categories/offense.json, patchouli_books/guide/en_us/categories/support.json, patchouli_books/guide/en_us/entries/barriers/barrier_breaker.json, patchouli_books/guide/en_us/entries/barriers/defensive_barrier.json, patchouli_books/guide/en_us/entries/barriers/examination_barrier.json, patchouli_books/guide/en_us/entries/barriers/shield_breaking.json, patchouli_books/guide/en_us/entries/basics/casting.json, patchouli_books/guide/en_us/entries/basics/circles.json, patchouli_books/guide/en_us/entries/basics/compat.json (+38 more).
+
 ## 1.5.6
 
 - Rebuild with no code changes.

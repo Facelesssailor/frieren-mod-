@@ -1,0 +1,28 @@
+{
+  "name": "Barrier Breaker",
+  "icon": "frieren_arcana:textures/gui/spell_icons/barrier_breaker.png",
+  "category": "frieren_arcana:barriers",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Barrier Breaker",
+      "text": "$(o)Shatters the examination barrier above you.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Frieren's unravelling of Serie's barrier (ep. 21). In her cupped hands a green and black non-Euclidean shape turns through itself and compresses, then a single cone of light rises straight up into the dome; the barrier bands, cracks and shatters into falling shards."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Examination barriers only; you must stand inside or beneath one. Needs full mana. K or Escape skips the camera."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Legendary and up$(br)$(l)Levels:$() 1$(br)$(l)Mana:$() your whole equipped mana capacity$(br)$(l)Cooldown:$() 90 s$(br)$(l)Cast:$() Long (10 s charge)"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Defensive Barrier",
+  "icon": "frieren_arcana:textures/gui/spell_icons/defensive_barrier.png",
+  "category": "frieren_arcana:barriers",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Defensive Barrier",
+      "text": "$(o)Blocks incoming magic and projectiles.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Ordinary defensive magic: a sphere of hexagonal cells that disperses incoming spells. Weak to physical mass. Stronger spells crack or shatter it from the point of impact. Recast to dismiss."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Uncommon and up$(br)$(l)Levels:$() 5$(br)$(l)Mana:$() 60 (+10 per level)$(br)$(l)Cooldown:$() 10 s$(br)$(l)Cast:$() Instant"
+    }
+  ]
+}

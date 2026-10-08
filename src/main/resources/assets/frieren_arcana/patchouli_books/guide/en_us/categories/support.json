@@ -1,0 +1,6 @@
+{
+  "name": "Support and Utility",
+  "description": "Flight, sight, binding, healing and other magic that does not (mostly) hurt.",
+  "icon": "frieren_arcana:textures/gui/spell_icons/flight.png",
+  "sortnum": 2
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Zoltraak",
+  "icon": "frieren_arcana:textures/gui/spell_icons/zoltraak.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Zoltraak",
+      "text": "$(o)Focused single-target magic beam.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Ordinary Offensive Magic: a cylindrical beam of white killing magic fired from a small circle at your hand. Bends slightly onto a creature under your crosshair. Blocked by terrain and barriers. Damage: 1× spell power to the first target hit."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Uncommon and up$(br)$(l)Levels:$() 5$(br)$(l)Mana:$() 25 (+10 per level)$(br)$(l)Cooldown:$() 3 s$(br)$(l)Cast:$() Instant$(br)$(l)Effect:$() 1x spell power to the first creature hit$(br)$(o)Before gear bonuses: 8.0 at level 1, 20.0 at level 5.$()"
+    }
+  ]
+}

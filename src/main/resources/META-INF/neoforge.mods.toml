@@ -4,7 +4,7 @@ license="MIT"
 
 [[mods]]
 modId="frieren_arcana"
-version="1.5.6"
+version="1.5.7"
 displayName="Frieren Arcana"
 authors="Pete"
 description='''A standalone Frieren-inspired Iron's Spellbooks add-on: 28 spells, persistent graphical barriers, configurable Zoltraak modes, staff flight, grand barrier devices, and manga-inspired magic.'''
@@ -96,6 +96,15 @@ type="optional"
 versionRange="[19.32.0.359,20)"
 ordering="AFTER"
 side="CLIENT"
+
+[[dependencies.frieren_arcana]]
+modId="patchouli"
+type="optional"
+reason="Optional: adds the in-game guide book (Frieren: Magic Compendium) documenting every spell, item and keybinding."
+referralUrl="https://www.curseforge.com/minecraft/mc-mods/patchouli"
+versionRange="[0,)"
+ordering="NONE"
+side="BOTH"
 
 [[mixins]]
 config="frieren_arcana.mixins.json"

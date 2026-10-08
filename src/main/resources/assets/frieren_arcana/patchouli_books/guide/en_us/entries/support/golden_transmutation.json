@@ -1,0 +1,24 @@
+{
+  "name": "Diagoldze — Golden Curse",
+  "icon": "frieren_arcana:textures/gui/spell_icons/golden_transmutation.png",
+  "category": "frieren_arcana:support",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Diagoldze — Golden Curse",
+      "text": "$(o)Gold creeps over and restrains a target.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Manga spoiler: Macht's curse that turns things to gold. Here a 10-second golden restraint rather than permanent transmutation. One legendary level. Deals no damage; holds the target, turning to gold, for 10 seconds."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Legendary and up$(br)$(l)Levels:$() 1$(br)$(l)Mana:$() 350$(br)$(l)Cooldown:$() 60 s$(br)$(l)Cast:$() Long, 5 s$(br)$(l)Effect:$() No damage; a 10 s golden restraint"
+    }
+  ]
+}

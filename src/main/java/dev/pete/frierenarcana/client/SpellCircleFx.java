@@ -610,7 +610,9 @@ public final class SpellCircleFx {
         ArcanaClient.Fracture var7 = null;
 
         for (ArcanaClient.Fracture var9 : ArcanaClient.fractures()) {
-            if (var7 == null || var9.startNanos() > var7.startNanos()) {
+            if (ArcanaCinematic.release != 0L
+                && var9.startNanos() >= ArcanaCinematic.release - 400000000L
+                && (var7 == null || var9.startNanos() > var7.startNanos())) {
                 var7 = var9;
             }
         }

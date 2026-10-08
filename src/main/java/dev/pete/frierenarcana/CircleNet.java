@@ -11,7 +11,7 @@ public final class CircleNet {
 
     public static void cast(LivingEntity var0, ArcanaSpell var1, int var2) {
         if (var0 instanceof ServerPlayer var3) {
-            int var4 = Math.max(24, var1.getCastTime(var2) + 14);
+            int var4 = Math.max(24, var1.getEffectiveCastTime(var2, var0) + 14);
             refresh(var3, var1, var4);
         }
     }

@@ -1,0 +1,24 @@
+{
+  "name": "Jilwer — Swift Movement",
+  "icon": "frieren_arcana:textures/gui/spell_icons/jilwer.png",
+  "category": "frieren_arcana:support",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Jilwer — Swift Movement",
+      "text": "$(o)Brief burst of movement speed.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Laufen's folk speed spell: a burst of movement too fast for the eye. Three levels increase speed and duration. Barriers still confine movement."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Uncommon and up$(br)$(l)Levels:$() 3$(br)$(l)Mana:$() 30 (+10 per level)$(br)$(l)Cooldown:$() 8 s$(br)$(l)Cast:$() Instant"
+    }
+  ]
+}

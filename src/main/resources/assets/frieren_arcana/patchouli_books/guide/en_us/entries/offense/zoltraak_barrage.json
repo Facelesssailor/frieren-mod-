@@ -1,0 +1,24 @@
+{
+  "name": "Zoltraak — Barrage",
+  "icon": "frieren_arcana:textures/gui/spell_icons/zoltraak_barrage.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Zoltraak — Barrage",
+      "text": "$(o)Continuous barrage until exhaustion.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Toggle a rapid stream of about seven focused shots per second, Fern-style. Continuously drains mana and suppresses regeneration until stopped or exhausted. Keep the spell equipped. Damage: 0.33× spell power per shot, about seven shots a second."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Rare and up$(br)$(l)Levels:$() 5$(br)$(l)Mana:$() 25 to start, then a steady drain while it fires$(br)$(l)Cooldown:$() 3 s$(br)$(l)Cast:$() Toggle$(br)$(l)Effect:$() 0.33x spell power per shot, about 7 shots a second$(br)$(o)Before gear bonuses: 2.6 at level 1, 6.6 at level 5.$()"
+    }
+  ]
+}

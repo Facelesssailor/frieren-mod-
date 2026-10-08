@@ -1,0 +1,24 @@
+{
+  "name": "Goddess Magic — Cleansing",
+  "icon": "frieren_arcana:textures/gui/spell_icons/goddess_cleansing.png",
+  "category": "frieren_arcana:support",
+  "sortnum": 9,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Goddess Magic — Cleansing",
+      "text": "$(o)Removes harmful effects.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Goddess magic that lifts afflictions: poison and wither; level II also slowness, level III blindness."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Rare and up$(br)$(l)Levels:$() 3$(br)$(l)Mana:$() 40 (+10 per level)$(br)$(l)Cooldown:$() 12 s$(br)$(l)Cast:$() Instant"
+    }
+  ]
+}

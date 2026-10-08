@@ -1,0 +1,24 @@
+{
+  "name": "Examination Barrier",
+  "icon": "frieren_arcana:textures/gui/spell_icons/examination_barrier.png",
+  "category": "frieren_arcana:barriers",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Examination Barrier",
+      "text": "$(o)Persistent sealed round dome.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A sealed, faintly green dome like Serie's barrier over the Grobe Basin. Blocks both directions, including its caster, and keeps out rain. Recast or use the Release Sigil to dismiss."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Epic and up$(br)$(l)Levels:$() 5$(br)$(l)Mana:$() 120 (+10 per level)$(br)$(l)Cooldown:$() 30 s$(br)$(l)Cast:$() Long, 2 s"
+    }
+  ]
+}

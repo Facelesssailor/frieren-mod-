@@ -1,0 +1,24 @@
+{
+  "name": "Reamstroha — Water Control",
+  "icon": "frieren_arcana:textures/gui/spell_icons/reamstroha.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 12,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Reamstroha — Water Control",
+      "text": "$(o)Water strike; nearby water required.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Kanne's water magic: gathers nearby water into a huge sphere and slams it down. Needs existing water nearby (rain counts in canon; here water blocks within 5). Five levels. Damage: 1.4× spell power to everything in the stream."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Rare and up$(br)$(l)Levels:$() 5$(br)$(l)Mana:$() 45 (+10 per level)$(br)$(l)Cooldown:$() 8 s$(br)$(l)Cast:$() Instant$(br)$(l)Effect:$() 1.4x spell power to everything in the stream$(br)$(o)Before gear bonuses: 11.2 at level 1, 28.0 at level 5.$()"
+    }
+  ]
+}

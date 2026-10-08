@@ -1,0 +1,25 @@
+{
+  "name": "Keybindings",
+  "icon": "minecraft:tripwire_hook",
+  "category": "frieren_arcana:basics",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(l)Frieren: Magic$() category in Controls:$(br)$(li)$(l)N$() Cycle Zoltraak mode (single, barrage, heavy)$(li)$(l)Y$() Cast or toggle the selected Zoltraak mode$(li)$(l)B$() Stop the barrage or cancel a heavy charge",
+      "title": "Keybindings"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(l)K$() or Esc: skip a spell cutscene (the spell still happens)$(li)$(l)U$() Throw the target of Object Levitation"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "In big modpacks several mods may want the same key. NeoForge gives a key press to only one of them, so a clash with Iron's cast key can stop spells from casting at all."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The first time you join a world, this mod moves any default key that clashes with Iron's cast, spell wheel or quick-cast keys, and any of its own keys that clash, to a free key, and tells you in chat what moved. Keys you set yourself are never changed. Delete $(o)config/frieren_arcana-keyfix.txt$() to run it again."
+    }
+  ]
+}

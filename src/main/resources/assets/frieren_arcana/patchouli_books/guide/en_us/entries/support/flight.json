@@ -1,0 +1,29 @@
+{
+  "name": "Flight Magic",
+  "icon": "frieren_arcana:textures/gui/spell_icons/flight.png",
+  "category": "frieren_arcana:support",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Flight Magic",
+      "text": "$(o)Staff flight; double-tap jump.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Hold a staff in either hand. Double-tap jump for ordinary flight. A staff appears beneath you. Mana drains only while flying."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Rare and up$(br)$(l)Levels:$() 1$(br)$(l)Mana:$() 30$(br)$(l)Cooldown:$() 2 s$(br)$(l)Cast:$() Toggle"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "frieren_arcana:flight_staff",
+      "text": "Any staff works; this one is easy to make."
+    }
+  ]
+}

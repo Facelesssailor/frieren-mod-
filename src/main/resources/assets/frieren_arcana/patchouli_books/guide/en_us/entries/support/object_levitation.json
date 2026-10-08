@@ -1,0 +1,24 @@
+{
+  "name": "Object Levitation",
+  "icon": "frieren_arcana:textures/gui/spell_icons/object_levitation.png",
+  "category": "frieren_arcana:support",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Object Levitation",
+      "text": "$(o)Grab and move targets; Throw (U) flings them.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Channel to grab a creature or dropped item within 12/14/16 blocks and move it with your aim. Uses Iron Telekinesis for creatures. Press Throw (U by default) to throw the target. Costs 25 mana per channel pulse; releases when casting stops."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Uncommon and up$(br)$(l)Levels:$() 3$(br)$(l)Mana:$() 25 per channel pulse$(br)$(l)Cooldown:$() 4 s$(br)$(l)Cast:$() Continuous, 7 s"
+    }
+  ]
+}

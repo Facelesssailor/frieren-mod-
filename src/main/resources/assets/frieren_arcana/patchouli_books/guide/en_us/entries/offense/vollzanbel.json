@@ -1,0 +1,24 @@
+{
+  "name": "Vollzanbel — Hellfire Summoning",
+  "icon": "frieren_arcana:textures/gui/spell_icons/vollzanbel.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Vollzanbel — Hellfire Summoning",
+      "text": "$(o)Pillars of hellfire erupt at the target.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Frieren's hellfire: pillars of fire erupt like molten lava at the target area. Three levels increase damage and radius. Ignites foes; leaves terrain intact. Damage: 2× spell power within 2 + level blocks, and burning for 3 + level seconds."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Fire$(br)$(l)Rarity:$() Epic and up$(br)$(l)Levels:$() 3$(br)$(l)Mana:$() 120 (+10 per level)$(br)$(l)Cooldown:$() 15 s$(br)$(l)Cast:$() Long, 2 s$(br)$(l)Effect:$() 2x spell power within 2 + level blocks, burning 3 + level s$(br)$(o)Before gear bonuses: 16.0 at level 1, 28.0 at level 3.$()"
+    }
+  ]
+}

@@ -103,7 +103,8 @@ public final class CinemaDirector {
                     ArcanaClient.Fracture var14 = null;
 
                     for (ArcanaClient.Fracture var16 : ArcanaClient.fractures()) {
-                        if ((ArcanaCinematic.release == 0L || var16.startNanos() >= ArcanaCinematic.release - 400000000L)
+                        if (ArcanaCinematic.release != 0L
+                            && var16.startNanos() >= ArcanaCinematic.release - 400000000L
                             && (var14 == null || var16.startNanos() > var14.startNanos())) {
                             var14 = var16;
                         }

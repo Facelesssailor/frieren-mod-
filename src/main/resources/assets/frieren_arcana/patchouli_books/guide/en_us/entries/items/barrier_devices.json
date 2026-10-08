@@ -1,0 +1,43 @@
+{
+  "name": "Examination Barrier Devices",
+  "icon": "frieren_arcana:barrier_device_5",
+  "category": "frieren_arcana:items",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "frieren_arcana:barrier_device_1",
+      "title": "Barrier Devices",
+      "text": "Raise a great examination barrier without the spell. Use the device to form a barrier centred on you; use it again to release it. Each tier costs more mana and covers more ground."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l)Tier 1:$() radius 32 blocks, 150 mana$(br)$(l)Tier 2:$() radius 48 blocks, 250 mana$(br)$(l)Tier 3:$() radius 64 blocks, 350 mana$(br)$(l)Tier 4:$() radius 96 blocks, 450 mana$(br)$(l)Tier 5:$() radius 128 blocks, 550 mana",
+      "title": "Tiers"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Radii are for the default grandBarrierRadius of 128. World height and border limits still apply."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "frieren_arcana:barrier_device_1"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "frieren_arcana:barrier_device_2"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "frieren_arcana:barrier_device_3"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "frieren_arcana:barrier_device_4"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "frieren_arcana:barrier_device_5"
+    }
+  ]
+}

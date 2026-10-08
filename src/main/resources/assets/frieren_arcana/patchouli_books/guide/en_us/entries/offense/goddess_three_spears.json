@@ -1,0 +1,24 @@
+{
+  "name": "Goddess Magic — Three Spears",
+  "icon": "frieren_arcana:textures/gui/spell_icons/goddess_three_spears.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 17,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Goddess Magic — Three Spears",
+      "text": "$(o)Three lances of goddess light.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Sein's goddess magic: three tight lances of light. Three levels increase power. Terrain and barriers still apply. Damage: 0.9× spell power per spear, three spears."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Holy$(br)$(l)Rarity:$() Rare and up$(br)$(l)Levels:$() 3$(br)$(l)Mana:$() 50 (+10 per level)$(br)$(l)Cooldown:$() 7 s$(br)$(l)Cast:$() Instant$(br)$(l)Effect:$() 0.9x spell power per spear, three spears$(br)$(o)Before gear bonuses: 7.2 at level 1, 12.6 at level 3.$()"
+    }
+  ]
+}

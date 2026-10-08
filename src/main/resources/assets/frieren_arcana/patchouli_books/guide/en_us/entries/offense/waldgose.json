@@ -1,0 +1,24 @@
+{
+  "name": "Waldgose — Tornado",
+  "icon": "frieren_arcana:textures/gui/spell_icons/waldgose.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Waldgose — Tornado",
+      "text": "$(o)Wind burst; sets up Fire-Wind.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Denken's tornado magic: a cyclone that damages and lifts foes. Five levels. Leaves a four-second window to turn it into Daosdorg. Damage: 0.8× spell power within 2 + level blocks, and Levitation."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Rare and up$(br)$(l)Levels:$() 5$(br)$(l)Mana:$() 60 (+10 per level)$(br)$(l)Cooldown:$() 10 s$(br)$(l)Cast:$() Instant$(br)$(l)Effect:$() 0.8x spell power within 2 + level blocks, plus Levitation$(br)$(o)Before gear bonuses: 6.4 at level 1, 16.0 at level 5.$()"
+    }
+  ]
+}

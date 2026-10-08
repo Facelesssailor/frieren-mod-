@@ -1,0 +1,24 @@
+{
+  "name": "Doragate — Stone Bullets",
+  "icon": "frieren_arcana:textures/gui/spell_icons/dragate.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 14,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Doragate — Stone Bullets",
+      "text": "$(o)Levitated rocks flung like cannon shot.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Ehre's stone magic: rocks lift beside you and are flung like cannon shot. Physical mass, so it wears down defensive magic fast. Five levels; terrain is not harvested. Damage: 0.65× spell power per rock, 2 + level rocks."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Uncommon and up$(br)$(l)Levels:$() 5$(br)$(l)Mana:$() 40 (+10 per level)$(br)$(l)Cooldown:$() 5 s$(br)$(l)Cast:$() Instant$(br)$(l)Effect:$() 0.65x spell power per rock, 2 + level rocks$(br)$(o)Before gear bonuses: 5.2 at level 1, 13.0 at level 5.$()"
+    }
+  ]
+}

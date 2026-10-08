@@ -1,0 +1,24 @@
+{
+  "name": "Nephtear — Ice Spears",
+  "icon": "frieren_arcana:textures/gui/spell_icons/nephtear.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 11,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Nephtear — Ice Spears",
+      "text": "$(o)Spread of freezing ice lances.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Lawine's volley of large ice spears; damages, freezes and slows. Five levels increase power and spear count. Damage: 0.6× spell power per spear, 2 + level spears."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Uncommon and up$(br)$(l)Levels:$() 5$(br)$(l)Mana:$() 35 (+10 per level)$(br)$(l)Cooldown:$() 5 s$(br)$(l)Cast:$() Instant$(br)$(l)Effect:$() 0.6x spell power per spear, 2 + level spears$(br)$(o)Before gear bonuses: 4.8 at level 1, 12.0 at level 5.$()"
+    }
+  ]
+}

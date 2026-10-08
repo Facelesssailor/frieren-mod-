@@ -1,0 +1,24 @@
+{
+  "name": "Judradjim — Destructive Lightning",
+  "icon": "frieren_arcana:textures/gui/spell_icons/judradjim.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Judradjim — Destructive Lightning",
+      "text": "$(o)Wild purple lightning around the target.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Frieren's destructive lightning: purple bolts that run wild around the target area while the caster is unharmed. Three levels increase damage and radius. Damage: 2.2× spell power to everything within 1.5 + level blocks."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Lightning$(br)$(l)Rarity:$() Epic and up$(br)$(l)Levels:$() 3$(br)$(l)Mana:$() 130 (+10 per level)$(br)$(l)Cooldown:$() 18 s$(br)$(l)Cast:$() Long, 1.5 s$(br)$(l)Effect:$() 2.2x spell power within 1.5 + level blocks$(br)$(o)Before gear bonuses: 17.6 at level 1, 30.8 at level 3.$()"
+    }
+  ]
+}

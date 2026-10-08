@@ -41,8 +41,8 @@ public final class CircleArt {
     }
 
     private static void col(SpellCircleFx.Ctx var0, float var1, float var2, float var3, float var4) {
-        if (Math.abs(var2 - 0.9F) < 0.006F) {
-            var2 = 0.915F;
+        if (Math.abs(var2 - 0.9F) < 0.012F) {
+            var2 = 0.925F;
         }
 
         var0.r = var1;

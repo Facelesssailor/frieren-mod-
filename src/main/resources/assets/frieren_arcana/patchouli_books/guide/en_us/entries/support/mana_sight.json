@@ -1,0 +1,24 @@
+{
+  "name": "Mana Sight",
+  "icon": "frieren_arcana:textures/gui/spell_icons/mana_sight.png",
+  "category": "frieren_arcana:support",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Mana Sight",
+      "text": "$(o)Shows nearby players’ apparent mana.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Toggle visible mana auras and read a targeted player’s apparent Iron’s Spellbooks mana. Concealment can fool this sight."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Rare and up$(br)$(l)Levels:$() 1$(br)$(l)Mana:$() 20$(br)$(l)Cooldown:$() 2 s$(br)$(l)Cast:$() Toggle"
+    }
+  ]
+}

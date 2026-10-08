@@ -1,0 +1,24 @@
+{
+  "name": "Zoltraak — Heavy Blast",
+  "icon": "frieren_arcana:textures/gui/spell_icons/zoltraak_heavy.png",
+  "category": "frieren_arcana:offense",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "irons_spellbooks:scroll",
+      "link_recipe": false,
+      "title": "Zoltraak — Heavy Blast",
+      "text": "$(o)Wide endgame blast; long charge.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A compressed, much thicker Zoltraak with a long minimum charge and an endgame mana requirement. Multi-target. Terrain and barriers stop it. Damage: the configured heavy-beam damage (100 by default) × your spell-power bonus, to everything in the beam."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "At a glance",
+      "text": "$(l)School:$() Evocation$(br)$(l)Rarity:$() Legendary and up$(br)$(l)Levels:$() 1$(br)$(l)Mana:$() 450 (config), and 500+ maximum mana needed$(br)$(l)Cooldown:$() 60 s$(br)$(l)Cast:$() Long (charge)$(br)$(l)Effect:$() 100 (config) x your spell-power bonus to everything in the beam"
+    }
+  ]
+}
