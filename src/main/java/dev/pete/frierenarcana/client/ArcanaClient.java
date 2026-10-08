@@ -58,55 +58,59 @@ public final class ArcanaClient {
     }
 
     public static void receive(CompoundTag tag) {
-        String var1 = tag.getString("kind");
-        switch (var1) {
-            case "fields":
-                FIELDS.clear();
+        if (!CastCircles.receive(tag)) {
+            String var1 = tag.getString("kind");
+            switch (var1) {
+                case "fields":
+                    FIELDS.clear();
 
-                for (Tag raw : tag.getList("fields", 10)) {
-                    FIELDS.add(readField((CompoundTag)raw));
-                }
-                break;
-            case "sight":
-                sight = tag.getBoolean("active");
-                MANA.clear();
+                    for (Tag raw : tag.getList("fields", 10)) {
+                        FIELDS.add(readField((CompoundTag)raw));
+                    }
+                    break;
+                case "sight":
+                    sight = tag.getBoolean("active");
+                    MANA.clear();
 
-                for (Tag raw : tag.getList("players", 10)) {
-                    CompoundTag t = (CompoundTag)raw;
-                    MANA.put(t.getUUID("player"), new ArcanaClient.Mana(t.getFloat("mana"), t.getFloat("capacity")));
-                }
-                break;
-            case "beam":
-                BEAMS.add(new ArcanaClient.Beam(ArcanaNetwork.vector(tag, "start"), ArcanaNetwork.vector(tag, "end"), tag.getInt("style"), System.nanoTime()));
-                break;
-            case "shatter":
-                FRACTURES.add(new ArcanaClient.Fracture(readField(tag.getCompound("field")), ArcanaNetwork.vector(tag, "impact"), System.nanoTime()));
-                break;
-            case "flight":
-                UUID playerx = tag.getUUID("player");
-                if (tag.getBoolean("active")) {
-                    FLIGHTS.put(playerx, System.nanoTime());
-                } else {
-                    FLIGHTS.remove(playerx);
-                }
-                break;
-            case "effect":
-                EFFECTS.add(new ArcanaClient.Effect(ArcanaNetwork.vector(tag, "center"), tag.getInt("style"), tag.getInt("strength"), System.nanoTime()));
-                break;
-            case "charge":
-                UUID player = tag.getUUID("player");
-                ArcanaCinematic.charge(player, tag.getBoolean("active"), tag.getBoolean("breaker"));
-                if (tag.getBoolean("active")) {
-                    CHARGES.put(player, System.nanoTime());
-                    if (tag.getBoolean("breaker")) {
-                        BREAKER_CHARGES.add(player);
+                    for (Tag raw : tag.getList("players", 10)) {
+                        CompoundTag t = (CompoundTag)raw;
+                        MANA.put(t.getUUID("player"), new ArcanaClient.Mana(t.getFloat("mana"), t.getFloat("capacity")));
+                    }
+                    break;
+                case "beam":
+                    BEAMS.add(
+                        new ArcanaClient.Beam(ArcanaNetwork.vector(tag, "start"), ArcanaNetwork.vector(tag, "end"), tag.getInt("style"), System.nanoTime())
+                    );
+                    break;
+                case "shatter":
+                    FRACTURES.add(new ArcanaClient.Fracture(readField(tag.getCompound("field")), ArcanaNetwork.vector(tag, "impact"), System.nanoTime()));
+                    break;
+                case "flight":
+                    UUID playerx = tag.getUUID("player");
+                    if (tag.getBoolean("active")) {
+                        FLIGHTS.put(playerx, System.nanoTime());
                     } else {
+                        FLIGHTS.remove(playerx);
+                    }
+                    break;
+                case "effect":
+                    EFFECTS.add(new ArcanaClient.Effect(ArcanaNetwork.vector(tag, "center"), tag.getInt("style"), tag.getInt("strength"), System.nanoTime()));
+                    break;
+                case "charge":
+                    UUID player = tag.getUUID("player");
+                    ArcanaCinematic.charge(player, tag.getBoolean("active"), tag.getBoolean("breaker"));
+                    if (tag.getBoolean("active")) {
+                        CHARGES.put(player, System.nanoTime());
+                        if (tag.getBoolean("breaker")) {
+                            BREAKER_CHARGES.add(player);
+                        } else {
+                            BREAKER_CHARGES.remove(player);
+                        }
+                    } else {
+                        CHARGES.remove(player);
                         BREAKER_CHARGES.remove(player);
                     }
-                } else {
-                    CHARGES.remove(player);
-                    BREAKER_CHARGES.remove(player);
-                }
+            }
         }
     }
 

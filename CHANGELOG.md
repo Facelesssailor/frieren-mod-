@@ -2,6 +2,13 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.3.5
+
+- Fern-style Zoltraak barrage (BarrageFern).
+- Casting circles shown to other players (CircleNet, CastCircles).
+
+Code: added BarrageFern, CircleNet, client.CastCircles; changed ArcanaModes, ArcanaSpell, client.ArcanaClient, client.SpellCircleFx.
+
 ## 1.3.4
 
 - First cutscene director for the Barrier Breaker (CinemaDirector); dome shader update.

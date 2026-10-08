@@ -140,7 +140,7 @@ public final class SpellCircleFx {
         }
     }
 
-    private static final class Ctx {
+    static final class Ctx {
         VertexConsumer vc;
         Matrix4f m;
         double cx;

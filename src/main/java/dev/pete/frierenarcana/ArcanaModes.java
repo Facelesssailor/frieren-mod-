@@ -129,7 +129,7 @@ public final class ArcanaModes {
                 } else {
                     magic.setMana(before - drain);
                     f.putFloat("barrageMana", magic.getMana());
-                    if (p.tickCount % 5 == 0) {
+                    if (p.tickCount % 3 == 0) {
                         ArcanaSpell spell = FrierenArcana.SPELL_MAP.get(ArcanaSpell.Kind.BARRAGE).get();
                         int level = Math.min(
                             Math.min(f.getInt("barrageLevel"), spell.getMaxLevel()), equipped(p, ArcanaSpell.Kind.BARRAGE).spellData.getLevel()
@@ -137,7 +137,7 @@ public final class ArcanaModes {
                         double yaw = (p.getRandom().nextDouble() - 0.5) * 0.025;
                         double pitch = (p.getRandom().nextDouble() - 0.5) * 0.025;
                         Vec3 d = p.getLookAngle().add(yaw, pitch, -yaw).normalize();
-                        fire(p, spell, level, d, 64.0, 0.12F, spell.getSpellPower(level, p) * 0.55F, 1, false);
+                        BarrageFern.volley(p, spell, level, d, 64.0, 0.12F, spell.getSpellPower(level, p) * 0.55F, 1, false);
                         ArcanaEvents.syncMana(p);
                     }
                 }
@@ -197,7 +197,7 @@ public final class ArcanaModes {
             }
         }
 
-        ArcanaNetwork.magicBeam(p.serverLevel(), start, end, visual);
+        BarrageFern.beam(p.serverLevel(), start, end, visual);
         return end;
     }
 }

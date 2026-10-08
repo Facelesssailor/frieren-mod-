@@ -120,6 +120,7 @@ public final class ArcanaSpell extends AbstractSpell {
 
     @Override
     public void onServerPreCast(Level level, int spellLevel, LivingEntity entity, MagicData data) {
+        CircleNet.cast(entity, this, spellLevel);
         if (this.kind == ArcanaSpell.Kind.PIERCE && entity instanceof ServerPlayer p) {
             CompoundTag f = ArcanaEvents.flags(p);
             f.putBoolean("hovering", true);
