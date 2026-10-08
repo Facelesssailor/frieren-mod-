@@ -470,6 +470,7 @@ public final class ArcanaSpell extends AbstractSpell {
             var3.add(Component.translatable("info.frieren_arcana.heavy", ArcanaConfig.HEAVY_CAPACITY.get(), ArcanaConfig.HEAVY_CHARGE.get()));
         }
 
+        DamageInfo.add(var3, this, var1, var2);
         return var3;
     }
 

@@ -2,8 +2,6 @@ package dev.pete.frierenarcana.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Block;
 import net.minecraft.world.level.ClipContext.Fluid;
@@ -18,6 +16,15 @@ public final class CinemaDirector {
     private static float lockPitch;
     private static Vec3 lockLook = new Vec3(0.0, 0.0, 1.0);
     private static Vec3 anchor = null;
+    private static Vec3 sEye;
+    private static Vec3 sEyePrev;
+    private static Vec3 sFlat;
+    private static Vec3 sSide;
+    private static Vec3 sCenter;
+    private static Vec3 sHit;
+    private static double sRadius;
+    private static boolean sFrac;
+    private static boolean sReady;
     private static int shot = -1;
     private static float bands = 0.0F;
     private static float descent = 0.0F;
@@ -53,6 +60,8 @@ public final class CinemaDirector {
             shot = -1;
             bands = 0.0F;
             descent = 0.0F;
+            sReady = false;
+            sEye = null;
         } else {
             LocalPlayer var2 = var1.player;
             if (var2 != null && var1.level != null && ArcanaCinematic.camera.level() == var1.level && var2.isAlive() && var1.screen == null) {
@@ -139,119 +148,116 @@ public final class CinemaDirector {
 
                     double var42 = fractureSeen == 0L ? -1.0 : (double)(var3 - fractureSeen) / 1.0E9;
                     if (!(var5 > 40.0) && (fractureSeen == 0L || !(var42 > 15.0)) && (fractureSeen != 0L || ArcanaCinematic.release == 0L || !(var7 > 3.6))) {
-                        Vec3 var43;
-                        Vec3 var44;
-                        byte var45;
-                        if (ArcanaCinematic.release == 0L) {
-                            if (var5 < 3.4) {
-                                var45 = 10;
-                                double var46 = var5 / 3.4;
-                                var43 = var13.add(var10.scale(3.9 - 0.6 * var46)).add(var11.scale(0.45 - 0.2 * var46)).add(0.0, -0.15, 0.0);
-                                var44 = var13.add(0.0, -0.3, 0.0).add(var10.scale(0.6));
-                            } else if (var5 < 7.0) {
-                                var45 = 11;
-                                double var47 = (var5 - 3.4) / 3.6;
-                                var43 = var13.add(var10.scale(10.0 + 1.5 * var47)).add(var11.scale(6.5)).add(0.0, 0.3 + 0.4 * var47, 0.0);
-                                var44 = var13.add(0.0, 0.5 + 0.5 * var47, 0.0);
-                            } else {
-                                var45 = 0;
-                                double var48 = Math.min(1.0, (var5 - 7.0) / 3.2);
-                                double var61 = Math.sin(var48 * Math.PI * 0.6) * 0.9;
-                                Vec3 var68 = var10.scale(-Math.cos(var61)).add(var11.scale(Math.sin(var61)));
-                                var43 = var13.add(var68.scale(5.2 - 1.6 * var48)).add(0.0, -0.45 + 0.9 * var48, 0.0);
-                                var44 = var13.add(0.0, 0.15, 0.0).add(var10.scale(0.5));
-                            }
-                        } else if (var14 == null) {
-                            var45 = 1;
-                            var43 = var13.add(var10.scale(-4.2)).add(var11.scale(1.5)).add(0.0, 0.9, 0.0);
-                            var44 = var13.add(0.0, 6.0 + 10.0 * Math.min(1.0, var7), 0.0);
-                        } else if (var7 < 0.9500000000000001) {
-                            var45 = 0;
-                            double var49 = Math.sin(Math.PI * 3.0 / 5.0) * 0.9;
-                            Vec3 var62 = var10.scale(-Math.cos(var49)).add(var11.scale(Math.sin(var49)));
-                            double var27 = Math.max(0.0, Math.min(1.0, (var7 - 0.4) / 0.55));
-                            var43 = var13.add(var62.scale(3.6)).add(0.0, 0.45, 0.0);
-                            var44 = var13.add(0.0, 0.15 + 2.6 * var27 * var27, 0.0).add(var10.scale(0.5));
-                        } else if (var7 < 2.3) {
-                            var45 = 1;
-                            Vec3 var50 = new Vec3(var13.x - var40.x, 0.0, var13.z - var40.z);
-                            var50 = var50.lengthSqr() < 0.25 ? var10.scale(-1.0) : var50.normalize();
-                            double var25 = Math.cos(0.5);
-                            double var64 = Math.sin(0.5);
-                            Vec3 var29 = new Vec3(var50.x * var25 - var50.z * var64, 0.0, var50.x * var64 + var50.z * var25);
-                            double var72 = Math.pow(Math.min(1.0, var7 / 1.8), 1.6);
-                            var43 = var40.add(var29.scale(var41 * 1.45 + 12.0)).add(0.0, var41 * 0.22 + 2.0, 0.0);
-                            var44 = var13.lerp(var18, 0.35 + 0.45 * var72);
-                        } else if (var7 < 5.0) {
-                            var45 = 2;
-                            Vec3 var52 = new Vec3(var13.x - var40.x, 0.0, var13.z - var40.z);
-                            var52 = var52.lengthSqr() < 0.25 ? var10.scale(-1.0) : var52.normalize();
-                            double var58 = (var7 - 1.8 - 0.5) / 2.7;
-                            double var65 = Math.min(16.0, Math.max(7.0, var41 * 0.5)) * (1.0 - 0.15 * var58);
-                            var43 = var18.add(var52.scale(var65)).add(new Vec3(-var52.z, 0.0, var52.x).scale(2.5)).add(0.0, -var65 * 0.35 + 1.0 * var58, 0.0);
-                            var44 = var18.add(0.0, -var41 * 0.1 * var58, 0.0);
-                        } else if (var7 < 11.0) {
-                            var45 = 3;
-                            Vec3 var54 = new Vec3(var13.x - var40.x, 0.0, var13.z - var40.z);
-                            var54 = var54.lengthSqr() < 0.25 ? var10 : var54.normalize();
-                            double var59 = (var7 - 1.8 - 3.2) / 6.0;
-                            double var66 = 0.6 + 0.25 * var59;
-                            double var70 = Math.cos(var66);
-                            double var31 = Math.sin(var66);
-                            Vec3 var33 = new Vec3(var54.x * var70 - var54.z * var31, 0.0, var54.x * var31 + var54.z * var70);
-                            double var74 = var41 * 1.55 + 10.0 + 4.0 * var59;
-                            var43 = var40.add(var33.scale(var74)).add(0.0, var41 * 0.45 + 2.0 + 2.5 * var59, 0.0);
-                            var44 = var40.add(0.0, var41 * (0.35 - 0.1 * var59), 0.0);
-                        } else {
-                            var45 = 4;
-                            double var56 = (var7 - 1.8 - 9.2) / 3.0;
-                            var43 = var13.add(var10.scale(3.0 - 0.3 * var56)).add(var11.scale(0.7 - 0.4 * var56)).add(0.0, 0.05 + 0.1 * var56, 0.0);
-                            var44 = var13.add(0.0, -0.05, 0.0);
-                        }
-
-                        BlockHitResult var57 = var1.level.clip(new ClipContext(var44, var43, Block.VISUAL, Fluid.NONE, var2));
-                        if (var57.getType() != Type.MISS) {
-                            var43 = var57.getLocation().lerp(var44, 0.12);
-                        }
-
-                        boolean var60 = var45 != shot;
-                        Vec3 var63 = !var60 && ArcanaCinematic.previous != null
-                            ? ArcanaCinematic.previous.lerp(var43, var45 != 1 && var45 != 3 && var45 != 11 ? 0.24 : 0.12)
-                            : var43;
-                        shot = var45;
-                        ArcanaCinematic.previous = var63;
-                        ArmorStand var67 = ArcanaCinematic.camera;
-                        var67.xo = var67.getX();
-                        var67.yo = var67.getY();
-                        var67.zo = var67.getZ();
-                        var67.yRotO = var67.getYRot();
-                        var67.xRotO = var67.getXRot();
-                        var67.setPos(var63.x, var63.y - (double)var67.getEyeHeight(), var63.z);
-                        Vec3 var69 = var44.subtract(var63);
-                        float var71 = (float)(Math.toDegrees(Math.atan2(var69.z, var69.x)) - 90.0);
-                        if (!var60) {
-                            var71 = var67.getYRot() + Mth.wrapDegrees(var71 - var67.getYRot());
-                        }
-
-                        float var73 = (float)(-Math.toDegrees(Math.atan2(var69.y, var69.horizontalDistance())));
-                        if (var60) {
-                            var67.yRotO = var71;
-                            var67.xRotO = var73;
-                            var67.xo = var67.getX();
-                            var67.yo = var67.getY();
-                            var67.zo = var67.getZ();
-                        }
-
-                        var67.setYRot(var71);
-                        var67.setXRot(var73);
-                        var67.setYHeadRot(var71);
-                        var67.setYBodyRot(var71);
+                        sEyePrev = sEye == null ? var13 : sEye;
+                        sEye = var13;
+                        sFlat = var10;
+                        sSide = var11;
+                        sCenter = var40;
+                        sRadius = var41;
+                        sHit = var18;
+                        sFrac = var14 != null;
+                        sReady = true;
                     } else {
                         ArcanaCinematic.restore();
                     }
                 }
             } else {
                 ArcanaCinematic.restore();
+            }
+        }
+    }
+
+    static void frame(float var0) {
+        if (sReady && sEye != null) {
+            Minecraft var1 = Minecraft.getInstance();
+            if (var1.level != null && var1.player != null) {
+                long var2 = System.nanoTime();
+                double var4 = (double)(var2 - ArcanaCinematic.started) / 1.0E9;
+                double var6 = ArcanaCinematic.release == 0L ? 0.0 : (double)(var2 - ArcanaCinematic.release) / 1.0E9;
+                Vec3 var8 = sEyePrev.lerp(sEye, (double)var0);
+                Vec3 var9 = sFlat;
+                Vec3 var10 = sSide;
+                Vec3 var11 = sCenter;
+                Vec3 var12 = sHit;
+                double var13 = sRadius;
+                if (!sFrac || var11 != null && var12 != null) {
+                    Vec3 var15;
+                    Vec3 var16;
+                    byte var17;
+                    if (ArcanaCinematic.release == 0L) {
+                        if (var4 < 3.4) {
+                            var17 = 10;
+                            double var18 = var4 / 3.4;
+                            var15 = var8.add(var9.scale(3.9 - 0.6 * var18)).add(var10.scale(0.45 - 0.2 * var18)).add(0.0, -0.15, 0.0);
+                            var16 = var8.add(0.0, -0.3, 0.0).add(var9.scale(0.6));
+                        } else if (var4 < 7.0) {
+                            var17 = 11;
+                            double var30 = (var4 - 3.4) / 3.6;
+                            var15 = var8.add(var9.scale(10.0 + 1.5 * var30)).add(var10.scale(6.5)).add(0.0, 0.3 + 0.4 * var30, 0.0);
+                            var16 = var8.add(0.0, 0.5 + 0.5 * var30, 0.0);
+                        } else {
+                            var17 = 0;
+                            double var31 = Math.min(1.0, (var4 - 7.0) / 3.2);
+                            double var20 = Math.sin(var31 * Math.PI * 0.6) * 0.9;
+                            Vec3 var22 = var9.scale(-Math.cos(var20)).add(var10.scale(Math.sin(var20)));
+                            var15 = var8.add(var22.scale(5.2 - 1.6 * var31)).add(0.0, -0.45 + 0.9 * var31, 0.0);
+                            var16 = var8.add(0.0, 0.15, 0.0).add(var9.scale(0.5));
+                        }
+                    } else if (!sFrac) {
+                        var17 = 1;
+                        var15 = var8.add(var9.scale(-4.2)).add(var10.scale(1.5)).add(0.0, 0.9, 0.0);
+                        var16 = var8.add(0.0, 6.0 + 10.0 * Math.min(1.0, var6), 0.0);
+                    } else if (var6 < 0.9500000000000001) {
+                        var17 = 0;
+                        double var32 = Math.sin(Math.PI * 3.0 / 5.0) * 0.9;
+                        Vec3 var43 = var9.scale(-Math.cos(var32)).add(var10.scale(Math.sin(var32)));
+                        double var21 = Math.max(0.0, Math.min(1.0, (var6 - 0.4) / 0.55));
+                        var15 = var8.add(var43.scale(3.6)).add(0.0, 0.45, 0.0);
+                        var16 = var8.add(0.0, 0.15 + 2.6 * var21 * var21, 0.0).add(var9.scale(0.5));
+                    } else if (var6 < 2.3) {
+                        var17 = 1;
+                        Vec3 var33 = new Vec3(var8.x - var11.x, 0.0, var8.z - var11.z);
+                        var33 = var33.lengthSqr() < 0.25 ? var9.scale(-1.0) : var33.normalize();
+                        double var19 = Math.cos(0.5);
+                        double var44 = Math.sin(0.5);
+                        Vec3 var23 = new Vec3(var33.x * var19 - var33.z * var44, 0.0, var33.x * var44 + var33.z * var19);
+                        double var24 = Math.pow(Math.min(1.0, var6 / 1.8), 1.6);
+                        var15 = var11.add(var23.scale(var13 * 1.45 + 12.0)).add(0.0, var13 * 0.22 + 2.0, 0.0);
+                        var16 = var8.lerp(var12, 0.35 + 0.45 * var24);
+                    } else if (var6 < 5.0) {
+                        var17 = 2;
+                        Vec3 var35 = new Vec3(var8.x - var11.x, 0.0, var8.z - var11.z);
+                        var35 = var35.lengthSqr() < 0.25 ? var9.scale(-1.0) : var35.normalize();
+                        double var41 = (var6 - 1.8 - 0.5) / 2.7;
+                        double var45 = Math.min(16.0, Math.max(7.0, var13 * 0.5)) * (1.0 - 0.15 * var41);
+                        var15 = var12.add(var35.scale(var45)).add(new Vec3(-var35.z, 0.0, var35.x).scale(2.5)).add(0.0, -var45 * 0.35 + 1.0 * var41, 0.0);
+                        var16 = var12.add(0.0, -var13 * 0.1 * var41, 0.0);
+                    } else if (var6 < 11.0) {
+                        var17 = 3;
+                        Vec3 var37 = new Vec3(var8.x - var11.x, 0.0, var8.z - var11.z);
+                        var37 = var37.lengthSqr() < 0.25 ? var9 : var37.normalize();
+                        double var42 = (var6 - 1.8 - 3.2) / 6.0;
+                        double var46 = 0.6 + 0.25 * var42;
+                        double var47 = Math.cos(var46);
+                        double var25 = Math.sin(var46);
+                        Vec3 var27 = new Vec3(var37.x * var47 - var37.z * var25, 0.0, var37.x * var25 + var37.z * var47);
+                        double var28 = var13 * 1.55 + 10.0 + 4.0 * var42;
+                        var15 = var11.add(var27.scale(var28)).add(0.0, var13 * 0.45 + 2.0 + 2.5 * var42, 0.0);
+                        var16 = var11.add(0.0, var13 * (0.35 - 0.1 * var42), 0.0);
+                    } else {
+                        var17 = 4;
+                        double var39 = (var6 - 1.8 - 9.2) / 3.0;
+                        var15 = var8.add(var9.scale(3.0 - 0.3 * var39)).add(var10.scale(0.7 - 0.4 * var39)).add(0.0, 0.05 + 0.1 * var39, 0.0);
+                        var16 = var8.add(0.0, -0.05, 0.0);
+                    }
+
+                    BlockHitResult var40 = var1.level.clip(new ClipContext(var16, var15, Block.VISUAL, Fluid.NONE, var1.player));
+                    if (var40.getType() != Type.MISS) {
+                        var15 = var40.getLocation().lerp(var16, 0.12);
+                    }
+
+                    CinemaFrame.place(var15, var16, var17, var17 != 1 && var17 != 3 && var17 != 11 ? 0.24 : 0.12);
+                }
             }
         }
     }

@@ -5,8 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Block;
 import net.minecraft.world.level.ClipContext.Fluid;
@@ -29,7 +27,6 @@ public final class BlackHoleCinema {
     private static Vec3 b;
     private static double travel;
     private static double rise;
-    private static int shot = -1;
 
     private BlackHoleCinema() {
     }
@@ -60,7 +57,6 @@ public final class BlackHoleCinema {
             if (!ArcanaCinematic.active()) {
                 ArcanaCinematic.charge(var1.player.getUUID(), true, false);
                 start = System.nanoTime();
-                shot = -1;
                 on = true;
             }
         }
@@ -79,83 +75,62 @@ public final class BlackHoleCinema {
     }
 
     public static void tick(Minecraft var0, LocalPlayer var1) {
-        double var2 = t();
-        if (var2 > tEnd()) {
+        if (t() > tEnd()) {
             on = false;
             ArcanaCinematic.restore();
-        } else {
-            Vec3 var4 = b.subtract(a);
-            var4 = var4.lengthSqr() < 1.0E-6 ? var1.getLookAngle() : var4.normalize();
-            Vec3 var5 = new Vec3(var4.x, 0.0, var4.z);
-            var5 = var5.lengthSqr() < 1.0E-4 ? new Vec3(0.0, 0.0, 1.0) : var5.normalize();
-            Vec3 var6 = new Vec3(-var5.z, 0.0, var5.x);
-            Vec3 var7 = new Vec3(0.0, 1.0, 0.0);
-            Vec3 var8;
-            Vec3 var9;
-            byte var10;
-            if (var2 < tFly()) {
-                var10 = 1;
-                double var11 = var2 / tFly();
-                var8 = a.add(var4.scale(1.25 - 0.25 * var11)).add(var6.scale(0.35)).add(var7.scale(0.05));
-                var9 = a.add(var6.scale(0.05));
-            } else if (var2 < tHold()) {
-                var10 = 2;
-                Vec3 var20 = a.lerp(b, (var2 - tFly()) / travel);
-                var8 = var20.subtract(var5.scale(3.6)).add(var6.scale(2.3)).add(var7.scale(0.9));
-                var9 = var20.add(var4.scale(3.0));
-            } else if (var2 < tCol()) {
-                var10 = 3;
-                double var21 = (var2 - tHold()) / 3.2;
-                double var13 = BlackHoleShape.grow(var21);
-                double var15 = 0.9 + var21 * 0.7;
-                Vec3 var17 = var6.scale(Math.cos(var15)).add(var5.scale(-Math.sin(var15)));
-                var8 = b.add(var17.scale(8.5 + 2.0 * var13)).add(var7.scale(-0.6));
-                var9 = b.add(var7.scale(1.0 + 0.9 * var21));
-            } else {
-                var10 = 4;
-                double var22 = Math.min(1.0, (var2 - tCol()) / 2.2);
-                Vec3 var25 = BlackHoleShape.center(b, rise, 1.0);
-                var8 = b.subtract(var5.scale(12.0 + 3.0 * var22)).add(var6.scale(4.0)).add(var7.scale(1.0 + 1.0 * var22));
-                var9 = var25;
-            }
+        }
+    }
 
-            if (var0.level != null) {
-                BlockHitResult var23 = var0.level.clip(new ClipContext(var9, var8, Block.VISUAL, Fluid.NONE, var1));
-                if (var23.getType() != Type.MISS) {
-                    var8 = var23.getLocation().lerp(var9, 0.12);
+    static void frame(float var0) {
+        Minecraft var1 = Minecraft.getInstance();
+        LocalPlayer var2 = var1.player;
+        if (var2 != null && a != null && b != null) {
+            double var3 = t();
+            if (!(var3 > tEnd())) {
+                Vec3 var5 = b.subtract(a);
+                var5 = var5.lengthSqr() < 1.0E-6 ? var2.getLookAngle() : var5.normalize();
+                Vec3 var6 = new Vec3(var5.x, 0.0, var5.z);
+                var6 = var6.lengthSqr() < 1.0E-4 ? new Vec3(0.0, 0.0, 1.0) : var6.normalize();
+                Vec3 var7 = new Vec3(-var6.z, 0.0, var6.x);
+                Vec3 var8 = new Vec3(0.0, 1.0, 0.0);
+                Vec3 var9;
+                Vec3 var10;
+                byte var11;
+                if (var3 < tFly()) {
+                    var11 = 1;
+                    double var12 = var3 / tFly();
+                    var9 = a.add(var5.scale(1.25 - 0.25 * var12)).add(var7.scale(0.35)).add(var8.scale(0.05));
+                    var10 = a.add(var7.scale(0.05));
+                } else if (var3 < tHold()) {
+                    var11 = 2;
+                    Vec3 var21 = a.lerp(b, (var3 - tFly()) / travel);
+                    var9 = var21.subtract(var6.scale(3.6)).add(var7.scale(2.3)).add(var8.scale(0.9));
+                    var10 = var21.add(var5.scale(3.0));
+                } else if (var3 < tCol()) {
+                    var11 = 3;
+                    double var22 = (var3 - tHold()) / 3.2;
+                    double var14 = BlackHoleShape.grow(var22);
+                    double var16 = 0.9 + var22 * 0.7;
+                    Vec3 var18 = var7.scale(Math.cos(var16)).add(var6.scale(-Math.sin(var16)));
+                    var9 = b.add(var18.scale(8.5 + 2.0 * var14)).add(var8.scale(-0.6));
+                    var10 = b.add(var8.scale(1.0 + 0.9 * var22));
+                } else {
+                    var11 = 4;
+                    double var23 = Math.min(1.0, (var3 - tCol()) / 2.2);
+                    Vec3 var25 = BlackHoleShape.center(b, rise, 1.0);
+                    var9 = b.subtract(var6.scale(12.0 + 3.0 * var23)).add(var7.scale(4.0)).add(var8.scale(1.0 + 1.0 * var23));
+                    var10 = var25;
                 }
-            }
 
-            boolean var24 = var10 != shot;
-            Vec3 var12 = !var24 && ArcanaCinematic.previous != null ? ArcanaCinematic.previous.lerp(var8, var10 == 2 ? 0.6 : 0.2) : var8;
-            shot = var10;
-            ArcanaCinematic.previous = var12;
-            ArmorStand var26 = ArcanaCinematic.camera;
-            var26.xo = var26.getX();
-            var26.yo = var26.getY();
-            var26.zo = var26.getZ();
-            var26.yRotO = var26.getYRot();
-            var26.xRotO = var26.getXRot();
-            var26.setPos(var12.x, var12.y - (double)var26.getEyeHeight(), var12.z);
-            Vec3 var14 = var9.subtract(var12);
-            float var27 = (float)(Math.toDegrees(Math.atan2(var14.z, var14.x)) - 90.0);
-            if (!var24) {
-                var27 = var26.getYRot() + Mth.wrapDegrees(var27 - var26.getYRot());
-            }
+                if (var1.level != null) {
+                    BlockHitResult var24 = var1.level.clip(new ClipContext(var10, var9, Block.VISUAL, Fluid.NONE, var2));
+                    if (var24.getType() != Type.MISS) {
+                        var9 = var24.getLocation().lerp(var10, 0.12);
+                    }
+                }
 
-            float var16 = (float)(-Math.toDegrees(Math.atan2(var14.y, var14.horizontalDistance())));
-            if (var24) {
-                var26.yRotO = var27;
-                var26.xRotO = var16;
-                var26.xo = var26.getX();
-                var26.yo = var26.getY();
-                var26.zo = var26.getZ();
+                CinemaFrame.place(var9, var10, 100 + var11, var11 == 2 ? 0.6 : 0.2);
             }
-
-            var26.setYRot(var27);
-            var26.setXRot(var16);
-            var26.setYHeadRot(var27);
-            var26.setYBodyRot(var27);
         }
     }
 

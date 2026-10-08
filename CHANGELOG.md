@@ -2,6 +2,12 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.5.5
+
+- Damage lines in every spell description (DamageInfo); cutscene camera placement (CinemaFrame); spell guide text rewritten.
+
+Code: added DamageInfo, client.CinemaFrame; changed ArcanaSpell, NewSpell, client.ArcanaKeys, client.BlackHoleCinema, client.CinemaDirector, client.SpellFx, mixin.CinematicMouseMixin, mixin.WeatherBarrierMixin.
+
 ## 1.5.4
 
 - Black Hole shape; effect fixes; seated flight tweak.

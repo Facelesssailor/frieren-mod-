@@ -64,6 +64,7 @@ public final class NewSpell extends AbstractSpell {
     public List<MutableComponent> getUniqueInfo(int var1, LivingEntity var2) {
         ArrayList var3 = new ArrayList();
         var3.add(Component.translatable("spell.frieren_arcana." + this.kind.path + ".summary"));
+        DamageInfo.add(var3, this, var1, var2);
         return var3;
     }
 
