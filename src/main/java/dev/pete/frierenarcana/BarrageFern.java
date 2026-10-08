@@ -70,25 +70,38 @@ public final class BarrageFern {
     private static void drawBend(ServerPlayer var0, ServerLevel var1, Vec3 var2, Vec3 var3, Vec3 var4, int var5) {
         Vec3 var6 = new Vec3(-var3.z, 0.0, var3.x);
         var6 = var6.lengthSqr() < 1.0E-4 ? new Vec3(1.0, 0.0, 0.0) : var6.normalize();
-        double var7 = (var5 & 1) == 0 ? 1.0 : -1.0;
-        double var9 = 2.2 + (double)(var5 % 5) * 0.45;
-        Vec3 var11 = var2.add(var6.scale(0.35 * -var7)).add(0.0, -0.3, 0.0).add(var3.scale(0.4));
-        Vec3 var12 = var11.add(var6.scale(var7 * var9)).add(0.0, 1.2 + (double)(var5 % 3) * 0.5, 0.0).add(var3.scale(2.0));
-        Vec3 var13 = var4.add(var6.scale(-var7 * var9 * 0.6)).add(0.0, 1.0, 0.0).subtract(var4.subtract(var11).normalize().scale(3.0));
-        byte var14 = 9;
-        Vec3 var15 = var11;
+        Vec3 var7 = var6.cross(var3).normalize();
+        if (var7.y < 0.0) {
+            var7 = var7.scale(-1.0);
+        }
 
-        for (int var16 = 1; var16 <= var14; var16++) {
-            double var17 = (double)var16 / (double)var14;
-            double var19 = 1.0 - var17;
-            Vec3 var21 = var11.scale(var19 * var19 * var19)
-                .add(var12.scale(3.0 * var19 * var19 * var17))
-                .add(var13.scale(3.0 * var19 * var17 * var17))
-                .add(var4.scale(var17 * var17 * var17));
-            double var22 = Math.sin(var17 * Math.PI * 3.0 + (double)var5) * 0.18 * Math.sin(var17 * Math.PI);
-            var21 = var21.add(var6.scale(var22)).add(0.0, var22 * 0.6, 0.0);
-            ArcanaNetwork.magicBeam(var1, var15, var21, 1);
-            var15 = var21;
+        double var8 = var0.getRandom().nextDouble() < 0.5 ? 1.0 : -1.0;
+        Vec3 var10 = var2.add(var3.scale(0.9 + var0.getRandom().nextDouble() * 1.3))
+            .add(var6.scale(var8 * (0.9 + var0.getRandom().nextDouble() * 1.7)))
+            .add(var7.scale(-0.35 + var0.getRandom().nextDouble() * 1.6));
+        Vec3 var11 = var4.subtract(var10);
+        double var12 = var11.length();
+        if (var12 < 0.5) {
+            ArcanaNetwork.magicBeam(var1, var10, var4, 6);
+        } else {
+            Vec3 var14 = var11.scale(1.0 / var12);
+            Vec3 var15 = var10.add(var3.scale(Math.min(3.0, var12 * 0.3))).add(var6.scale(var8 * 0.5));
+            Vec3 var16 = var4.subtract(var14.scale(Math.min(3.0, var12 * 0.3))).add(var7.scale(0.4 * (var0.getRandom().nextDouble() - 0.5)));
+            byte var17 = 9;
+            Vec3 var18 = var10;
+
+            for (int var19 = 1; var19 <= var17; var19++) {
+                double var20 = (double)var19 / (double)var17;
+                double var22 = 1.0 - var20;
+                Vec3 var24 = var10.scale(var22 * var22 * var22)
+                    .add(var15.scale(3.0 * var22 * var22 * var20))
+                    .add(var16.scale(3.0 * var22 * var20 * var20))
+                    .add(var4.scale(var20 * var20 * var20));
+                double var25 = Math.sin(var20 * Math.PI * 3.0 + (double)var5) * 0.14 * Math.sin(var20 * Math.PI);
+                var24 = var24.add(var6.scale(var25)).add(0.0, var25 * 0.6, 0.0);
+                ArcanaNetwork.magicBeam(var1, var18, var24, var19 == 1 ? 6 : 1);
+                var18 = var24;
+            }
         }
     }
 }

@@ -27,6 +27,7 @@ public final class SpellFx {
             case 5:
                 return 0.9;
             case 6:
+                return 0.6;
             case 7:
             case 8:
             case 9:
@@ -295,7 +296,6 @@ public final class SpellFx {
                             fern(var0, var1, var7, handStart(var3, var11), var4, var11, var5, var12);
                             return true;
                         case 3:
-                        case 6:
                         case 7:
                         case 8:
                         case 9:
@@ -310,6 +310,13 @@ public final class SpellFx {
                             return true;
                         case 5:
                             waterStream(var0, var1, var7, handStart(var3, var11), var4, var5, var12);
+                            return true;
+                        case 6:
+                            fern(var0, var1, var7, var3, var4, var11, Math.min(var5, 0.45), 0.45);
+                            float var19 = env(var5, 0.6, 0.02, 0.35);
+                            castCircle(var0, var1, var7, var3, var11, 0.42, var5, 0.9F, 0.94F, 1.0F, var19);
+                            PixelFx.sprite(var3, 0.9, 4, 0.75F, 0.82F, 1.0F, 0.6F * var19);
+                            PixelFx.sprite(var3, 0.5, 48 + Math.min(3, (int)(var5 * 12.0)), 0.95F, 0.97F, 1.0F, var19 * (float)clamp(1.0 - var5 * 3.0));
                             return true;
                         case 10:
                             cut(var0, var1, var7, handStart(var3, var11), var4, var11, var5, var12);

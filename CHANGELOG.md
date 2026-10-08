@@ -2,6 +2,12 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.4.5
+
+- Barrage tuning.
+
+Code: changed BarrageFern, client.SpellFx.
+
 ## 1.4.4
 
 - Barrage tuning.
