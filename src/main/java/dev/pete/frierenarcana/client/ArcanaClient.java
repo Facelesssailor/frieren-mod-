@@ -195,7 +195,7 @@ public final class ArcanaClient {
                 }
 
                 long var22 = System.nanoTime();
-                FRACTURES.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > 15.3);
+                FRACTURES.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > 16.1);
 
                 for (ArcanaClient.Fracture var12 : FRACTURES) {
                     fracture(var6, var4, var12, var7, (double)(var22 - var12.startNanos) / 1.0E9);

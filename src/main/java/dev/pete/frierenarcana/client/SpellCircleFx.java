@@ -617,7 +617,7 @@ public final class SpellCircleFx {
             }
         }
 
-        double var29 = var7 == null ? -1.0 : (double)(var5 - var7.startNanos()) / 1.0E9 - 1.8;
+        double var29 = var7 == null ? -1.0 : (double)(var5 - var7.startNanos()) / 1.0E9 - 2.6;
         if (ArcanaCinematic.release == 0L) {
             double var10000 = -1.0;
         } else {

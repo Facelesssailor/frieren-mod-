@@ -5,9 +5,9 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 
 public final class BreakerFx {
-    public static final double NEEDLE = 1.8;
-    public static final double LIFE = 15.3;
-    public static final double BEAM_LIFE = 4.4;
+    public static final double NEEDLE = 2.6;
+    public static final double LIFE = 16.1;
+    public static final double BEAM_LIFE = 5.2;
     static final double CRACK_END = 3.0;
     static final double SHATTER = 3.1;
     public static final double PINCH = 0.4;
@@ -102,22 +102,22 @@ public final class BreakerFx {
 
     public static void beam(VertexConsumer var0, Matrix4f var1, Vec3 var2, Vec3 var3, double var4) {
         Vec3 var6 = ArcanaClient.camera();
-        if (var6 != null && !(var4 > 4.4) && !(var4 < 0.4)) {
+        if (var6 != null && !(var4 > 5.2) && !(var4 < 0.4)) {
             Vec3 var7 = ArcanaCinematic.breakerActive() ? CinemaDirector.lockedLook() : Vec3.ZERO;
             var7 = new Vec3(var7.x, 0.0, var7.z);
             var7 = var7.lengthSqr() < 1.0E-4 ? Vec3.ZERO : var7.normalize().scale(0.42);
             var2 = var2.add(var7.x, -0.57, var7.z);
-            double var8 = Math.min(1.0, (var4 - 0.4) / 1.4);
+            double var8 = Math.min(1.0, (var4 - 0.4) / 2.2);
             double var10 = Math.pow(var8, 1.6);
             double var12 = sstep(0.0, 0.6, var4 - 0.4);
-            float var14 = (float)(var4 < 3.4000000000000004 ? 1.0 : Math.max(0.0, 1.0 - (var4 - 1.8 - 1.6) / 1.0000000000000004));
+            float var14 = (float)(var4 < 4.2 ? 1.0 : Math.max(0.0, 1.0 - (var4 - 2.6 - 1.6) / 1.0));
             float var15 = (float)(0.9 + 0.1 * Math.sin(var4 * 37.0));
             Vec3 var16 = var2.lerp(var3, var10);
-            if (var4 > 1.8) {
-                var16 = var3.add(0.0, Math.min(70.0, (var4 - 1.8) * 55.0), 0.0);
+            if (var4 > 2.6) {
+                var16 = var3.add(0.0, Math.min(70.0, (var4 - 2.6) * 55.0), 0.0);
             }
 
-            Vec3[] var17 = var4 > 1.8 ? new Vec3[]{var2, var3, var16} : new Vec3[]{var2, var16};
+            Vec3[] var17 = var4 > 2.6 ? new Vec3[]{var2, var3, var16} : new Vec3[]{var2, var16};
             SpellFx.tube(var0, var1, var6, new Vec3[]{var2, var2.lerp(var16, 0.25)}, 0.05 + 0.85 * var12, 0.35F, 1.0F, 0.6F, 0.1F * var14);
             SpellFx.tube(var0, var1, var6, var17, 0.04 + 0.38 * var12, 0.35F, 1.0F, 0.6F, 0.12F * var14 * var15);
             SpellFx.tube(var0, var1, var6, var17, 0.16, 0.72F, 1.0F, 0.86F, 0.5F * var14);
@@ -135,8 +135,8 @@ public final class BreakerFx {
 
             float var26 = (float)(0.85 + 0.15 * Math.sin(var4 * 22.0));
             sparkle(var0, var1, var6, var2, 1.6 * (double)var26 * (0.4 + 0.6 * var12), 0.9F, 1.0F, 0.94F, 0.9F * var14);
-            if (var4 >= 1.8) {
-                double var27 = var4 - 1.8;
+            if (var4 >= 2.6) {
+                double var27 = var4 - 2.6;
                 sparkle(var0, var1, var6, var3, (2.6 + 0.6 * Math.sin(var4 * 18.0)) * (double)var14, 1.0F, 1.0F, 1.0F, 0.95F * var14);
                 disc(var0, var1, var6, var3, 2.0 + var27 * 2.0, 0.45F, 1.0F, 0.65F, 0.45F * var14);
             }
@@ -145,7 +145,7 @@ public final class BreakerFx {
 
     static double remap(ArcanaClient.Fracture var0, double var1) {
         if (!var0.field().defensive()) {
-            return var1 - 1.8;
+            return var1 - 2.6;
         } else {
             return var1 < 0.3 ? var1 * 10.333333333333334 : 3.1 + (var1 - 0.3) * 1.8;
         }
@@ -156,12 +156,18 @@ public final class BreakerFx {
         if (var7 != null) {
             boolean var8 = var2.field().defensive();
             var5 = remap(var2, var5);
+            if (!var8 && var5 >= 3.1 && var5 < 4.1) {
+                BreakerSound.shatter(var2);
+            }
+
             Vec3 var9 = var2.field().center();
             double var10 = (double)var2.field().radius();
             Vec3 var12 = var2.impact();
             if (var5 < 0.0) {
                 if (!var8) {
-                    BarrierLook.shell(var0, var1, var9, var10, var7, 1.0F, 1.0F);
+                    double var30 = var5 + 2.6;
+                    double var32 = Math.max(0.0, Math.min(1.0, (var30 - 0.4) / 2.2));
+                    BarrierLook.shellFalling(var0, var1, var9, var10, var7, 1.0F, (float)(0.45 + 0.55 * var32), var32);
                 }
             } else {
                 if (var5 < 3.4) {
@@ -174,25 +180,51 @@ public final class BreakerFx {
                     cracks(var0, var1, var7, var9, var10, var12, var5, var14);
                 }
 
-                double var24 = var5 - 3.0;
-                if (var24 > 0.0 && var24 < 0.8) {
-                    float var15 = (float)(Math.sin(Math.min(1.0, var24 / 0.8) * Math.PI) * 0.9);
-                    disc(var0, var1, var7, var12, var10 * 0.35 + var24 * var10 * 0.6, 0.85F, 1.0F, 0.92F, var15 * 0.5F);
+                double var29 = var5 - 3.0;
+                if (var29 > 0.0 && var29 < 0.8) {
+                    float var15 = (float)(Math.sin(Math.min(1.0, var29 / 0.8) * Math.PI) * 0.9);
+                    disc(var0, var1, var7, var12, var10 * 0.35 + var29 * var10 * 0.6, 0.85F, 1.0F, 0.92F, var15 * 0.5F);
                     sparkle(var0, var1, var7, var12, var10 * 0.25, 1.0F, 1.0F, 1.0F, var15);
                 }
 
-                BreakerFx.Shard var25 = new BreakerFx.Shard();
-                int var16 = var2.field().defensive() ? defCount(var10) : shardCount(var10);
+                double var31 = var5 - 3.1;
+                if (!var8 && var31 > 0.0 && var31 < 9.5) {
+                    haze(var0, var1, var7, var9, var10, var31, var3);
+                }
 
-                for (int var17 = 0; var17 < var16; var17++) {
-                    if (shard(var17, var16, var9, var10, var12, var5, var25)) {
-                        double var18 = hash(var17, 9) * 6.2831 + var5 * 0.5;
-                        float var20 = (float)(0.55 + 0.45 * Math.cos(var18));
-                        float var21 = (float)(0.55 + 0.45 * Math.cos(var18 - 2.1));
-                        float var22 = (float)(0.55 + 0.45 * Math.cos(var18 + 2.1));
-                        quad(var0, var1, var7, var25, var20, var21, var22, var25.alpha * 0.16F);
-                        if (var17 % 9 == 0 && var25.facet > 0.85) {
-                            sparkle(var0, var1, var7, var25.p0, var25.size * 0.8, 1.0F, 1.0F, 1.0F, var25.alpha * (float)((var25.facet - 0.85) / 0.15));
+                BreakerFx.Shard var17 = new BreakerFx.Shard();
+                int var18 = var2.field().defensive() ? defCount(var10) : shardCount(var10);
+
+                for (int var19 = 0; var19 < var18; var19++) {
+                    if (shard(var19, var18, var9, var10, var12, var5, var17)) {
+                        double var20 = hash(var19, 9) * 6.2831 + var5 * 0.5;
+                        float var22 = (float)(0.72 + 0.28 * Math.cos(var20));
+                        float var23 = (float)(0.7 + 0.28 * Math.cos(var20 - 2.1));
+                        float var24 = (float)(0.8 + 0.2 * Math.cos(var20 + 2.1));
+                        if (var8) {
+                            var22 = 0.78F;
+                            var23 = 0.95F;
+                            var24 = 1.0F;
+                        }
+
+                        if (Math.abs(var23 - 0.9F) < 0.012F) {
+                            var23 = 0.925F;
+                        }
+
+                        quad(var0, var1, var7, var17, var22, var23, var24, var17.alpha * (var8 ? 0.1F : 0.18F));
+                        float var25 = var17.alpha * (var8 ? 0.85F : 0.3F);
+                        double var26 = Math.max(0.025, var17.size * (var8 ? 0.035 : 0.025));
+                        ribbon(var0, var1, var7, var17.p0, var17.p1, var26, 0.86F, 0.97F, 1.0F, var25);
+                        ribbon(var0, var1, var7, var17.p1, var17.p2, var26, 0.86F, 0.97F, 1.0F, var25);
+                        if (var17.p3 != var17.p2) {
+                            ribbon(var0, var1, var7, var17.p2, var17.p3, var26, 0.86F, 0.97F, 1.0F, var25);
+                            ribbon(var0, var1, var7, var17.p3, var17.p0, var26, 0.86F, 0.97F, 1.0F, var25);
+                        } else {
+                            ribbon(var0, var1, var7, var17.p2, var17.p0, var26, 0.86F, 0.97F, 1.0F, var25);
+                        }
+
+                        if (var19 % 9 == 0 && var17.facet > 0.85) {
+                            sparkle(var0, var1, var7, var17.p0, var17.size * 0.8, 1.0F, 1.0F, 1.0F, var17.alpha * (float)((var17.facet - 0.85) / 0.15));
                         }
                     }
                 }
@@ -254,6 +286,41 @@ public final class BreakerFx {
         }
     }
 
+    private static void haze(VertexConsumer var0, Matrix4f var1, Vec3 var2, Vec3 var3, double var4, double var6, double var8) {
+        double var10 = Math.min(1.0, var6 / 0.4) * (1.0 - sstep(3.5, 9.5, var6));
+        if (!(var10 <= 0.01)) {
+            double var12 = var4 * (1.0 + 0.015 * var6);
+
+            for (int var14 = 0; var14 < 10; var14++) {
+                for (int var15 = 0; var15 < 36; var15++) {
+                    double var16 = 0.12 + 0.88 * (double)var14 / 10.0;
+                    double var18 = 0.12 + 0.88 * (double)(var14 + 1) / 10.0;
+                    double var20 = (double)var15 * Math.PI * 2.0 / 36.0;
+                    double var22 = (double)(var15 + 1) * Math.PI * 2.0 / 36.0;
+                    double[][] var24 = new double[][]{{var16, var20}, {var16, var22}, {var18, var22}, {var18, var20}};
+
+                    for (double[] var28 : var24) {
+                        double var29 = var28[0];
+                        double var31 = Math.sqrt(Math.max(0.0, 1.0 - var29 * var29));
+                        double var33 = var3.x + Math.cos(var28[1]) * var31 * var12;
+                        double var35 = var3.y + var29 * var12;
+                        double var37 = var3.z + Math.sin(var28[1]) * var31 * var12;
+                        double var39 = 0.9 * var29 + 0.12 * Math.sin(3.0 * var28[1] + var6 * 0.3) + 0.05 * var8;
+                        float var41 = (float)(0.74 + 0.26 * Math.cos(6.2831 * var39));
+                        float var42 = (float)(0.74 + 0.26 * Math.cos(6.2831 * (var39 - 0.33)));
+                        float var43 = (float)(0.8 + 0.2 * Math.cos(6.2831 * (var39 + 0.33)));
+                        if (Math.abs(var42 - 0.9F) < 0.012F) {
+                            var42 = 0.925F;
+                        }
+
+                        float var44 = (float)(0.13 * var10 * sstep(0.12, 0.45, var29));
+                        v(var0, var1, var2, var33, var35, var37, var41, var42, var43, var44);
+                    }
+                }
+            }
+        }
+    }
+
     public static void prisms(VertexConsumer var0, Matrix4f var1, ArcanaClient.Fracture var2, double var3) {
         Vec3 var5 = ArcanaClient.camera();
         if (var5 != null) {
@@ -296,14 +363,14 @@ public final class BreakerFx {
             if (var27 < 0.0) {
                 return false;
             } else {
-                double var29 = 7.699999999999999 + 3.2 * hash(var0, 4);
+                double var29 = 9.1 + 3.5 * hash(var0, 4);
                 float var31 = (float)(Math.min(1.0, var27 / 0.15) * Math.max(0.0, Math.min(1.0, (var29 - var6) / 1.4)));
                 if (var31 <= 0.004F) {
                     return false;
                 } else {
                     double var32 = 0.25 + 0.9 * hash(var0, 1);
-                    double var34 = 0.8 + 0.9 * hash(var0, 2);
-                    double var36 = Math.sin(var27 * (0.8 + hash(var0, 7)) + (double)var0) * 0.35 * var27 / (1.0 + var27);
+                    double var34 = (0.8 + 0.9 * hash(var0, 2)) * Math.max(1.0, var3 / 16.0);
+                    double var36 = Math.sin(var27 * (0.8 + hash(var0, 7)) + (double)var0) * 0.9 * var27 / (1.0 + var27);
                     Vec3 var38 = var21.cross(Math.abs(var9) < 0.95 ? new Vec3(0.0, 1.0, 0.0) : new Vec3(1.0, 0.0, 0.0)).normalize();
                     Vec3 var39 = var21.cross(var38);
                     Vec3 var40 = var2.add(var21.scale(var3 + var32 * var27)).add(var38.scale(var36)).add(0.0, -0.5 * var34 * var27 * var27 * 0.6, 0.0);
@@ -312,11 +379,12 @@ public final class BreakerFx {
                     Vec3 var45 = var38.scale(Math.cos(var41)).add(var39.scale(Math.sin(var41)));
                     Vec3 var46 = var39.scale(Math.cos(var41)).subtract(var38.scale(Math.sin(var41)));
                     var46 = var46.scale(Math.cos(var43)).add(var21.scale(Math.sin(var43)));
-                    double var47 = Math.max(0.45, Math.min(3.6, var3 * 0.075)) * (0.45 + 0.9 * hash(var0, 10));
+                    double var47 = Math.max(0.6, Math.min(4.0, var3 * 0.09)) * (0.45 + 0.9 * hash(var0, 10));
                     boolean var49 = hash(var0, 11) > 0.45;
                     double var50 = hash(var0, 12);
                     double var52 = hash(var0, 13);
                     double var54 = hash(var0, 14);
+                    var45 = var45.scale(1.5);
                     var8.p0 = var40.add(var45.scale(var47 * (0.7 + 0.5 * var50)));
                     var8.p1 = var40.add(var45.scale(-var47 * 0.5 * (0.6 + var52))).add(var46.scale(var47 * (0.6 + 0.4 * var54)));
                     var8.p2 = var40.add(var45.scale(-var47 * 0.4 * (0.6 + var54))).add(var46.scale(-var47 * (0.5 + 0.5 * var50)));
@@ -325,9 +393,17 @@ public final class BreakerFx {
                     Vec3 var57 = var45.cross(var46).normalize();
                     double var58 = var56 == null ? 0.5 : Math.abs(var57.dot(var56.subtract(var40).normalize()));
                     var8.facet = Math.pow(var58, 3.0);
-                    var8.alpha = var31;
-                    var8.size = var47;
-                    return true;
+                    if (var56 != null) {
+                        var31 *= (float)sstep(1.5, 6.0, var56.distanceTo(var40));
+                    }
+
+                    if (var31 <= 0.004F) {
+                        return false;
+                    } else {
+                        var8.alpha = var31;
+                        var8.size = var47;
+                        return true;
+                    }
                 }
             }
         }

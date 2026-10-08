@@ -199,5 +199,7 @@
   "info.frieren_arcana.damage_black_hole": "%s damage every 0.5 s inside it, %s when it collapses",
   "info.frieren_arcana.damage_cone": "%s damage to everything thrown",
   "info.frieren_arcana.heals": "Heals %s health, plus Regeneration",
-  "info.frieren_arcana.no_damage_hold": "No damage; holds the target for %s s"
+  "info.frieren_arcana.no_damage_hold": "No damage; holds the target for %s s",
+  "item.frieren_arcana.guide_book": "Frieren: Magic Compendium",
+  "item.frieren_arcana.guide_book.tooltip": "Right-click to read about every spell, item and keybinding"
 }

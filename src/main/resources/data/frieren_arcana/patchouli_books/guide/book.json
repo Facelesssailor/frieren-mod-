@@ -4,7 +4,6 @@
   "subtitle": "Spells of a thousand-year journey",
   "use_resource_pack": true,
   "show_progress": false,
-  "creative_tab": "frieren_arcana:arcana",
   "model": "patchouli:book_green",
   "book_texture": "patchouli:textures/gui/book_green.png",
   "version": "0"

@@ -340,7 +340,7 @@ public final class ArcanaSpell extends AbstractSpell {
                         ArcanaNetwork.beam(var6.serverLevel(), var9, var14, true);
                         ArcanaNetwork.shatter(var6.serverLevel(), var15, var14);
                         BarrierData.get(var6.serverLevel()).remove(var6.serverLevel(), var15.id, false);
-                        var6.serverLevel().playSound(null, BlockPos.containing(var14), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 4.0F, 0.55F);
+                        var6.serverLevel().playSound(null, BlockPos.containing(var14), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 4.0F, 0.55F);
                         break;
                     case SIGHT:
                     case FLIGHT:

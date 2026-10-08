@@ -2,6 +2,15 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.5.8
+
+- Built-in guide book, the Magic Compendium, that works without Patchouli.
+- Barrier shatter sound; barrier break visual fixes.
+
+Code: added GuideBook, GuideBookItem, client.BreakerSound, client.GuideBookClient; changed ArcanaSpell, client.ArcanaClient, client.BarrierLook, client.BreakerFx, client.CinemaDirector, client.CinemaOverlay, client.SpellCircleFx, client.SpellFx.
+
+Resources: added guide/en_us.txt, models/item/guide_book.json, textures/item/guide_book.png, data/advancement/grant_compendium.json; changed shaders/core/arcana_energy.fsh, shaders/core/arcana_refraction.fsh, data/loot_table/grant/guide_book.json, data/patchouli_books/guide/book.json, data/recipe/guide_book.json; removed data/advancement/grant_guide_book.json.
+
 ## 1.5.7
 
 - Patchouli guide book content.

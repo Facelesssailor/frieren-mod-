@@ -1,0 +1,1584 @@
+§2§lFrieren:
+Magic Compendium§r
+
+§oSpells of a
+thousand-year
+journey§r
+
+§8Every spell, item and
+keybinding of Frieren
+Arcana. Click any
+underlined name to
+jump to it.§r
+@@page
+§lContents§r
+
+[[3:Getting Started]]
+[[22:Offensive Magic]]
+[[80:Support and Utility]]
+[[106:Barriers]]
+[[117:Items]]
+@@page
+§2§lGetting Started§r
+§oHow magic works in
+this mod: casting,
+keybindings, spell
+power, cutscenes and
+compatibility.§r
+
+[[5:Learning and Casting]]
+[[9:Keybindings]]
+[[13:Spell Power and]]
+[[13:Damage]]
+[[16:Cutscenes]]
+[[18:Spell Circles]]
+@@page
+[[20:Compatibility]]
+
+[[2:< Contents]]
+@@page
+§2§lLearning and
+Casting§r
+All spells in this book
+are Iron's Spells 'n
+Spellbooks spells.
+Find or craft their
+scrolls, scribe them
+into a spellbook at an
+Inscription Table,
+equip the book and
+cast with Iron's §lCast
+Selected Spell§r key
+(V by default) or the
+@@page
+spell wheel (R).
+
+Each spell has a
+minimum rarity: a
+scroll of lower rarity
+cannot hold it. Higher
+spell levels raise
+damage, radius and
+duration and cost a
+little more mana.
+
+Spells with a §lLong§r
+cast keep you casting
+@@page
+for their cast time
+first. §lToggle§r spells
+turn on with one cast
+and off with the next.
+Barrage stops when
+you cast it again,
+release right-click
+with a staff, or press
+Stop.
+
+Tooltips in the
+spellbook show each
+spell's damage at
+@@page
+your current spell
+power.
+
+[[3:< Getting Started]]
+@@page
+§2§lKeybindings§r
+§lFrieren: Magic§r
+category in Controls:
+
+- §lN§r Cycle Zoltraak
+mode (single, barrage,
+heavy)
+- §lY§r Cast or toggle
+the selected Zoltraak
+mode
+- §lB§r Stop the barrage
+or cancel a heavy
+charge
+@@page
+- §lK§r or Esc: skip a
+spell cutscene (the
+spell still happens)
+- §lU§r Throw the target
+of Object Levitation
+
+In big modpacks
+several mods may
+want the same key.
+NeoForge gives a key
+press to only one of
+them, so a clash with
+@@page
+Iron's cast key can
+stop spells from
+casting at all.
+
+The first time you
+join a world, this mod
+moves any default
+key that clashes with
+Iron's cast, spell
+wheel or quick-cast
+keys, and any of its
+own keys that clash,
+to a free key, and
+@@page
+tells you in chat what
+moved. Keys you set
+yourself are never
+changed. Delete
+§oconfig/frieren_arcan
+a-keyfix.txt§r to run it
+again.
+
+[[3:< Getting Started]]
+@@page
+§2§lSpell Power and
+Damage§r
+Spell power for these
+spells is 8 at level 1,
+plus 3 for each level
+after, multiplied by
+your Iron's spell
+power and school
+power bonuses from
+gear and attributes.
+
+Each spell's damage
+is a multiple of that
+@@page
+power, shown on its
+page and in its tooltip.
+Magic resistance and
+Iron's own damage
+rules apply as usual.
+
+Physical spells
+(Balgrant, Doragate
+and the golem fist)
+count as stronger
+against defensive
+magic, as in the anime:
+defensive barriers
+@@page
+are weak to mass.
+
+Terrain and barriers
+block beams. Spells
+never grief terrain
+unless noted.
+
+[[3:< Getting Started]]
+@@page
+§2§lCutscenes§r
+Two spells play a
+short cinematic for
+the caster: the
+§lBarrier Breaker§r
+(about 25 s) and the
+§lBlack Hole§r (about 8
+s). While one plays,
+your movement and
+mouse are locked so
+the camera cannot be
+dragged.
+
+@@page
+Press §lK§r or §lEsc§r to
+skip at any time.
+Skipping only ends the
+camera: the spell still
+happens exactly the
+same for everyone.
+
+[[3:< Getting Started]]
+@@page
+§2§lSpell Circles§r
+Casting draws a magic
+circle in the anime's
+style: a double outer
+ring, a band of
+ancient script, a fine
+tick ring and node
+circles, with a figure
+in the middle that
+shows the spell's
+family.
+
+Aimed spells draw it in
+@@page
+front of you, area
+spells on the ground,
+Catastravia overhead
+and Judradjim high in
+the sky above its
+target. The golem's
+circle is a violet
+sunburst that opens
+under the target
+before the fist
+breaks through.
+
+[[3:< Getting Started]]
+@@page
+§2§lCompatibility§r
+Requires Iron's
+Spells 'n Spellbooks
+3.16, Iron's Lib,
+GeckoLib, Curios and
+Player Animator.
+Tested against Sable,
+Create Aeronautics
+ships, Zoltraak
+Cinematic and Frieren
+Void.
+
+This book needs
+@@page
+Patchouli. You get one
+the first time you join
+a world; craft
+another from a book
+and an amethyst
+shard.
+
+[[3:< Getting Started]]
+@@page
+§2§lOffensive Magic§r
+§oAttack spells, from
+ordinary Zoltraak to
+the Height of Magic.§r
+
+[[25:Zoltraak]]
+[[28:Zoltraak — Barrage]]
+[[31:Zoltraak — Heavy]]
+[[31:Blast]]
+[[34:Black Hole]]
+[[38:The Height of Magic]]
+[[41:Judradjim —]]
+[[41:Destructive Lightning]]
+@@page
+[[44:Vollzanbel — Hellfire]]
+[[44:Summoning]]
+[[47:Waldgose — Tornado]]
+[[50:Daosdorg — Fire-Wind]]
+[[53:Catastravia — Lights]]
+[[53:of Judgment]]
+[[56:Reelseiden — Cutting]]
+[[56:Magic]]
+[[59:Nephtear — Ice]]
+[[59:Spears]]
+[[62:Reamstroha — Water]]
+[[62:Control]]
+[[65:Bargland — Earth]]
+@@page
+[[65:Control]]
+[[68:Doragate — Stone]]
+[[68:Bullets]]
+[[71:Jubelade — Steel]]
+[[71:Petals]]
+[[74:Golem Magic — Stone]]
+[[74:Fist]]
+[[77:Goddess Magic —]]
+[[77:Three Spears]]
+
+[[2:< Contents]]
+@@page
+§2§lZoltraak§r
+§oFocused
+single-target magic
+beam.§r
+
+Ordinary Offensive
+Magic: a cylindrical
+beam of white killing
+magic fired from a
+small circle at your
+hand. Bends slightly
+onto a creature
+under your
+@@page
+crosshair. Blocked by
+terrain and barriers.
+Damage: 1x spell
+power to the first
+target hit.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Uncommon
+and up
+§lLevels:§r 5
+§lMana:§r 25 (+10 per
+level)
+@@page
+§lCooldown:§r 3 s
+§lCast:§r Instant
+§lEffect:§r 1x spell
+power to the first
+creature hit
+§oBefore gear bonuses:
+8.0 at level 1, 20.0 at
+level 5.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lZoltraak —
+Barrage§r
+§oContinuous barrage
+until exhaustion.§r
+
+Toggle a rapid stream
+of about seven
+focused shots per
+second, Fern-style.
+Continuously drains
+mana and suppresses
+regeneration until
+stopped or
+@@page
+exhausted. Keep the
+spell equipped.
+Damage: 0.33x spell
+power per shot, about
+seven shots a
+second.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Rare and up
+§lLevels:§r 5
+§lMana:§r 25 to start,
+then a steady drain
+@@page
+while it fires
+§lCooldown:§r 3 s
+§lCast:§r Toggle
+§lEffect:§r 0.33x spell
+power per shot, about
+7 shots a second
+§oBefore gear bonuses:
+2.6 at level 1, 6.6 at
+level 5.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lZoltraak — Heavy
+Blast§r
+§oWide endgame blast;
+long charge.§r
+
+A compressed, much
+thicker Zoltraak with
+a long minimum charge
+and an endgame mana
+requirement.
+Multi-target. Terrain
+and barriers stop it.
+Damage: the
+@@page
+configured
+heavy-beam damage
+(100 by default) x
+your spell-power
+bonus, to everything
+in the beam.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Legendary
+and up
+§lLevels:§r 1
+§lMana:§r 450 (config),
+@@page
+and 500+ maximum
+mana needed
+§lCooldown:§r 60 s
+§lCast:§r Long (charge)
+§lEffect:§r 100 (config)
+x your spell-power
+bonus to everything
+in the beam
+
+[[22:< Offensive Magic]]
+@@page
+§2§lBlack Hole§r
+§oA collapsing black
+hole that drags foes
+in.§r
+
+The Spiegel copy's
+spell from ep. 26: a
+black core in a
+blazing corona forms
+at your fingertips,
+flies slowly along
+your aim dragging
+creatures and rubble
+@@page
+after it, crushes the
+rubble into a
+red-cracked mass,
+then collapses in a
+blast.
+
+Plays a short
+cutscene for the
+caster (K / Esc
+skips). Three levels
+widen the pull. Damage:
+0.35x spell power
+every half second to
+@@page
+anything inside it, then
+1.6x spell power within
+5 blocks when it
+collapses.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Epic and up
+§lLevels:§r 3
+§lMana:§r 110 (+15 per
+level)
+§lCooldown:§r 22 s
+§lCast:§r Instant
+@@page
+§lEffect:§r 0.35x spell
+power every 0.5 s
+inside it, 1.6x when it
+collapses (5-block
+blast)
+§oBefore gear bonuses:
+12.8 at level 1, 22.4 at
+level 3.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lThe Height of
+Magic§r
+§oInvisible telekinetic
+repulsion.§r
+
+Frieren's telekinetic
+repulsion (ep. 26): no
+mana can be sensed
+and nothing is seen
+but the air bending.
+Throws every foe in
+front of you across
+the field. One
+@@page
+legendary level.
+Damage: 0.5x spell
+power to everything
+thrown.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Legendary
+and up
+§lLevels:§r 1
+§lMana:§r 70
+§lCooldown:§r 12 s
+§lCast:§r Instant
+@@page
+§lEffect:§r 0.5x spell
+power to everything
+thrown
+§oBefore gear bonuses:
+4.0.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lJudradjim —
+Destructive
+Lightning§r
+§oWild purple lightning
+around the target.§r
+
+Frieren's destructive
+lightning: purple bolts
+that run wild around
+the target area while
+the caster is
+unharmed. Three
+levels increase
+@@page
+damage and radius.
+Damage: 2.2x spell
+power to everything
+within 1.5 + level
+blocks.
+
+§lAt a glance§r
+§lSchool:§r Lightning
+§lRarity:§r Epic and up
+§lLevels:§r 3
+§lMana:§r 130 (+10 per
+level)
+§lCooldown:§r 18 s
+@@page
+§lCast:§r Long, 1.5 s
+§lEffect:§r 2.2x spell
+power within 1.5 +
+level blocks
+§oBefore gear bonuses:
+17.6 at level 1, 30.8 at
+level 3.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lVollzanbel —
+Hellfire Summoning§r
+§oPillars of hellfire
+erupt at the target.§r
+
+Frieren's hellfire:
+pillars of fire erupt
+like molten lava at the
+target area. Three
+levels increase
+damage and radius.
+Ignites foes; leaves
+terrain intact. Damage:
+@@page
+2x spell power within
+2 + level blocks, and
+burning for 3 + level
+seconds.
+
+§lAt a glance§r
+§lSchool:§r Fire
+§lRarity:§r Epic and up
+§lLevels:§r 3
+§lMana:§r 120 (+10 per
+level)
+§lCooldown:§r 15 s
+§lCast:§r Long, 2 s
+@@page
+§lEffect:§r 2x spell
+power within 2 + level
+blocks, burning 3 +
+level s
+§oBefore gear bonuses:
+16.0 at level 1, 28.0 at
+level 3.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lWaldgose —
+Tornado§r
+§oWind burst; sets up
+Fire-Wind.§r
+
+Denken's tornado
+magic: a cyclone that
+damages and lifts
+foes. Five levels.
+Leaves a
+four-second window
+to turn it into
+Daosdorg. Damage:
+@@page
+0.8x spell power within
+2 + level blocks, and
+Levitation.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Rare and up
+§lLevels:§r 5
+§lMana:§r 60 (+10 per
+level)
+§lCooldown:§r 10 s
+§lCast:§r Instant
+§lEffect:§r 0.8x spell
+@@page
+power within 2 + level
+blocks, plus Levitation
+§oBefore gear bonuses:
+6.4 at level 1, 16.0 at
+level 5.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lDaosdorg —
+Fire-Wind§r
+§oIgnites your recent
+Tornado.§r
+
+Denken's follow-up:
+within four seconds
+of your Waldgose,
+turn its cyclone into
+a roaring fire
+tornado. Five levels.
+Does not set blocks
+on fire. Damage: 1.8x
+@@page
+spell power within 3 +
+level blocks of the
+Waldgose, and burning
+for 3 + level
+seconds.
+
+§lAt a glance§r
+§lSchool:§r Fire
+§lRarity:§r Epic and up
+§lLevels:§r 5
+§lMana:§r 95 (+10 per
+level)
+§lCooldown:§r 14 s
+@@page
+§lCast:§r Instant
+§lEffect:§r 1.8x spell
+power within 3 + level
+blocks of your
+Waldgose, burning 3 +
+level s
+§oBefore gear bonuses:
+14.4 at level 1, 36.0 at
+level 5.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lCatastravia —
+Lights of Judgment§r
+§oRain of exploding light
+arrows.§r
+
+Denken's rain of
+exploding arrows of
+light, falling from a
+circle above onto
+your line of fire. Five
+levels. Terrain and
+barriers stop it.
+Damage: 1.8x spell
+@@page
+power to everything
+along the line of fire.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Epic and up
+§lLevels:§r 5
+§lMana:§r 90 (+10 per
+level)
+§lCooldown:§r 10 s
+§lCast:§r Long, 1 s
+§lEffect:§r 1.8x spell
+power to everything
+@@page
+along the line of fire
+§oBefore gear bonuses:
+14.4 at level 1, 36.0 at
+level 5.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lReelseiden —
+Cutting Magic§r
+§oSweeping cutting
+magic.§r
+
+Übel's cutting magic: a
+near-invisible slash
+that cuts what you
+can imagine cutting,
+about five blocks.
+Five levels. Cannot
+cut barriers or
+terrain. Damage: 2.4x
+@@page
+spell power to
+everything in the cut
+(5 blocks).
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Epic and up
+§lLevels:§r 5
+§lMana:§r 60 (+10 per
+level)
+§lCooldown:§r 6 s
+§lCast:§r Instant
+§lEffect:§r 2.4x spell
+@@page
+power to everything
+in the 5-block cut
+§oBefore gear bonuses:
+19.2 at level 1, 48.0 at
+level 5.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lNephtear — Ice
+Spears§r
+§oSpread of freezing
+ice lances.§r
+
+Lawine's volley of
+large ice spears;
+damages, freezes and
+slows. Five levels
+increase power and
+spear count. Damage:
+0.6x spell power per
+spear, 2 + level
+@@page
+spears.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Uncommon
+and up
+§lLevels:§r 5
+§lMana:§r 35 (+10 per
+level)
+§lCooldown:§r 5 s
+§lCast:§r Instant
+§lEffect:§r 0.6x spell
+power per spear, 2 +
+@@page
+level spears
+§oBefore gear bonuses:
+4.8 at level 1, 12.0 at
+level 5.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lReamstroha —
+Water Control§r
+§oWater strike; nearby
+water required.§r
+
+Kanne's water magic:
+gathers nearby water
+into a huge sphere
+and slams it down.
+Needs existing water
+nearby (rain counts
+in canon; here water
+blocks within 5). Five
+@@page
+levels. Damage: 1.4x
+spell power to
+everything in the
+stream.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Rare and up
+§lLevels:§r 5
+§lMana:§r 45 (+10 per
+level)
+§lCooldown:§r 8 s
+§lCast:§r Instant
+@@page
+§lEffect:§r 1.4x spell
+power to everything
+in the stream
+§oBefore gear bonuses:
+11.2 at level 1, 28.0 at
+level 5.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lBargland — Earth
+Control§r
+§oEarth spikes launch
+nearby foes.§r
+
+Richter's earth magic:
+stone spikes drive up
+from the ground and
+launch nearby foes.
+Physical mass, so it
+wears down defensive
+magic fast. Five
+levels; terrain is left
+@@page
+intact. Damage: 1.3x
+spell power to
+everything within 3 +
+level blocks.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Rare and up
+§lLevels:§r 5
+§lMana:§r 50 (+10 per
+level)
+§lCooldown:§r 10 s
+§lCast:§r Instant
+@@page
+§lEffect:§r 1.3x spell
+power within 3 + level
+blocks
+§oBefore gear bonuses:
+10.4 at level 1, 26.0 at
+level 5.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lDoragate — Stone
+Bullets§r
+§oLevitated rocks flung
+like cannon shot.§r
+
+Ehre's stone magic:
+rocks lift beside you
+and are flung like
+cannon shot. Physical
+mass, so it wears
+down defensive magic
+fast. Five levels;
+terrain is not
+@@page
+harvested. Damage:
+0.65x spell power per
+rock, 2 + level rocks.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Uncommon
+and up
+§lLevels:§r 5
+§lMana:§r 40 (+10 per
+level)
+§lCooldown:§r 5 s
+§lCast:§r Instant
+@@page
+§lEffect:§r 0.65x spell
+power per rock, 2 +
+level rocks
+§oBefore gear bonuses:
+5.2 at level 1, 13.0 at
+level 5.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lJubelade — Steel
+Petals§r
+§oSteel-petal strike;
+flowers required.§r
+
+Scharf's spell: flower
+petals harden into
+razor steel blades.
+Requires nearby
+flower blocks or your
+flower field. Five
+levels. Does not
+consume flowers.
+@@page
+Damage: 1.3x spell
+power to everything
+in the stream of
+blades.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Rare and up
+§lLevels:§r 5
+§lMana:§r 45 (+10 per
+level)
+§lCooldown:§r 7 s
+§lCast:§r Instant
+@@page
+§lEffect:§r 1.3x spell
+power to everything
+in the stream of
+blades
+§oBefore gear bonuses:
+10.4 at level 1, 26.0 at
+level 5.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lGolem Magic —
+Stone Fist§r
+§oA stone fist erupts
+from the ground.§r
+
+Golem magic like the
+exam's golem bottles:
+a huge stone fist
+bursts from the
+ground at your
+target and launches
+everything above it.
+Physical mass breaks
+@@page
+defensive magic
+quickly. Three levels.
+Damage:
+
+1.5x spell power within
+2.2 + 0.5 x level
+blocks, launching
+targets upward.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Rare and up
+§lLevels:§r 3
+@@page
+§lMana:§r 55 (+15 per
+level)
+§lCooldown:§r 9 s
+§lCast:§r Instant
+§lEffect:§r 1.5x spell
+power within 2.2 + 0.5
+x level blocks
+§oBefore gear bonuses:
+12.0 at level 1, 21.0 at
+level 3.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lGoddess Magic —
+Three Spears§r
+§oThree lances of
+goddess light.§r
+
+Sein's goddess magic:
+three tight lances of
+light. Three levels
+increase power.
+Terrain and barriers
+still apply. Damage:
+0.9x spell power per
+spear, three spears.
+@@page
+§lAt a glance§r
+§lSchool:§r Holy
+§lRarity:§r Rare and up
+§lLevels:§r 3
+§lMana:§r 50 (+10 per
+level)
+§lCooldown:§r 7 s
+§lCast:§r Instant
+§lEffect:§r 0.9x spell
+power per spear,
+three spears
+§oBefore gear bonuses:
+@@page
+§o7.2 at level 1, 12.6 at
+level 3.§r
+
+[[22:< Offensive Magic]]
+@@page
+§2§lSupport and Utility§r
+§oFlight, sight, binding,
+healing and other
+magic that does not
+(mostly) hurt.§r
+
+[[82:Flight Magic]]
+[[85:Mana Sight]]
+[[87:Mana Concealment]]
+[[89:Jilwer — Swift]]
+[[89:Movement]]
+[[91:Sorganeil — Sight]]
+[[91:Binding]]
+@@page
+[[94:Diagoldze — Golden]]
+[[94:Curse]]
+[[97:Object Levitation]]
+[[100:Field of Flowers]]
+[[102:Goddess Magic —]]
+[[102:Healing]]
+[[104:Goddess Magic —]]
+[[104:Cleansing]]
+
+[[2:< Contents]]
+@@page
+§2§lFlight Magic§r
+§oStaff flight;
+double-tap jump.§r
+
+Hold a staff in either
+hand. Double-tap
+jump for ordinary
+flight. A staff
+appears beneath you.
+Mana drains only while
+flying.
+
+§lAt a glance§r
+@@page
+§lSchool:§r Evocation
+§lRarity:§r Rare and up
+§lLevels:§r 1
+§lMana:§r 30
+§lCooldown:§r 2 s
+§lCast:§r Toggle
+
+§lCrafting: Flight
+Staff§r
+- G A
+- S G
+S - -
+§lG§r Gold Ingot
+@@page
+§lA§r Amethyst Shard
+§lS§r Stick
+
+Any staff works; this
+one is easy to make.
+
+[[80:< Support and Utility]]
+@@page
+§2§lMana Sight§r
+§oShows nearby
+players' apparent
+mana.§r
+
+Toggle visible mana
+auras and read a
+targeted player's
+apparent Iron's
+Spellbooks mana.
+Concealment can fool
+this sight.
+
+@@page
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Rare and up
+§lLevels:§r 1
+§lMana:§r 20
+§lCooldown:§r 2 s
+§lCast:§r Toggle
+
+[[80:< Support and Utility]]
+@@page
+§2§lMana Concealment§r
+§oSuppresses your
+apparent mana aura.§r
+
+Toggle suppression
+of your visible mana
+aura. Your actual
+mana remains usable.
+Persists through
+logout.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+@@page
+§lRarity:§r Rare and up
+§lLevels:§r 1
+§lMana:§r 20
+§lCooldown:§r 2 s
+§lCast:§r Toggle
+
+[[80:< Support and Utility]]
+@@page
+§2§lJilwer — Swift
+Movement§r
+§oBrief burst of
+movement speed.§r
+
+Laufen's folk speed
+spell: a burst of
+movement too fast for
+the eye. Three levels
+increase speed and
+duration. Barriers
+still confine movement.
+
+@@page
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Uncommon
+and up
+§lLevels:§r 3
+§lMana:§r 30 (+10 per
+level)
+§lCooldown:§r 8 s
+§lCast:§r Instant
+
+[[80:< Support and Utility]]
+@@page
+§2§lSorganeil — Sight
+Binding§r
+§oBinds a target while
+you watch it.§r
+
+Wirbel's binding:
+paralyses one target
+while you keep it in
+sight; losing sight of
+it, death or logout
+releases it. Three
+levels extend the
+maximum hold. Deals no
+@@page
+damage; holds the
+target for 4 + 2 x
+level seconds while
+you keep it in sight.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Rare and up
+§lLevels:§r 3
+§lMana:§r 40 (+10 per
+level)
+§lCooldown:§r 12 s
+§lCast:§r Instant
+@@page
+§lEffect:§r No damage;
+holds the target 4 +
+2 x level s while you
+keep it in sight
+
+[[80:< Support and Utility]]
+@@page
+§2§lDiagoldze — Golden
+Curse§r
+§oGold creeps over and
+restrains a target.§r
+
+Manga spoiler: Macht's
+curse that turns
+things to gold. Here a
+10-second golden
+restraint rather than
+permanent
+transmutation. One
+legendary level. Deals
+@@page
+no damage; holds the
+target, turning to
+gold, for 10 seconds.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Legendary
+and up
+§lLevels:§r 1
+§lMana:§r 350
+§lCooldown:§r 60 s
+§lCast:§r Long, 5 s
+§lEffect:§r No damage; a
+@@page
+10 s golden restraint
+
+[[80:< Support and Utility]]
+@@page
+§2§lObject Levitation§r
+§oGrab and move
+targets; Throw (U)
+flings them.§r
+
+Channel to grab a
+creature or dropped
+item within 12/14/16
+blocks and move it
+with your aim. Uses
+Iron Telekinesis for
+creatures. Press
+Throw (U by default)
+@@page
+to throw the target.
+Costs 25 mana per
+channel pulse;
+releases when
+casting stops.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Uncommon
+and up
+§lLevels:§r 3
+§lMana:§r 25 per channel
+pulse
+@@page
+§lCooldown:§r 4 s
+§lCast:§r Continuous, 7 s
+
+[[80:< Support and Utility]]
+@@page
+§2§lField of Flowers§r
+§oCreates a cosmetic
+flower field.§r
+
+Flamme's spell to
+create a field of
+flowers, passed on to
+Frieren. Blossoms
+open across the
+ground for 15
+seconds. Three levels
+widen the field. No
+blocks are placed.
+@@page
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Common and
+up
+§lLevels:§r 3
+§lMana:§r 10 (+10 per
+level)
+§lCooldown:§r 3 s
+§lCast:§r Instant
+
+[[80:< Support and Utility]]
+@@page
+§2§lGoddess Magic —
+Healing§r
+§oHealing and brief
+regeneration.§r
+
+Goddess (priest)
+magic as used by
+Heiter and Sein: warm
+scripture light heals
+you and grants brief
+regeneration. Three
+levels. Heals 4 + 4 x
+level health, plus
+@@page
+Regeneration.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Rare and up
+§lLevels:§r 3
+§lMana:§r 50 (+10 per
+level)
+§lCooldown:§r 15 s
+§lCast:§r Instant
+§lEffect:§r Heals 4 + 4 x
+level health, plus
+Regeneration
+[[80:< Support and Utility]]
+@@page
+§2§lGoddess Magic —
+Cleansing§r
+§oRemoves harmful
+effects.§r
+
+Goddess magic that
+lifts afflictions:
+poison and wither;
+level II also slowness,
+level III blindness.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+@@page
+§lRarity:§r Rare and up
+§lLevels:§r 3
+§lMana:§r 40 (+10 per
+level)
+§lCooldown:§r 12 s
+§lCast:§r Instant
+
+[[80:< Support and Utility]]
+@@page
+§2§lBarriers§r
+§oExamination barriers,
+defensive magic, and
+how to break them.§r
+
+[[107:Examination Barrier]]
+[[109:Defensive Barrier]]
+[[111:Barrier Breaker]]
+[[114:Breaking Defensive]]
+[[114:Magic]]
+
+[[2:< Contents]]
+@@page
+§2§lExamination
+Barrier§r
+§oPersistent sealed
+round dome.§r
+
+A sealed, faintly
+green dome like
+Serie's barrier over
+the Grobe Basin.
+Blocks both
+directions, including
+its caster, and keeps
+out rain. Recast or
+@@page
+use the Release Sigil
+to dismiss.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Epic and up
+§lLevels:§r 5
+§lMana:§r 120 (+10 per
+level)
+§lCooldown:§r 30 s
+§lCast:§r Long, 2 s
+
+[[106:< Barriers]]
+@@page
+§2§lDefensive Barrier§r
+§oBlocks incoming magic
+and projectiles.§r
+
+Ordinary defensive
+magic: a sphere of
+hexagonal cells that
+disperses incoming
+spells. Weak to
+physical mass.
+Stronger spells
+crack or shatter it
+from the point of
+@@page
+impact. Recast to
+dismiss.
+
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Uncommon
+and up
+§lLevels:§r 5
+§lMana:§r 60 (+10 per
+level)
+§lCooldown:§r 10 s
+§lCast:§r Instant
+
+[[106:< Barriers]]
+@@page
+§2§lBarrier Breaker§r
+§oShatters the
+examination barrier
+above you.§r
+
+Frieren's unravelling
+of Serie's barrier
+(ep. 21). In her
+cupped hands a
+green and black
+non-Euclidean shape
+turns through itself
+and compresses, then
+@@page
+a single cone of light
+rises straight up into
+the dome; the barrier
+bands, cracks and
+shatters into falling
+shards.
+
+Examination barriers
+only; you must stand
+inside or beneath one.
+Needs full mana. K or
+Escape skips the
+camera.
+@@page
+§lAt a glance§r
+§lSchool:§r Evocation
+§lRarity:§r Legendary
+and up
+§lLevels:§r 1
+§lMana:§r your whole
+equipped mana
+capacity
+§lCooldown:§r 90 s
+§lCast:§r Long (10 s
+charge)
+
+[[106:< Barriers]]
+@@page
+§2§lBreaking
+Defensive Magic§r
+Defensive barriers
+have a level from
+their spell level
+(1-5). A spell striking
+one compares its
+level with the shield's:
+- clearly stronger:
+the shield shatters
+from the point of
+impact
+
+@@page
+- about equal: the
+spell is cancelled in a
+white flash and the
+shield wears
+- weaker: the shield
+holds, cracking more
+with each hit
+
+Physical spells
+(Balgrant, Doragate,
+golem fist) count as
+two levels higher.
+Your own shield
+@@page
+never blocks your
+own spells.
+
+Examination barriers
+cannot be broken this
+way: only the Barrier
+Breaker can open
+one.
+
+[[106:< Barriers]]
+@@page
+§2§lItems§r
+§oStaffs, barrier
+devices and sigils,
+with their recipes.§r
+
+[[118:Flight Staff]]
+[[120:Barrier Release Sigil]]
+[[122:Examination Barrier]]
+[[122:Devices]]
+
+[[2:< Contents]]
+@@page
+§2§lFlight Staff§r
+A simple staff. Holding
+any staff in either
+hand lets you use
+Flight Magic and fire
+the barrage from the
+hand.
+
+§lCrafting: Flight
+Staff§r
+- G A
+- S G
+S - -
+@@page
+§lG§r Gold Ingot
+§lA§r Amethyst Shard
+§lS§r Stick
+
+[[117:< Items]]
+@@page
+§2§lBarrier Release
+Sigil§r
+Use it to dismiss
+every barrier you
+own in this dimension
+at once.
+
+§lCrafting: Barrier
+Release Sigil§r
+- G -
+G A G
+- G -
+§lG§r Gold Ingot
+@@page
+§lA§r Amethyst Shard
+
+[[117:< Items]]
+@@page
+§2§lExamination
+Barrier Devices§r
+§lBarrier Devices§r
+Raise a great
+examination barrier
+without the spell. Use
+the device to form a
+barrier centred on
+you; use it again to
+release it. Each tier
+costs more mana and
+covers more ground.
+
+@@page
+§lTiers§r
+§lTier 1:§r radius 32
+blocks, 150 mana
+§lTier 2:§r radius 48
+blocks, 250 mana
+§lTier 3:§r radius 64
+blocks, 350 mana
+§lTier 4:§r radius 96
+blocks, 450 mana
+§lTier 5:§r radius 128
+blocks, 550 mana
+
+Radii are for the
+@@page
+default
+grandBarrierRadius
+of 128. World height
+and border limits still
+apply.
+
+§lCrafting:
+Examination
+Barrier Device —
+Tier 1§r
+G A G
+A E A
+G A G
+@@page
+§lG§r Gold Ingot
+§lA§r Amethyst Shard
+§lE§r Ender Pearl
+
+§lCrafting:
+Examination
+Barrier Device —
+Tier 2§r
+A M A
+M P M
+A M A
+§lA§r Amethyst Shard
+§lM§r Diamond
+@@page
+§lP§r Examination Barrier
+Device — Tier 1
+
+§lCrafting:
+Examination
+Barrier Device —
+Tier 3§r
+A M A
+M P M
+A M A
+§lA§r Amethyst Shard
+§lM§r Echo Shard
+§lP§r Examination Barrier
+@@page
+Device — Tier 2
+
+§lCrafting:
+Examination
+Barrier Device —
+Tier 4§r
+A M A
+M P M
+A M A
+§lA§r Amethyst Shard
+§lM§r Netherite Ingot
+§lP§r Examination Barrier
+Device — Tier 3
+@@page
+§lCrafting:
+Examination
+Barrier Device —
+Tier 5§r
+A M A
+M P M
+A M A
+§lA§r Amethyst Shard
+§lM§r Nether Star
+§lP§r Examination Barrier
+Device — Tier 4
+
+[[117:< Items]]

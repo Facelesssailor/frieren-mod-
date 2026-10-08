@@ -1,10 +1,4 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:mod_loaded",
-      "modid": "patchouli"
-    }
-  ],
   "type": "minecraft:advancement_reward",
   "pools": [
     {
@@ -12,15 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "patchouli:guide_book",
-          "functions": [
-            {
-              "function": "minecraft:set_components",
-              "components": {
-                "patchouli:book": "frieren_arcana:guide"
-              }
-            }
-          ]
+          "name": "frieren_arcana:guide_book"
         }
       ]
     }

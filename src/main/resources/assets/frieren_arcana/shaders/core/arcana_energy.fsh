@@ -30,16 +30,22 @@ void main() {
             float film = drift * 2.4 + fr * 1.7 + p.y * .025 + ArcanaTime * .03;
             vec3 oil = .55 + .45 * cos(6.2831 * (vec3(0.0, .33, .67) + film));
             col = mix(col, oil, k * (.22 + .45 * fr));
+            // Bold horizontal stripes like the struck dome in ep. 21: violet, lavender, green, lime, white and a little
+            // deep teal, uneven widths, edges softly wobbling; thin white filaments ride on top.
             float y = p.y;
-            float wob = noise(vec3(p.x * .05, y * .08, p.z * .05) + ArcanaTime * .03) * 1.6;
-            float fine = pow(sin(y * 3.3 + wob * 2.0) * .5 + .5, 7.0);
-            float mid = pow(sin(y * 1.15 - wob) * .5 + .5, 3.0);
-            float hue = sin(y * .42 + wob * .8 + ArcanaTime * .05) * .5 + .5;
-            vec3 green = vec3(.42, 1.0, .58), violet = vec3(.74, .40, 1.0), gold = vec3(1.0, .98, .70);
-            vec3 band = mix(mix(green, violet, smoothstep(.25, .75, hue)), gold, mid * .4);
+            float wob = noise(vec3(p.x * .04, y * .06, p.z * .04) + ArcanaTime * .03) * 1.2;
+            float s = y * .40 + .9 * sin(y * .11) + wob;
+            float id = floor(s), fs = fract(s);
+            float h = fract(sin(id * 91.7 + 3.1) * 43758.5453);
+            vec3 stripe = h < .30 ? vec3(.62, .42, .94) : h < .47 ? vec3(.82, .72, 1.0) : h < .63 ? vec3(.40, .88, .48)
+                        : h < .76 ? vec3(.86, .98, .52) : h < .89 ? vec3(.97, 1.0, .94) : vec3(.18, .44, .42);
+            float edge = smoothstep(0.0, .14, fs) * smoothstep(1.0, .86, fs);
+            float fine = pow(sin(y * 3.3 + wob * 2.0) * .5 + .5, 9.0);
+            vec3 band = mix(col, stripe, .35 + .65 * edge);
+            band = mix(band, vec3(1.0), fine * .35);
             float bk = k * k;
-            col = mix(col, band, bk * (.45 + .45 * fine));
-            a = mix(a, a * 1.4 + .30 * fine + .18 * mid, bk);
+            col = mix(col, band, bk * .9);
+            a = mix(a, max(a * 1.2, .38 + .24 * edge) + .12 * fine, bk);
         }
         fragColor = vec4(col, clamp(a, 0.0, 1.0)) * ColorModulator;
         if (fragColor.a < .002) discard;

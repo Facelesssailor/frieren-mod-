@@ -5,9 +5,9 @@ uniform float ArcanaTime;
 uniform vec4 ColorModulator;
 in vec4 vertexColor;
 out vec4 fragColor;
-// Falling barrier shards: clear holographic glass. Each shard carries its own seed in red/green and a facet
-// brightness in blue. The scene behind is bent and split into a soft spectrum; the surface carries an oily
-// purple / cyan / pink / green sheen like the shattered dome in the anime. No static, no scanlines.
+// Falling barrier shards: clear crystal glass. Each shard carries its own seed in red/green and a facet brightness in
+// blue. The scene behind is bent and split into a soft spectrum; the surface carries the pale thin-film sheen of the
+// shattered dome in ep. 21: lavender, ice blue, pink and gold, flaring white when a facet turns toward the camera.
 void main() {
     vec2 uv = gl_FragCoord.xy / ScreenSize;
     vec2 seed = vertexColor.rg;
@@ -16,9 +16,9 @@ void main() {
                          texture(SceneSampler, clamp(uv + bend, .001, .999)).g,
                          texture(SceneSampler, clamp(uv + bend * .6, .001, .999)).b);
     float phase = seed.x * 2.3 + seed.y * 1.1 + uv.x * 1.4 + uv.y * .9 + ArcanaTime * .08;
-    vec3 holo = .55 + .45 * cos(6.2831 * (vec3(0.0, .33, .67) + phase));
+    vec3 holo = .64 + .36 * cos(6.2831 * (vec3(0.0, .33, .67) + phase));
+    holo = mix(holo, vec3(.80, .72, 1.0), .28);
     float facet = vertexColor.b;
-    vec3 glass = spectrum * (.70 + .25 * facet) + holo * (.32 + .40 * facet);
-    glass += vec3(.10, .35, .20) * .25;
+    vec3 glass = spectrum * (.42 + .20 * facet) + holo * (.58 + .30 * facet) + vec3(.55) * facet * facet;
     fragColor = vec4(glass, clamp(vertexColor.a, 0.0, 1.0)) * ColorModulator;
 }

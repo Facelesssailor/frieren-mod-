@@ -41,6 +41,26 @@ public final class BarrierLook {
         }
     }
 
+    static void shellFalling(VertexConsumer var0, Matrix4f var1, Vec3 var2, double var3, Vec3 var5, float var6, float var7, double var8) {
+        double var10 = 1.0 - 2.1 * Math.max(0.0, Math.min(1.0, var8));
+
+        for (int var12 = 0; var12 < 56; var12++) {
+            if (!(SY[var12 * 113] < -0.55) || !(SY[(var12 + 1) * 113] < -0.55)) {
+                for (int var13 = 0; var13 < 112; var13++) {
+                    int var14 = var12 * 113 + var13;
+                    int var15 = var14 + 1;
+                    int var16 = (var12 + 1) * 113 + var13;
+                    int var17 = var16 + 1;
+
+                    for (int var21 : new int[]{var14, var15, var17, var16}) {
+                        float var22 = (float)((double)var7 * Math.max(0.0, Math.min(1.0, (SY[var21] - var10) / 0.3)));
+                        vtx(var0, var1, var2, var3, var5, var21, var6, var22);
+                    }
+                }
+            }
+        }
+    }
+
     private static void vtx(VertexConsumer var0, Matrix4f var1, Vec3 var2, double var3, Vec3 var5, int var6, float var7, float var8) {
         double var9 = SX[var6];
         double var11 = SY[var6];
