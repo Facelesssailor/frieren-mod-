@@ -5,27 +5,20 @@ uniform float ArcanaTime;
 uniform vec4 ColorModulator;
 in vec4 vertexColor;
 out vec4 fragColor;
-float rnd(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+// Falling barrier shards: clear holographic glass. Each shard carries its own seed in red/green and a facet
+// brightness in blue. The scene behind is bent and split into a soft spectrum; the surface carries an oily
+// purple / cyan / pink / green sheen like the shattered dome in the anime. No static, no scanlines.
 void main() {
     vec2 uv = gl_FragCoord.xy / ScreenSize;
-    float tick = floor(ArcanaTime * 14.0);
-    // horizontal tearing bands, like a broken signal behind cracked glass
-    float band = rnd(vec2(floor(uv.y * 90.0), tick));
-    float tear = (band > 0.86 ? (band - 0.93) * 0.05 : 0.0) * vertexColor.a;
-    vec2 displacement = (vertexColor.rg * 2.0 - 1.0) * (.006 + .0015 * sin(ArcanaTime * 3.0));
-    vec2 base = uv + vec2(tear, 0.0);
-    vec3 spectrum = vec3(texture(SceneSampler, clamp(base + displacement * 1.6, .001, .999)).r,
-                         texture(SceneSampler, clamp(base + displacement, .001, .999)).g,
-                         texture(SceneSampler, clamp(base + displacement * .55, .001, .999)).b);
-    // sparse green static blocks
-    vec2 cell = floor(gl_FragCoord.xy / vec2(5.0, 2.0));
-    float n = rnd(cell + tick * 1.37);
-    float stat = step(0.86, n) * (0.35 + 0.65 * rnd(cell.yx + tick));
-    float scan = 0.94 + 0.06 * sin(gl_FragCoord.y * 1.7 + ArcanaTime * 40.0);
-    vec3 glass = mix(spectrum * scan, vec3(.03, .55, .26), .16);
-    // holographic facets: purple / cyan / pink / green shifting per shard, like the falling barrier in the anime
-    vec3 holo = .5 + .5 * cos(6.2831 * (vec3(0., .33, .67) + vertexColor.r * 1.7 + uv.x * .9 + uv.y * .6 + ArcanaTime * .06));
-    glass = mix(glass, glass * .55 + holo * .75, .42);
-    glass += vec3(.06, .95, .42) * stat * 0.6;
-    fragColor = vec4(glass, clamp(vertexColor.a + stat * 0.25, 0.0, 1.0)) * ColorModulator;
+    vec2 seed = vertexColor.rg;
+    vec2 bend = (seed * 2.0 - 1.0) * (.010 + .004 * sin(ArcanaTime * 1.7 + seed.x * 9.0));
+    vec3 spectrum = vec3(texture(SceneSampler, clamp(uv + bend * 1.5, .001, .999)).r,
+                         texture(SceneSampler, clamp(uv + bend, .001, .999)).g,
+                         texture(SceneSampler, clamp(uv + bend * .6, .001, .999)).b);
+    float phase = seed.x * 2.3 + seed.y * 1.1 + uv.x * 1.4 + uv.y * .9 + ArcanaTime * .08;
+    vec3 holo = .55 + .45 * cos(6.2831 * (vec3(0.0, .33, .67) + phase));
+    float facet = vertexColor.b;
+    vec3 glass = spectrum * (.70 + .25 * facet) + holo * (.32 + .40 * facet);
+    glass += vec3(.10, .35, .20) * .25;
+    fragColor = vec4(glass, clamp(vertexColor.a, 0.0, 1.0)) * ColorModulator;
 }

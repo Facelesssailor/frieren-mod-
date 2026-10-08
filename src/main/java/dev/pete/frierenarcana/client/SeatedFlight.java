@@ -79,8 +79,7 @@ public final class SeatedFlight {
             var3.mulPose(Axis.YP.rotationDegrees(180.0F - var4));
             var3.translate(0.0, 0.34, 0.12);
             var3.mulPose(Axis.XP.rotationDegrees(90.0F));
-            var3.mulPose(Axis.ZP.rotationDegrees(-45.0F));
-            float var5 = 1.45F;
+            float var5 = 1.0F;
             var3.scale(var5, var5, var5);
             Minecraft.getInstance()
                 .getItemRenderer()

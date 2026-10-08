@@ -18,7 +18,8 @@
     "ClientRainBarrierMixin",
     "FallingRainBarrierMixin",
     "SeatedPoseMixin",
-    "SeatedHandMixin"
+    "SeatedHandMixin",
+    "CinematicMouseMixin"
   ],
   "injectors": {
     "defaultRequire": 1

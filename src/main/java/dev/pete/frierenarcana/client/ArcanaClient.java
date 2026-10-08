@@ -195,13 +195,13 @@ public final class ArcanaClient {
                 }
 
                 long var22 = System.nanoTime();
-                FRACTURES.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > 3.2);
+                FRACTURES.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > 8.5);
 
                 for (ArcanaClient.Fracture var12 : FRACTURES) {
                     fracture(var6, var4, var12, var7, (double)(var22 - var12.startNanos) / 1.0E9);
                 }
 
-                BEAMS.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > (var2x.style == 3 ? 1.2 : (var2x.style == 2 ? 1.4 : 0.35)));
+                BEAMS.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > (var2x.style == 3 ? 2.6 : (var2x.style == 2 ? 1.4 : 0.35)));
 
                 for (ArcanaClient.Beam var29 : BEAMS) {
                     beam(var6, var4, var29, (double)(var22 - var29.startNanos) / 1.0E9);
@@ -230,7 +230,7 @@ public final class ArcanaClient {
                         boolean var38 = BREAKER_CHARGES.contains(var31.getUUID());
                         Vec3 var39 = var31.getLookAngle();
                         double var16 = Math.min(1.0, (double)(var22 - CHARGES.get(var31.getUUID())) / 1.0E9 / (double)(var38 ? 5 : 8));
-                        sigil(
+                        ChargeFx.sigil(
                             var6,
                             var4,
                             var35.add(var39.scale(0.8)),
@@ -246,7 +246,7 @@ public final class ArcanaClient {
                         for (int var18 = 0; var18 < 12; var18++) {
                             double var19 = (double)var18 * 2.39996 + var7;
                             Vec3 var21 = var35.add(Math.cos(var19) * (1.0 - var16 * 0.5), Math.sin(var19 * 0.7) * 0.85, Math.sin(var19) * (1.0 - var16 * 0.5));
-                            crystal(
+                            ChargeFx.crystal(
                                 var6, var4, var21, new Vec3(0.0, 1.0, 0.0), 0.025, 0.09, var38 ? 0.1F : 0.8F, var38 ? 0.85F : 0.96F, var38 ? 0.4F : 1.0F, 0.6F
                             );
                         }
@@ -308,7 +308,9 @@ public final class ArcanaClient {
     }
 
     private static void sphere(VertexConsumer var0, Matrix4f var1, ArcanaClient.VisualField var2, double var3, double var5) {
-        if (var2.defensive) {
+        if (!var2.defensive()) {
+            BarrierLook.sphere(var0, var1, var2, var3, var5);
+        } else if (var2.defensive) {
             defensiveShell(var0, var1, var2, var3, var5);
         } else {
             byte var7 = 64;
@@ -364,100 +366,104 @@ public final class ArcanaClient {
     }
 
     private static void beam(VertexConsumer var0, Matrix4f var1, ArcanaClient.Beam var2, double var3) {
-        Vec3 var5 = var2.end.subtract(var2.start).normalize();
-        if (!(var5.lengthSqr() < 0.1)) {
-            float var6 = var2.style == 3 ? 1.4F : (var2.style == 2 ? 1.6F : 0.5F);
-            float var7 = (float)Math.pow(Math.max(0.0, 1.0 - var3 / (double)var6), 0.65);
-            if (var2.style == 15) {
-                Vec3 var25 = var2.end.subtract(var2.start);
-                Vec3 var28 = basis(var5);
-                Vec3 var29 = var5.cross(var28);
-                Vec3 var30 = var2.start;
+        if (var2.style() == 3) {
+            BreakerFx.beam(var0, var1, var2.start(), var2.end(), var3);
+        } else {
+            Vec3 var5 = var2.end.subtract(var2.start).normalize();
+            if (!(var5.lengthSqr() < 0.1)) {
+                float var6 = var2.style == 3 ? 1.4F : (var2.style == 2 ? 1.6F : 0.5F);
+                float var7 = (float)Math.pow(Math.max(0.0, 1.0 - var3 / (double)var6), 0.65);
+                if (var2.style == 15) {
+                    Vec3 var25 = var2.end.subtract(var2.start);
+                    Vec3 var28 = basis(var5);
+                    Vec3 var29 = var5.cross(var28);
+                    Vec3 var30 = var2.start;
 
-                for (int var31 = 1; var31 <= 32; var31++) {
-                    Vec3 var33 = var2.start
-                        .add(var25.scale((double)var31 / 32.0))
-                        .add(var28.scale(var31 == 32 ? 0.0 : Math.sin((double)var31 * 7.3 + var3 * 20.0) * 0.24))
-                        .add(var29.scale(var31 == 32 ? 0.0 : Math.cos((double)var31 * 4.1) * 0.12));
-                    tube(var0, var1, var30, var33, 0.018, 0.92F, 0.98F, 1.0F, var7);
-                    tube(var0, var1, var30, var33, 0.07, 0.38F, 0.62F, 1.0F, var7 * 0.18F);
-                    var30 = var33;
-                }
-            } else if (var2.style == 18) {
-                for (int var24 = 0; var24 < 7; var24++) {
-                    double var27 = Math.min(1.0, Math.max(0.0, var3 * 3.0 - (double)var24 * 0.07));
-                    crystal(var0, var1, var2.start.lerp(var2.end, var27), var5, 0.11, 0.22, 0.53F, 0.42F, 0.3F, var7);
-                }
-            } else if (var2.style == 4) {
-                for (int var23 = 0; var23 < 5; var23++) {
-                    double var26 = Math.min(1.0, Math.max(0.0, var3 * 4.0 - (double)var23 * 0.08));
-                    crystal(var0, var1, var2.start.lerp(var2.end, var26), var5, 0.13, 0.45, 0.63F, 0.88F, 1.0F, var7);
-                }
-            } else if (var2.style == 10) {
-                Vec3 var22 = basis(var5);
-                double var9 = 0.6 + var3 * 3.0;
-                quad(
-                    var0,
-                    var1,
-                    var2.start.add(var22.scale(var9)),
-                    var2.end.add(var22.scale(var9 * 0.3)),
-                    var2.end.subtract(var22.scale(var9 * 0.3)),
-                    var2.start.subtract(var22.scale(var9)),
-                    0.85F,
-                    1.0F,
-                    0.67F,
-                    var7 * 0.16F
-                );
-                tube(var0, var1, var2.start.subtract(var22.scale(var9)), var2.end.add(var22.scale(var9 * 0.3)), 0.018, 1.0F, 1.0F, 0.88F, var7);
-                tube(var0, var1, var2.start.add(var22.scale(var9)), var2.end.subtract(var22.scale(var9 * 0.3)), 0.018, 1.0F, 1.0F, 0.88F, var7);
-            } else {
-                double var8 = var2.style == 2
-                    ? 1.35
-                    : (var2.style == 5 ? 0.5 : (var2.style == 3 ? 0.16 : (var2.style == 16 ? 0.5 : (var2.style == 10 ? 0.22 : 0.065))));
-                float var10 = var2.style == 3 ? 0.012F : (var2.style == 4 ? 0.52F : (var2.style == 10 ? 1.0F : 0.68F));
-                float var11 = var2.style == 3 ? 0.085F : (var2.style == 10 ? 0.92F : (var2.style != 16 && var2.style != 19 ? 0.86F : 0.86F));
-                float var12 = var2.style == 3 ? 0.04F : (var2.style == 10 ? 0.24F : (var2.style != 16 && var2.style != 19 ? 1.0F : 0.48F));
-                taperedBeam(var0, var1, var2.start, var2.end, var8 * 2.9, var3, var10, var11, var12, var7 * 0.08F);
-                taperedBeam(var0, var1, var2.start, var2.end, var8 * 1.8, var3, var10, var11, var12, var7 * 0.18F);
-                taperedBeam(var0, var1, var2.start, var2.end, var8, var3, var10, var11, var12, var7 * 0.95F);
-                if (var2.style != 3) {
-                    taperedBeam(var0, var1, var2.start, var2.end, var8 * 0.38, var3, 1.0F, 1.0F, 1.0F, var7);
-                } else {
-                    taperedBeam(var0, var1, var2.start, var2.end, var8 * 1.1, var3, 0.05F, 0.55F, 0.23F, var7 * 0.4F);
-                    Vec3 var13 = basis(var5);
-                    Vec3 var14 = var5.cross(var13);
-
-                    for (int var15 = 0; var15 < 10; var15++) {
-                        double var16 = (double)var15 * 2.39996 + var3 * 5.0;
-                        double var18 = ((double)var15 * 0.17 + var3 * 0.8) % 1.0;
-                        Vec3 var20 = var2.start.lerp(var2.end, var18);
-                        Vec3 var21 = var20.add(var13.scale(Math.cos(var16) * var8 * 2.0)).add(var14.scale(Math.sin(var16) * var8 * 2.0));
-                        triangle(
-                            var0,
-                            var1,
-                            var21,
-                            var21.add(var13.scale(0.25)),
-                            var21.add(var5.scale(0.5)).add(var14.scale(0.12)),
-                            0.06F,
-                            0.75F,
-                            0.31F,
-                            var7 * 0.55F
-                        );
+                    for (int var31 = 1; var31 <= 32; var31++) {
+                        Vec3 var33 = var2.start
+                            .add(var25.scale((double)var31 / 32.0))
+                            .add(var28.scale(var31 == 32 ? 0.0 : Math.sin((double)var31 * 7.3 + var3 * 20.0) * 0.24))
+                            .add(var29.scale(var31 == 32 ? 0.0 : Math.cos((double)var31 * 4.1) * 0.12));
+                        tube(var0, var1, var30, var33, 0.018, 0.92F, 0.98F, 1.0F, var7);
+                        tube(var0, var1, var30, var33, 0.07, 0.38F, 0.62F, 1.0F, var7 * 0.18F);
+                        var30 = var33;
                     }
-                }
+                } else if (var2.style == 18) {
+                    for (int var24 = 0; var24 < 7; var24++) {
+                        double var27 = Math.min(1.0, Math.max(0.0, var3 * 3.0 - (double)var24 * 0.07));
+                        crystal(var0, var1, var2.start.lerp(var2.end, var27), var5, 0.11, 0.22, 0.53F, 0.42F, 0.3F, var7);
+                    }
+                } else if (var2.style == 4) {
+                    for (int var23 = 0; var23 < 5; var23++) {
+                        double var26 = Math.min(1.0, Math.max(0.0, var3 * 4.0 - (double)var23 * 0.08));
+                        crystal(var0, var1, var2.start.lerp(var2.end, var26), var5, 0.13, 0.45, 0.63F, 0.88F, 1.0F, var7);
+                    }
+                } else if (var2.style == 10) {
+                    Vec3 var22 = basis(var5);
+                    double var9 = 0.6 + var3 * 3.0;
+                    quad(
+                        var0,
+                        var1,
+                        var2.start.add(var22.scale(var9)),
+                        var2.end.add(var22.scale(var9 * 0.3)),
+                        var2.end.subtract(var22.scale(var9 * 0.3)),
+                        var2.start.subtract(var22.scale(var9)),
+                        0.85F,
+                        1.0F,
+                        0.67F,
+                        var7 * 0.16F
+                    );
+                    tube(var0, var1, var2.start.subtract(var22.scale(var9)), var2.end.add(var22.scale(var9 * 0.3)), 0.018, 1.0F, 1.0F, 0.88F, var7);
+                    tube(var0, var1, var2.start.add(var22.scale(var9)), var2.end.subtract(var22.scale(var9 * 0.3)), 0.018, 1.0F, 1.0F, 0.88F, var7);
+                } else {
+                    double var8 = var2.style == 2
+                        ? 1.35
+                        : (var2.style == 5 ? 0.5 : (var2.style == 3 ? 0.16 : (var2.style == 16 ? 0.5 : (var2.style == 10 ? 0.22 : 0.065))));
+                    float var10 = var2.style == 3 ? 0.012F : (var2.style == 4 ? 0.52F : (var2.style == 10 ? 1.0F : 0.68F));
+                    float var11 = var2.style == 3 ? 0.085F : (var2.style == 10 ? 0.92F : (var2.style != 16 && var2.style != 19 ? 0.86F : 0.86F));
+                    float var12 = var2.style == 3 ? 0.04F : (var2.style == 10 ? 0.24F : (var2.style != 16 && var2.style != 19 ? 1.0F : 0.48F));
+                    taperedBeam(var0, var1, var2.start, var2.end, var8 * 2.9, var3, var10, var11, var12, var7 * 0.08F);
+                    taperedBeam(var0, var1, var2.start, var2.end, var8 * 1.8, var3, var10, var11, var12, var7 * 0.18F);
+                    taperedBeam(var0, var1, var2.start, var2.end, var8, var3, var10, var11, var12, var7 * 0.95F);
+                    if (var2.style != 3) {
+                        taperedBeam(var0, var1, var2.start, var2.end, var8 * 0.38, var3, 1.0F, 1.0F, 1.0F, var7);
+                    } else {
+                        taperedBeam(var0, var1, var2.start, var2.end, var8 * 1.1, var3, 0.05F, 0.55F, 0.23F, var7 * 0.4F);
+                        Vec3 var13 = basis(var5);
+                        Vec3 var14 = var5.cross(var13);
 
-                sigil(var0, var1, var2.start, var5, var2.style == 2 ? 1.65 : 0.4, var3 * 2.0, var10, var11, var12, var7 * 0.85F);
-                if (var2.style == 2) {
-                    orientedRing(var0, var1, var2.end, var5, 0.2 + var3 * 6.0, 0.025, var10, var11, var12, var7 * 0.5F);
-                }
+                        for (int var15 = 0; var15 < 10; var15++) {
+                            double var16 = (double)var15 * 2.39996 + var3 * 5.0;
+                            double var18 = ((double)var15 * 0.17 + var3 * 0.8) % 1.0;
+                            Vec3 var20 = var2.start.lerp(var2.end, var18);
+                            Vec3 var21 = var20.add(var13.scale(Math.cos(var16) * var8 * 2.0)).add(var14.scale(Math.sin(var16) * var8 * 2.0));
+                            triangle(
+                                var0,
+                                var1,
+                                var21,
+                                var21.add(var13.scale(0.25)),
+                                var21.add(var5.scale(0.5)).add(var14.scale(0.12)),
+                                0.06F,
+                                0.75F,
+                                0.31F,
+                                var7 * 0.55F
+                            );
+                        }
+                    }
 
-                for (int var32 = 0; var32 < 12; var32++) {
-                    double var34 = (double)var32 * 2.39996;
-                    Vec3 var35 = basis(var5);
-                    Vec3 var17 = var5.cross(var35);
-                    Vec3 var36 = var35.scale(Math.cos(var34)).add(var17.scale(Math.sin(var34)));
-                    Vec3 var19 = var2.end.add(var36.scale(var3 * (var2.style == 2 ? 4.0 : 1.5))).add(var5.scale(-var3 * 0.5));
-                    crystal(var0, var1, var19, var36, 0.018, 0.1, var10, var11, var12, var7 * 0.75F);
+                    sigil(var0, var1, var2.start, var5, var2.style == 2 ? 1.65 : 0.4, var3 * 2.0, var10, var11, var12, var7 * 0.85F);
+                    if (var2.style == 2) {
+                        orientedRing(var0, var1, var2.end, var5, 0.2 + var3 * 6.0, 0.025, var10, var11, var12, var7 * 0.5F);
+                    }
+
+                    for (int var32 = 0; var32 < 12; var32++) {
+                        double var34 = (double)var32 * 2.39996;
+                        Vec3 var35 = basis(var5);
+                        Vec3 var17 = var5.cross(var35);
+                        Vec3 var36 = var35.scale(Math.cos(var34)).add(var17.scale(Math.sin(var34)));
+                        Vec3 var19 = var2.end.add(var36.scale(var3 * (var2.style == 2 ? 4.0 : 1.5))).add(var5.scale(-var3 * 0.5));
+                        crystal(var0, var1, var19, var36, 0.018, 0.1, var10, var11, var12, var7 * 0.75F);
+                    }
                 }
             }
         }
@@ -597,53 +603,11 @@ public final class ArcanaClient {
     }
 
     private static void fracture(VertexConsumer var0, Matrix4f var1, ArcanaClient.Fracture var2, double var3, double var5) {
-        sphere(var0, var1, var2.field, var3, Math.max(0.001, var5 - 0.9));
-        Vec3 var7 = var2.impact.subtract(var2.field.center).normalize();
-        Vec3 var8 = var7.cross(Math.abs(var7.y) < 0.9 ? new Vec3(0.0, 1.0, 0.0) : new Vec3(1.0, 0.0, 0.0)).normalize();
-        Vec3 var9 = var7.cross(var8);
-        double var10 = Math.min(Math.PI, var5 * 7.0);
-        double var12 = (double)var2.field.radius + 0.08;
-        float var14 = (float)Math.max(0.0, 1.0 - var5 / 3.2);
-
-        for (int var15 = 0; var15 < 15; var15++) {
-            double var16 = (double)var15 * Math.PI * 2.0 / 15.0;
-            Vec3 var18 = var2.impact;
-
-            for (int var19 = 1; var19 <= 18; var19++) {
-                double var20 = var10 * (double)var19 / 18.0;
-                double var22 = Math.sin((double)var19 * 2.7 + (double)var15) * 0.1;
-                Vec3 var24 = var8.scale(Math.cos(var16 + var22)).add(var9.scale(Math.sin(var16 + var22)));
-                Vec3 var25 = var2.field.center.add(var7.scale(Math.cos(var20) * var12)).add(var24.scale(Math.sin(var20) * var12));
-                tube(var0, var1, var18, var25, 0.045, 0.015F, 0.09F, 0.04F, var14);
-                Vec3 var26 = var8.scale(0.04).add(var9.scale(0.02));
-                tube(var0, var1, var18.add(var26), var25.add(var26), 0.018, 0.45F, 1.0F, 0.78F, var14 * 0.85F);
-                tube(var0, var1, var18.subtract(var26), var25.subtract(var26), 0.018, 0.76F, 0.48F, 1.0F, var14 * 0.65F);
-                var18 = var25;
-            }
-        }
+        BreakerFx.fracture(var0, var1, var2, var3, var5);
     }
 
     private static void prisms(VertexConsumer var0, Matrix4f var1, ArcanaClient.Fracture var2, double var3) {
-        Vec3 var5 = var2.impact.subtract(var2.field.center).normalize();
-        Vec3 var6 = basis(var5);
-        Vec3 var7 = var5.cross(var6);
-        double var8 = Math.min(Math.PI, var3 * 7.0);
-        double var10 = Math.min(3.0, (double)var2.field.radius * 0.045);
-        double var12 = Math.max(0.0, var3 - 0.9);
-        float var14 = (float)Math.max(0.0, 0.45 * (1.0 - var3 / 3.2));
-
-        for (int var15 = 0; var15 < 64; var15++) {
-            double var16 = (double)var15 * 2.39996;
-            double var18 = var8 * Math.sqrt(((double)var15 + 0.5) / 64.0);
-            Vec3 var20 = var5.scale(Math.cos(var18)).add(var6.scale(Math.cos(var16) * Math.sin(var18))).add(var7.scale(Math.sin(var16) * Math.sin(var18)));
-            Vec3 var21 = basis(var20);
-            Vec3 var22 = var20.cross(var21);
-            Vec3 var23 = var2.field.center.add(var20.scale((double)var2.field.radius + 0.12 + var12 * var12 * 2.0));
-            Vec3 var24 = var23.add(var21.scale(-var10)).add(var22.scale(-var10 * 0.4));
-            Vec3 var25 = var23.add(var21.scale(var10 * 0.7)).add(var22.scale(-var10 * 0.25));
-            Vec3 var26 = var23.add(var22.scale(var10 * 0.9));
-            triangle(var0, var1, var24, var25, var26, 0.5F + (float)Math.sin(var16) * 0.45F, 0.5F + (float)Math.cos(var16) * 0.45F, 0.5F, var14);
-        }
+        BreakerFx.prisms(var0, var1, var2, var3);
     }
 
     private static void effect(VertexConsumer var0, Matrix4f var1, ArcanaClient.Effect var2, double var3, double var5) {
@@ -900,6 +864,10 @@ public final class ArcanaClient {
 
     public static List fractures() {
         return FRACTURES;
+    }
+
+    public static Vec3 camera() {
+        return drawCamera;
     }
 
     private static record Beam(Vec3 start, Vec3 end, int style, long startNanos) {

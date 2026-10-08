@@ -2,6 +2,15 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.3.9
+
+- Barrier break effects rebuilt (BreakerFx, BarrierLook, ChargeFx) with a full-screen cutscene overlay.
+- Mouse locked during cutscenes; 3D textures for the barrier devices, release sigil and flight staff.
+
+Code: added client.BarrierLook, client.BreakerFx, client.ChargeFx, client.CinemaOverlay, mixin.CinematicMouseMixin; changed ArcanaSpell, client.ArcanaClient, client.CinemaDirector, client.SeatedFlight, client.SpellCircleFx.
+
+Resources: added textures/item/barrier_device_1_3d.png, textures/item/barrier_device_2_3d.png, textures/item/barrier_device_3_3d.png, textures/item/barrier_device_4_3d.png, textures/item/barrier_device_5_3d.png, textures/item/flight_staff_3d.png, textures/item/release_sigil_3d.png; changed models/item/barrier_device_1.json, models/item/barrier_device_2.json, models/item/barrier_device_3.json, models/item/barrier_device_4.json, models/item/barrier_device_5.json, models/item/flight_staff.json, models/item/release_sigil.json, shaders/core/arcana_energy.fsh, shaders/core/arcana_refraction.fsh, frieren_arcana.mixins.json.
+
 ## 1.3.8
 
 - Spell, barrier-hook and cutscene fixes.
