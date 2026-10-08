@@ -2,6 +2,12 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.4.0
+
+- New spell effects renderer (SpellFx).
+
+Code: added client.SpellFx; changed ArcanaSpell, client.ArcanaClient, client.BreakerFx, client.CinemaDirector, client.CinemaOverlay, client.SpellCircleFx.
+
 ## 1.3.9
 
 - Barrier break effects rebuilt (BreakerFx, BarrierLook, ChargeFx) with a full-screen cutscene overlay.

@@ -195,13 +195,13 @@ public final class ArcanaClient {
                 }
 
                 long var22 = System.nanoTime();
-                FRACTURES.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > 8.5);
+                FRACTURES.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > 13.5);
 
                 for (ArcanaClient.Fracture var12 : FRACTURES) {
                     fracture(var6, var4, var12, var7, (double)(var22 - var12.startNanos) / 1.0E9);
                 }
 
-                BEAMS.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > (var2x.style == 3 ? 2.6 : (var2x.style == 2 ? 1.4 : 0.35)));
+                BEAMS.removeIf(var2x -> (double)(var22 - var2x.startNanos()) / 1.0E9 > SpellFx.beamLife(var2x.style()));
 
                 for (ArcanaClient.Beam var29 : BEAMS) {
                     beam(var6, var4, var29, (double)(var22 - var29.startNanos) / 1.0E9);
@@ -254,14 +254,7 @@ public final class ArcanaClient {
                 }
 
                 FLIGHTS.entrySet().removeIf(var2x -> (double)(var22 - var2x.getValue()) / 1.0E9 > 1.5);
-                EFFECTS.removeIf(
-                    var2x -> (double)(var22 - var2x.startNanos) / 1.0E9
-                            > (
-                                var2x.style == 11
-                                    ? 15.0
-                                    : (var2x.style == 9 ? 10.0 : (var2x.style == 8 ? 6.0 : (var2x.style != 14 && var2x.style != 21 ? 1.3 : 4.0)))
-                            )
-                );
+                EFFECTS.removeIf(var2x -> (double)(var22 - var2x.startNanos()) / 1.0E9 > SpellFx.effectLife(var2x.style()));
 
                 for (ArcanaClient.Effect var32 : EFFECTS) {
                     effect(var6, var4, var32, (double)(var22 - var32.startNanos) / 1.0E9, var7);
@@ -366,103 +359,105 @@ public final class ArcanaClient {
     }
 
     private static void beam(VertexConsumer var0, Matrix4f var1, ArcanaClient.Beam var2, double var3) {
-        if (var2.style() == 3) {
-            BreakerFx.beam(var0, var1, var2.start(), var2.end(), var3);
-        } else {
-            Vec3 var5 = var2.end.subtract(var2.start).normalize();
-            if (!(var5.lengthSqr() < 0.1)) {
-                float var6 = var2.style == 3 ? 1.4F : (var2.style == 2 ? 1.6F : 0.5F);
-                float var7 = (float)Math.pow(Math.max(0.0, 1.0 - var3 / (double)var6), 0.65);
-                if (var2.style == 15) {
-                    Vec3 var25 = var2.end.subtract(var2.start);
-                    Vec3 var28 = basis(var5);
-                    Vec3 var29 = var5.cross(var28);
-                    Vec3 var30 = var2.start;
+        if (!SpellFx.beam(var0, var1, var2.style(), var2.start(), var2.end(), var3)) {
+            if (var2.style() == 3) {
+                BreakerFx.beam(var0, var1, var2.start(), var2.end(), var3);
+            } else {
+                Vec3 var5 = var2.end.subtract(var2.start).normalize();
+                if (!(var5.lengthSqr() < 0.1)) {
+                    float var6 = var2.style == 3 ? 1.4F : (var2.style == 2 ? 1.6F : 0.5F);
+                    float var7 = (float)Math.pow(Math.max(0.0, 1.0 - var3 / (double)var6), 0.65);
+                    if (var2.style == 15) {
+                        Vec3 var25 = var2.end.subtract(var2.start);
+                        Vec3 var28 = basis(var5);
+                        Vec3 var29 = var5.cross(var28);
+                        Vec3 var30 = var2.start;
 
-                    for (int var31 = 1; var31 <= 32; var31++) {
-                        Vec3 var33 = var2.start
-                            .add(var25.scale((double)var31 / 32.0))
-                            .add(var28.scale(var31 == 32 ? 0.0 : Math.sin((double)var31 * 7.3 + var3 * 20.0) * 0.24))
-                            .add(var29.scale(var31 == 32 ? 0.0 : Math.cos((double)var31 * 4.1) * 0.12));
-                        tube(var0, var1, var30, var33, 0.018, 0.92F, 0.98F, 1.0F, var7);
-                        tube(var0, var1, var30, var33, 0.07, 0.38F, 0.62F, 1.0F, var7 * 0.18F);
-                        var30 = var33;
-                    }
-                } else if (var2.style == 18) {
-                    for (int var24 = 0; var24 < 7; var24++) {
-                        double var27 = Math.min(1.0, Math.max(0.0, var3 * 3.0 - (double)var24 * 0.07));
-                        crystal(var0, var1, var2.start.lerp(var2.end, var27), var5, 0.11, 0.22, 0.53F, 0.42F, 0.3F, var7);
-                    }
-                } else if (var2.style == 4) {
-                    for (int var23 = 0; var23 < 5; var23++) {
-                        double var26 = Math.min(1.0, Math.max(0.0, var3 * 4.0 - (double)var23 * 0.08));
-                        crystal(var0, var1, var2.start.lerp(var2.end, var26), var5, 0.13, 0.45, 0.63F, 0.88F, 1.0F, var7);
-                    }
-                } else if (var2.style == 10) {
-                    Vec3 var22 = basis(var5);
-                    double var9 = 0.6 + var3 * 3.0;
-                    quad(
-                        var0,
-                        var1,
-                        var2.start.add(var22.scale(var9)),
-                        var2.end.add(var22.scale(var9 * 0.3)),
-                        var2.end.subtract(var22.scale(var9 * 0.3)),
-                        var2.start.subtract(var22.scale(var9)),
-                        0.85F,
-                        1.0F,
-                        0.67F,
-                        var7 * 0.16F
-                    );
-                    tube(var0, var1, var2.start.subtract(var22.scale(var9)), var2.end.add(var22.scale(var9 * 0.3)), 0.018, 1.0F, 1.0F, 0.88F, var7);
-                    tube(var0, var1, var2.start.add(var22.scale(var9)), var2.end.subtract(var22.scale(var9 * 0.3)), 0.018, 1.0F, 1.0F, 0.88F, var7);
-                } else {
-                    double var8 = var2.style == 2
-                        ? 1.35
-                        : (var2.style == 5 ? 0.5 : (var2.style == 3 ? 0.16 : (var2.style == 16 ? 0.5 : (var2.style == 10 ? 0.22 : 0.065))));
-                    float var10 = var2.style == 3 ? 0.012F : (var2.style == 4 ? 0.52F : (var2.style == 10 ? 1.0F : 0.68F));
-                    float var11 = var2.style == 3 ? 0.085F : (var2.style == 10 ? 0.92F : (var2.style != 16 && var2.style != 19 ? 0.86F : 0.86F));
-                    float var12 = var2.style == 3 ? 0.04F : (var2.style == 10 ? 0.24F : (var2.style != 16 && var2.style != 19 ? 1.0F : 0.48F));
-                    taperedBeam(var0, var1, var2.start, var2.end, var8 * 2.9, var3, var10, var11, var12, var7 * 0.08F);
-                    taperedBeam(var0, var1, var2.start, var2.end, var8 * 1.8, var3, var10, var11, var12, var7 * 0.18F);
-                    taperedBeam(var0, var1, var2.start, var2.end, var8, var3, var10, var11, var12, var7 * 0.95F);
-                    if (var2.style != 3) {
-                        taperedBeam(var0, var1, var2.start, var2.end, var8 * 0.38, var3, 1.0F, 1.0F, 1.0F, var7);
-                    } else {
-                        taperedBeam(var0, var1, var2.start, var2.end, var8 * 1.1, var3, 0.05F, 0.55F, 0.23F, var7 * 0.4F);
-                        Vec3 var13 = basis(var5);
-                        Vec3 var14 = var5.cross(var13);
-
-                        for (int var15 = 0; var15 < 10; var15++) {
-                            double var16 = (double)var15 * 2.39996 + var3 * 5.0;
-                            double var18 = ((double)var15 * 0.17 + var3 * 0.8) % 1.0;
-                            Vec3 var20 = var2.start.lerp(var2.end, var18);
-                            Vec3 var21 = var20.add(var13.scale(Math.cos(var16) * var8 * 2.0)).add(var14.scale(Math.sin(var16) * var8 * 2.0));
-                            triangle(
-                                var0,
-                                var1,
-                                var21,
-                                var21.add(var13.scale(0.25)),
-                                var21.add(var5.scale(0.5)).add(var14.scale(0.12)),
-                                0.06F,
-                                0.75F,
-                                0.31F,
-                                var7 * 0.55F
-                            );
+                        for (int var31 = 1; var31 <= 32; var31++) {
+                            Vec3 var33 = var2.start
+                                .add(var25.scale((double)var31 / 32.0))
+                                .add(var28.scale(var31 == 32 ? 0.0 : Math.sin((double)var31 * 7.3 + var3 * 20.0) * 0.24))
+                                .add(var29.scale(var31 == 32 ? 0.0 : Math.cos((double)var31 * 4.1) * 0.12));
+                            tube(var0, var1, var30, var33, 0.018, 0.92F, 0.98F, 1.0F, var7);
+                            tube(var0, var1, var30, var33, 0.07, 0.38F, 0.62F, 1.0F, var7 * 0.18F);
+                            var30 = var33;
                         }
-                    }
+                    } else if (var2.style == 18) {
+                        for (int var24 = 0; var24 < 7; var24++) {
+                            double var27 = Math.min(1.0, Math.max(0.0, var3 * 3.0 - (double)var24 * 0.07));
+                            crystal(var0, var1, var2.start.lerp(var2.end, var27), var5, 0.11, 0.22, 0.53F, 0.42F, 0.3F, var7);
+                        }
+                    } else if (var2.style == 4) {
+                        for (int var23 = 0; var23 < 5; var23++) {
+                            double var26 = Math.min(1.0, Math.max(0.0, var3 * 4.0 - (double)var23 * 0.08));
+                            crystal(var0, var1, var2.start.lerp(var2.end, var26), var5, 0.13, 0.45, 0.63F, 0.88F, 1.0F, var7);
+                        }
+                    } else if (var2.style == 10) {
+                        Vec3 var22 = basis(var5);
+                        double var9 = 0.6 + var3 * 3.0;
+                        quad(
+                            var0,
+                            var1,
+                            var2.start.add(var22.scale(var9)),
+                            var2.end.add(var22.scale(var9 * 0.3)),
+                            var2.end.subtract(var22.scale(var9 * 0.3)),
+                            var2.start.subtract(var22.scale(var9)),
+                            0.85F,
+                            1.0F,
+                            0.67F,
+                            var7 * 0.16F
+                        );
+                        tube(var0, var1, var2.start.subtract(var22.scale(var9)), var2.end.add(var22.scale(var9 * 0.3)), 0.018, 1.0F, 1.0F, 0.88F, var7);
+                        tube(var0, var1, var2.start.add(var22.scale(var9)), var2.end.subtract(var22.scale(var9 * 0.3)), 0.018, 1.0F, 1.0F, 0.88F, var7);
+                    } else {
+                        double var8 = var2.style == 2
+                            ? 1.35
+                            : (var2.style == 5 ? 0.5 : (var2.style == 3 ? 0.16 : (var2.style == 16 ? 0.5 : (var2.style == 10 ? 0.22 : 0.065))));
+                        float var10 = var2.style == 3 ? 0.012F : (var2.style == 4 ? 0.52F : (var2.style == 10 ? 1.0F : 0.68F));
+                        float var11 = var2.style == 3 ? 0.085F : (var2.style == 10 ? 0.92F : (var2.style != 16 && var2.style != 19 ? 0.86F : 0.86F));
+                        float var12 = var2.style == 3 ? 0.04F : (var2.style == 10 ? 0.24F : (var2.style != 16 && var2.style != 19 ? 1.0F : 0.48F));
+                        taperedBeam(var0, var1, var2.start, var2.end, var8 * 2.9, var3, var10, var11, var12, var7 * 0.08F);
+                        taperedBeam(var0, var1, var2.start, var2.end, var8 * 1.8, var3, var10, var11, var12, var7 * 0.18F);
+                        taperedBeam(var0, var1, var2.start, var2.end, var8, var3, var10, var11, var12, var7 * 0.95F);
+                        if (var2.style != 3) {
+                            taperedBeam(var0, var1, var2.start, var2.end, var8 * 0.38, var3, 1.0F, 1.0F, 1.0F, var7);
+                        } else {
+                            taperedBeam(var0, var1, var2.start, var2.end, var8 * 1.1, var3, 0.05F, 0.55F, 0.23F, var7 * 0.4F);
+                            Vec3 var13 = basis(var5);
+                            Vec3 var14 = var5.cross(var13);
 
-                    sigil(var0, var1, var2.start, var5, var2.style == 2 ? 1.65 : 0.4, var3 * 2.0, var10, var11, var12, var7 * 0.85F);
-                    if (var2.style == 2) {
-                        orientedRing(var0, var1, var2.end, var5, 0.2 + var3 * 6.0, 0.025, var10, var11, var12, var7 * 0.5F);
-                    }
+                            for (int var15 = 0; var15 < 10; var15++) {
+                                double var16 = (double)var15 * 2.39996 + var3 * 5.0;
+                                double var18 = ((double)var15 * 0.17 + var3 * 0.8) % 1.0;
+                                Vec3 var20 = var2.start.lerp(var2.end, var18);
+                                Vec3 var21 = var20.add(var13.scale(Math.cos(var16) * var8 * 2.0)).add(var14.scale(Math.sin(var16) * var8 * 2.0));
+                                triangle(
+                                    var0,
+                                    var1,
+                                    var21,
+                                    var21.add(var13.scale(0.25)),
+                                    var21.add(var5.scale(0.5)).add(var14.scale(0.12)),
+                                    0.06F,
+                                    0.75F,
+                                    0.31F,
+                                    var7 * 0.55F
+                                );
+                            }
+                        }
 
-                    for (int var32 = 0; var32 < 12; var32++) {
-                        double var34 = (double)var32 * 2.39996;
-                        Vec3 var35 = basis(var5);
-                        Vec3 var17 = var5.cross(var35);
-                        Vec3 var36 = var35.scale(Math.cos(var34)).add(var17.scale(Math.sin(var34)));
-                        Vec3 var19 = var2.end.add(var36.scale(var3 * (var2.style == 2 ? 4.0 : 1.5))).add(var5.scale(-var3 * 0.5));
-                        crystal(var0, var1, var19, var36, 0.018, 0.1, var10, var11, var12, var7 * 0.75F);
+                        sigil(var0, var1, var2.start, var5, var2.style == 2 ? 1.65 : 0.4, var3 * 2.0, var10, var11, var12, var7 * 0.85F);
+                        if (var2.style == 2) {
+                            orientedRing(var0, var1, var2.end, var5, 0.2 + var3 * 6.0, 0.025, var10, var11, var12, var7 * 0.5F);
+                        }
+
+                        for (int var32 = 0; var32 < 12; var32++) {
+                            double var34 = (double)var32 * 2.39996;
+                            Vec3 var35 = basis(var5);
+                            Vec3 var17 = var5.cross(var35);
+                            Vec3 var36 = var35.scale(Math.cos(var34)).add(var17.scale(Math.sin(var34)));
+                            Vec3 var19 = var2.end.add(var36.scale(var3 * (var2.style == 2 ? 4.0 : 1.5))).add(var5.scale(-var3 * 0.5));
+                            crystal(var0, var1, var19, var36, 0.018, 0.1, var10, var11, var12, var7 * 0.75F);
+                        }
                     }
                 }
             }
@@ -611,182 +606,188 @@ public final class ArcanaClient {
     }
 
     private static void effect(VertexConsumer var0, Matrix4f var1, ArcanaClient.Effect var2, double var3, double var5) {
-        Vec3 var7 = var2.center;
-        int var8 = var2.strength;
-        if (var2.style == 20) {
-            float var9 = (float)Math.max(0.0, 0.35 * (1.0 - var3 / 0.65));
+        if (!SpellFx.effect(var0, var1, var2.style(), var2.center(), var2.strength(), var3, var5)) {
+            Vec3 var7 = var2.center;
+            int var8 = var2.strength;
+            if (var2.style == 20) {
+                float var9 = (float)Math.max(0.0, 0.35 * (1.0 - var3 / 0.65));
 
-            for (int var10 = 0; var10 < 4; var10++) {
-                double var11 = (double)var10 * 2.39996 + var5;
-                crystal(
-                    var0,
-                    var1,
-                    var7.add(Math.cos(var11) * 0.24, var3 * 0.2, Math.sin(var11) * 0.24),
-                    new Vec3(0.0, 1.0, 0.0),
-                    0.009,
-                    0.03,
-                    0.65F,
-                    0.85F,
-                    1.0F,
-                    var9
-                );
-            }
-        } else if (var2.style == 11) {
-            float var21 = (float)Math.min(1.0, Math.min(var3 * 3.0, (15.0 - var3) * 2.0));
-
-            for (int var29 = 0; var29 < 24 * var8; var29++) {
-                double var38 = (double)var29 * 2.39996;
-                double var13 = Math.sqrt((double)(var29 + 1) / (24.0 * (double)var8)) * (double)(2 + var8);
-                Vec3 var15 = var7.add(Math.cos(var38) * var13, 0.02, Math.sin(var38) * var13);
-                Vec3 var16 = var15.add(0.0, 0.25 + (double)(var29 % 4) * 0.07, 0.0);
-                tube(var0, var1, var15, var16, 0.012, 0.1F, 0.6F, 0.2F, var21);
-
-                for (int var17 = 0; var17 < 5; var17++) {
-                    double var18 = (double)var17 * Math.PI * 2.0 / 5.0;
-                    Vec3 var20 = var16.add(Math.cos(var18) * 0.09, 0.015, Math.sin(var18) * 0.09);
-                    crystal(var0, var1, var20, new Vec3(Math.cos(var18), 0.2, Math.sin(var18)), 0.035, 0.07, var29 % 2 == 0 ? 1.0F : 0.68F, 0.55F, 1.0F, var21);
-                }
-            }
-        } else if (var2.style != 14 && var2.style != 21) {
-            if (var2.style == 13) {
-                float var23 = (float)Math.max(0.0, 1.0 - var3 / 1.3);
-
-                for (int var31 = 0; var31 < 12 + var8 * 3; var31++) {
-                    double var40 = (double)var31 * 2.39996;
-                    double var45 = Math.sqrt((double)(var31 + 1) / (12.0 + (double)(var8 * 3))) * (double)(1 + var8);
-                    Vec3 var49 = var7.add(Math.cos(var40) * var45, -0.4, Math.sin(var40) * var45);
-                    tube(
+                for (int var10 = 0; var10 < 4; var10++) {
+                    double var11 = (double)var10 * 2.39996 + var5;
+                    crystal(
                         var0,
                         var1,
-                        var49,
-                        var49.add(Math.sin(var5 * 6.0 + (double)var31) * 0.15, 1.0 + var3 * 2.0, Math.cos(var5 * 6.0 + (double)var31) * 0.15),
-                        0.1,
+                        var7.add(Math.cos(var11) * 0.24, var3 * 0.2, Math.sin(var11) * 0.24),
+                        new Vec3(0.0, 1.0, 0.0),
+                        0.009,
+                        0.03,
+                        0.65F,
+                        0.85F,
                         1.0F,
-                        0.22F,
-                        0.02F,
-                        var23
+                        var9
                     );
                 }
-            } else if (var2.style == 17) {
-                float var24 = (float)Math.max(0.0, 1.0 - var3 / 1.3);
+            } else if (var2.style == 11) {
+                float var21 = (float)Math.min(1.0, Math.min(var3 * 3.0, (15.0 - var3) * 2.0));
 
-                for (int var32 = 0; var32 < 12 + var8 * 3; var32++) {
-                    double var41 = var5 * 3.0 + (double)var32 * 2.39996;
-                    Vec3 var46 = var7.add(Math.cos(var41) * (1.0 + var3), 0.2 + (double)(var32 % 5) * 0.25, Math.sin(var41) * (1.0 + var3));
-                    crystal(var0, var1, var46, new Vec3(-Math.sin(var41), 0.3, Math.cos(var41)), 0.045, 0.25, 0.83F, 0.9F, 1.0F, var24);
+                for (int var29 = 0; var29 < 24 * var8; var29++) {
+                    double var38 = (double)var29 * 2.39996;
+                    double var13 = Math.sqrt((double)(var29 + 1) / (24.0 * (double)var8)) * (double)(2 + var8);
+                    Vec3 var15 = var7.add(Math.cos(var38) * var13, 0.02, Math.sin(var38) * var13);
+                    Vec3 var16 = var15.add(0.0, 0.25 + (double)(var29 % 4) * 0.07, 0.0);
+                    tube(var0, var1, var15, var16, 0.012, 0.1F, 0.6F, 0.2F, var21);
+
+                    for (int var17 = 0; var17 < 5; var17++) {
+                        double var18 = (double)var17 * Math.PI * 2.0 / 5.0;
+                        Vec3 var20 = var16.add(Math.cos(var18) * 0.09, 0.015, Math.sin(var18) * 0.09);
+                        crystal(
+                            var0, var1, var20, new Vec3(Math.cos(var18), 0.2, Math.sin(var18)), 0.035, 0.07, var29 % 2 == 0 ? 1.0F : 0.68F, 0.55F, 1.0F, var21
+                        );
+                    }
                 }
-            } else if (var2.style == 15) {
-                float var25 = (float)Math.max(0.0, 1.0 - var3 / 1.3);
+            } else if (var2.style != 14 && var2.style != 21) {
+                if (var2.style == 13) {
+                    float var23 = (float)Math.max(0.0, 1.0 - var3 / 1.3);
 
-                for (int var33 = 0; var33 < 8; var33++) {
-                    double var42 = (double)var33 * Math.PI / 4.0;
-                    Vec3 var47 = var7.add(Math.cos(var42) * (0.5 + var3 * 3.0), Math.sin((double)var33 * 2.1) * 0.5, Math.sin(var42) * (0.5 + var3 * 3.0));
-                    tube(var0, var1, var7, var47, 0.025, 0.6F, 0.8F, 1.0F, var25);
-                }
-            } else if (var2.style == 6) {
-                float var26 = (float)Math.max(0.0, 1.0 - var3 / 1.3);
-                double var34 = Math.sin(Math.min(1.0, var3) * Math.PI) * 2.0;
+                    for (int var31 = 0; var31 < 12 + var8 * 3; var31++) {
+                        double var40 = (double)var31 * 2.39996;
+                        double var45 = Math.sqrt((double)(var31 + 1) / (12.0 + (double)(var8 * 3))) * (double)(1 + var8);
+                        Vec3 var49 = var7.add(Math.cos(var40) * var45, -0.4, Math.sin(var40) * var45);
+                        tube(
+                            var0,
+                            var1,
+                            var49,
+                            var49.add(Math.sin(var5 * 6.0 + (double)var31) * 0.15, 1.0 + var3 * 2.0, Math.cos(var5 * 6.0 + (double)var31) * 0.15),
+                            0.1,
+                            1.0F,
+                            0.22F,
+                            0.02F,
+                            var23
+                        );
+                    }
+                } else if (var2.style == 17) {
+                    float var24 = (float)Math.max(0.0, 1.0 - var3 / 1.3);
 
-                for (int var12 = 0; var12 < 8 + var8; var12++) {
-                    double var48 = (double)var12 * Math.PI * 2.0 / (double)(8 + var8);
-                    Vec3 var50 = var7.add(Math.cos(var48) * (1.0 + (double)var8 * 0.5), 0.0, Math.sin(var48) * (1.0 + (double)var8 * 0.5));
-                    crystal(
-                        var0,
-                        var1,
-                        var50.add(0.0, var34 * 0.5, 0.0),
-                        new Vec3(0.12 * Math.sin((double)var12), 1.0, 0.12 * Math.cos((double)var12)),
-                        0.26,
-                        0.2 + var34 * (1.0 + (double)(var12 % 3) * 0.25),
-                        0.52F,
-                        0.4F,
-                        0.29F,
-                        var26
-                    );
-                }
-            } else if (var2.style == 8 || var2.style == 9) {
-                float var28 = (float)Math.max(0.0, 1.0 - var3 / (double)(var2.style == 9 ? 10 : 6));
+                    for (int var32 = 0; var32 < 12 + var8 * 3; var32++) {
+                        double var41 = var5 * 3.0 + (double)var32 * 2.39996;
+                        Vec3 var46 = var7.add(Math.cos(var41) * (1.0 + var3), 0.2 + (double)(var32 % 5) * 0.25, Math.sin(var41) * (1.0 + var3));
+                        crystal(var0, var1, var46, new Vec3(-Math.sin(var41), 0.3, Math.cos(var41)), 0.045, 0.25, 0.83F, 0.9F, 1.0F, var24);
+                    }
+                } else if (var2.style == 15) {
+                    float var25 = (float)Math.max(0.0, 1.0 - var3 / 1.3);
 
-                for (int var36 = 0; var36 < 1; var36++) {
-                    sigil(
-                        var0,
-                        var1,
-                        var7.add(0.0, 0.7, 0.0),
-                        new Vec3(0.0, 1.0, 0.0),
-                        0.62,
-                        var5 * (double)(var36 % 2 == 0 ? 1 : -1),
-                        var2.style == 9 ? 1.0F : 0.75F,
-                        var2.style == 9 ? 0.73F : 0.45F,
-                        var2.style == 9 ? 0.1F : 1.0F,
-                        var28
-                    );
-                }
+                    for (int var33 = 0; var33 < 8; var33++) {
+                        double var42 = (double)var33 * Math.PI / 4.0;
+                        Vec3 var47 = var7.add(Math.cos(var42) * (0.5 + var3 * 3.0), Math.sin((double)var33 * 2.1) * 0.5, Math.sin(var42) * (0.5 + var3 * 3.0));
+                        tube(var0, var1, var7, var47, 0.025, 0.6F, 0.8F, 1.0F, var25);
+                    }
+                } else if (var2.style == 6) {
+                    float var26 = (float)Math.max(0.0, 1.0 - var3 / 1.3);
+                    double var34 = Math.sin(Math.min(1.0, var3) * Math.PI) * 2.0;
 
-                for (int var37 = 0; var37 < 16; var37++) {
-                    double var44 = (double)var37 * 2.39996 + var5;
-                    crystal(
-                        var0,
-                        var1,
-                        var7.add(Math.cos(var44) * 0.68, (double)(var37 % 5) * 0.35, Math.sin(var44) * 0.68),
-                        new Vec3(0.0, 1.0, 0.0),
-                        0.025,
-                        0.07,
-                        var2.style == 9 ? 1.0F : 0.75F,
-                        var2.style == 9 ? 0.73F : 0.45F,
-                        var2.style == 9 ? 0.1F : 1.0F,
-                        var28
-                    );
+                    for (int var12 = 0; var12 < 8 + var8; var12++) {
+                        double var48 = (double)var12 * Math.PI * 2.0 / (double)(8 + var8);
+                        Vec3 var50 = var7.add(Math.cos(var48) * (1.0 + (double)var8 * 0.5), 0.0, Math.sin(var48) * (1.0 + (double)var8 * 0.5));
+                        crystal(
+                            var0,
+                            var1,
+                            var50.add(0.0, var34 * 0.5, 0.0),
+                            new Vec3(0.12 * Math.sin((double)var12), 1.0, 0.12 * Math.cos((double)var12)),
+                            0.26,
+                            0.2 + var34 * (1.0 + (double)(var12 % 3) * 0.25),
+                            0.52F,
+                            0.4F,
+                            0.29F,
+                            var26
+                        );
+                    }
+                } else if (var2.style == 8 || var2.style == 9) {
+                    float var28 = (float)Math.max(0.0, 1.0 - var3 / (double)(var2.style == 9 ? 10 : 6));
+
+                    for (int var36 = 0; var36 < 1; var36++) {
+                        sigil(
+                            var0,
+                            var1,
+                            var7.add(0.0, 0.7, 0.0),
+                            new Vec3(0.0, 1.0, 0.0),
+                            0.62,
+                            var5 * (double)(var36 % 2 == 0 ? 1 : -1),
+                            var2.style == 9 ? 1.0F : 0.75F,
+                            var2.style == 9 ? 0.73F : 0.45F,
+                            var2.style == 9 ? 0.1F : 1.0F,
+                            var28
+                        );
+                    }
+
+                    for (int var37 = 0; var37 < 16; var37++) {
+                        double var44 = (double)var37 * 2.39996 + var5;
+                        crystal(
+                            var0,
+                            var1,
+                            var7.add(Math.cos(var44) * 0.68, (double)(var37 % 5) * 0.35, Math.sin(var44) * 0.68),
+                            new Vec3(0.0, 1.0, 0.0),
+                            0.025,
+                            0.07,
+                            var2.style == 9 ? 1.0F : 0.75F,
+                            var2.style == 9 ? 0.73F : 0.45F,
+                            var2.style == 9 ? 0.1F : 1.0F,
+                            var28
+                        );
+                    }
+                } else {
+                    float var27 = (float)Math.max(0.0, 1.0 - var3 / 1.3);
+
+                    for (int var35 = 0; var35 < 18; var35++) {
+                        double var43 = (double)var35 * 2.39996 + var5;
+                        crystal(
+                            var0,
+                            var1,
+                            var7.add(Math.cos(var43) * (0.4 + var3), var3 * (0.4 + (double)(var35 % 4) * 0.25), Math.sin(var43) * (0.4 + var3)),
+                            new Vec3(0.0, 1.0, 0.0),
+                            0.018,
+                            0.06,
+                            0.8F,
+                            0.94F,
+                            1.0F,
+                            var27
+                        );
+                    }
                 }
             } else {
-                float var27 = (float)Math.max(0.0, 1.0 - var3 / 1.3);
+                float var22 = (float)Math.max(0.0, 1.0 - var3 / 4.0);
+                boolean var30 = var2.style == 21;
 
-                for (int var35 = 0; var35 < 18; var35++) {
-                    double var43 = (double)var35 * 2.39996 + var5;
-                    crystal(
+                for (int var39 = 0; var39 < 6; var39++) {
+                    spiralColor(
                         var0,
                         var1,
-                        var7.add(Math.cos(var43) * (0.4 + var3), var3 * (0.4 + (double)(var35 % 4) * 0.25), Math.sin(var43) * (0.4 + var3)),
-                        new Vec3(0.0, 1.0, 0.0),
-                        0.018,
-                        0.06,
-                        0.8F,
-                        0.94F,
-                        1.0F,
-                        var27
+                        var7,
+                        3.0 + (double)var8 * 0.35,
+                        1.0 + (double)var8 * 0.18,
+                        var3 * 5.0 + (double)var39 * Math.PI / 3.0,
+                        var22 * 0.65F,
+                        var30 ? 1.0F : 0.65F,
+                        var30 ? 0.28F : 0.84F,
+                        var30 ? 0.03F : 1.0F
                     );
                 }
-            }
-        } else {
-            float var22 = (float)Math.max(0.0, 1.0 - var3 / 4.0);
-            boolean var30 = var2.style == 21;
-
-            for (int var39 = 0; var39 < 6; var39++) {
-                spiralColor(
-                    var0,
-                    var1,
-                    var7,
-                    3.0 + (double)var8 * 0.35,
-                    1.0 + (double)var8 * 0.18,
-                    var3 * 5.0 + (double)var39 * Math.PI / 3.0,
-                    var22 * 0.65F,
-                    var30 ? 1.0F : 0.65F,
-                    var30 ? 0.28F : 0.84F,
-                    var30 ? 0.03F : 1.0F
-                );
             }
         }
     }
 
     private static void spiral(VertexConsumer var0, Matrix4f var1, Vec3 var2, double var3, double var5, double var7, float var9) {
-        for (int var10 = 0; var10 < 48; var10++) {
-            double var11 = (double)var10 / 48.0;
-            double var13 = (double)(var10 + 1) / 48.0;
-            double var15 = var7 + var11 * Math.PI * 4.0;
-            double var17 = var7 + var13 * Math.PI * 4.0;
-            Vec3 var19 = var2.add(Math.cos(var15) * var5, var3 * var11, Math.sin(var15) * var5);
-            Vec3 var20 = var2.add(Math.cos(var17) * var5, var3 * var13, Math.sin(var17) * var5);
-            float var21 = (float)Math.sin(Math.PI * var11);
-            tube(var0, var1, var19, var20, 0.013, 0.64F, 0.86F, 1.0F, var9 * var21);
-            tube(var0, var1, var19, var20, 0.06, 0.5F, 0.76F, 1.0F, var9 * var21 * 0.12F);
+        if (!SpellFx.aura(var0, var1, var2, var3, var5, var7, var9)) {
+            for (int var10 = 0; var10 < 48; var10++) {
+                double var11 = (double)var10 / 48.0;
+                double var13 = (double)(var10 + 1) / 48.0;
+                double var15 = var7 + var11 * Math.PI * 4.0;
+                double var17 = var7 + var13 * Math.PI * 4.0;
+                Vec3 var19 = var2.add(Math.cos(var15) * var5, var3 * var11, Math.sin(var15) * var5);
+                Vec3 var20 = var2.add(Math.cos(var17) * var5, var3 * var13, Math.sin(var17) * var5);
+                float var21 = (float)Math.sin(Math.PI * var11);
+                tube(var0, var1, var19, var20, 0.013, 0.64F, 0.86F, 1.0F, var9 * var21);
+                tube(var0, var1, var19, var20, 0.06, 0.5F, 0.76F, 1.0F, var9 * var21 * 0.12F);
+            }
         }
     }
 

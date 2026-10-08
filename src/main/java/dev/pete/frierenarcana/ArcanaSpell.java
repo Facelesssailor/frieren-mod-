@@ -44,7 +44,7 @@ public final class ArcanaSpell extends AbstractSpell {
             ? 140
             : (
                 var1 == ArcanaSpell.Kind.PIERCE
-                    ? 140
+                    ? 200
                     : (
                         var1 == ArcanaSpell.Kind.HEAVY
                             ? 160

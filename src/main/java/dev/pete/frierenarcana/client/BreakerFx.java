@@ -5,10 +5,10 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 
 public final class BreakerFx {
-    public static final double LIFE = 8.5;
-    public static final double BEAM_LIFE = 2.6;
-    static final double CRACK_END = 1.5;
-    static final double SHATTER = 1.6;
+    public static final double LIFE = 13.5;
+    public static final double BEAM_LIFE = 3.4;
+    static final double CRACK_END = 3.0;
+    static final double SHATTER = 3.1;
 
     private BreakerFx() {
     }
@@ -115,9 +115,9 @@ public final class BreakerFx {
 
     public static void beam(VertexConsumer var0, Matrix4f var1, Vec3 var2, Vec3 var3, double var4) {
         Vec3 var6 = ArcanaClient.camera();
-        if (var6 != null && !(var4 > 2.6)) {
+        if (var6 != null && !(var4 > 3.4)) {
             double var7 = sstep(0.0, 0.22, var4);
-            float var9 = (float)(var4 < 1.7 ? 1.0 : Math.max(0.0, 1.0 - (var4 - 1.7) / 0.9000000000000001));
+            float var9 = (float)(var4 < 2.4 ? 1.0 : Math.max(0.0, 1.0 - (var4 - 2.4) / 1.0));
             float var10 = (float)(0.88 + 0.12 * Math.sin(var4 * 37.0));
             Vec3 var11 = var2.lerp(var3, var7);
             ribbon(var0, var1, var6, var2, var11, 1.15, 0.3F, 0.9F, 0.55F, 0.07F * var9);
@@ -157,14 +157,14 @@ public final class BreakerFx {
             Vec3 var8 = var2.field().center();
             double var9 = (double)var2.field().radius();
             Vec3 var11 = var2.impact();
-            if (var5 < 1.9000000000000001) {
-                float var12 = (float)(1.0 + 1.3 * sstep(0.9, 1.6, var5));
-                float var13 = (float)(1.0 - sstep(1.6, 1.9000000000000001, var5));
+            if (var5 < 3.4) {
+                float var12 = (float)(1.0 + 1.3 * sstep(1.8, 3.1, var5));
+                float var13 = (float)(1.0 - sstep(3.1, 3.4, var5));
                 BarrierLook.shell(var0, var1, var8, var9, var7, var12 * var13, 1.0F);
                 cracks(var0, var1, var7, var8, var9, var11, var5, var13);
             }
 
-            double var22 = var5 - 1.5;
+            double var22 = var5 - 3.0;
             if (var22 > 0.0 && var22 < 0.8) {
                 float var14 = (float)(Math.sin(Math.min(1.0, var22 / 0.8) * Math.PI) * 0.9);
                 disc(var0, var1, var7, var11, var9 * 0.35 + var22 * var9 * 0.6, 0.85F, 1.0F, 0.92F, var14 * 0.5F);
@@ -193,7 +193,7 @@ public final class BreakerFx {
         Vec3 var10 = var6.subtract(var3).normalize();
         Vec3 var11 = var10.cross(Math.abs(var10.y) < 0.9 ? new Vec3(0.0, 1.0, 0.0) : new Vec3(1.0, 0.0, 0.0)).normalize();
         Vec3 var12 = var10.cross(var11);
-        double var13 = Math.PI * Math.pow(Math.min(1.0, var7 / 1.5), 0.8);
+        double var13 = Math.PI * Math.pow(Math.min(1.0, var7 / 3.0), 0.8);
         double var15 = var4 + 0.06;
         double var17 = 0.05 + var4 * 0.0025;
         float var19 = (float)(0.75 + 0.25 * Math.sin(var7 * 25.0)) * var9;
@@ -275,12 +275,12 @@ public final class BreakerFx {
             Vec3 var21 = new Vec3(var15, var9, var19);
             Vec3 var22 = var5.subtract(var2).normalize();
             double var23 = Math.acos(Math.max(-1.0, Math.min(1.0, var21.dot(var22))));
-            double var25 = 1.5 + 0.35 * var23 / Math.PI;
+            double var25 = 3.0 + 0.35 * var23 / Math.PI;
             double var27 = var6 - var25;
             if (var27 < 0.0) {
                 return false;
             } else {
-                double var29 = 5.6 + 2.6 * hash(var0, 4);
+                double var29 = 7.699999999999999 + 3.2 * hash(var0, 4);
                 float var31 = (float)(Math.min(1.0, var27 / 0.15) * Math.max(0.0, Math.min(1.0, (var29 - var6) / 1.4)));
                 if (var31 <= 0.004F) {
                     return false;

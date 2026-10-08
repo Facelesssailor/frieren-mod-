@@ -24,7 +24,7 @@ import org.joml.Matrix4f;
     value = {Dist.CLIENT}
 )
 public final class SpellCircleFx {
-    static final double CHARGE_SECONDS = 7.0;
+    static final double CHARGE_SECONDS = 10.0;
     private static long groundFor = -1L;
     private static double groundY;
 
@@ -46,7 +46,7 @@ public final class SpellCircleFx {
                 if (var2 != null && var3 != null) {
                     float var4 = var0.getPartialTick().getGameTimeDeltaPartialTick(false);
                     double var5 = (double)(System.nanoTime() - ArcanaCinematic.startedNanos()) / 1.0E9;
-                    double var7 = ease(var5 / 2.2);
+                    double var7 = ease(var5 / 3.0);
                     if (!(var7 <= 0.01)) {
                         Vec3 var9 = var0.getCamera().getPosition();
                         Vec3 var10 = var2.getPosition(var4);
@@ -63,17 +63,17 @@ public final class SpellCircleFx {
                         BufferSource var12 = var1.renderBuffers().bufferSource();
                         var11.vc = var12.getBuffer(ArcanaRenderTypes.MAGIC);
                         ArcanaShaders.prepare((double)((float)var3.getGameTime() + var4) / 20.0, var9);
-                        double var15 = ArcanaCinematic.release != 0L ? 1.0 : Math.min(1.0, var5 / 7.0);
+                        double var15 = ArcanaCinematic.release != 0L ? 1.0 : Math.min(1.0, var5 / 10.0);
                         float var17 = (float)(0.8 + 0.2 * Math.sin(var5 * 4.0));
                         double var18 = ArcanaCinematic.release == 0L ? 0.0 : (double)(System.nanoTime() - ArcanaCinematic.release) / 1.0E9;
-                        var11.fade = (float)Math.max(0.0, 1.0 - var18 / 2.5);
+                        var11.fade = (float)Math.max(0.0, 1.0 - var18 / 3.5);
                         if ((double)var11.fade > 0.01) {
                             groundCircle(
                                 var11, new Vec3(var10.x, groundY + 0.06, var10.z), var5, var7 * (1.0 + 0.25 * Math.min(1.0, var18 * 3.0)), var15, var17
                             );
                         }
 
-                        var11.fade = (float)Math.max(0.0, 1.0 - var18 / 3.0);
+                        var11.fade = (float)Math.max(0.0, 1.0 - var18 / 4.0);
                         extras(var11, var10, var9, var5, var15, var17);
                         var11.fade = 1.0F;
                         scene(var11, var10, var9, var5);
@@ -365,7 +365,7 @@ public final class SpellCircleFx {
         }
 
         if (var12 != null && var10 >= 0.0) {
-            double var33 = var32 < 1.7 ? 1.0 : Math.max(0.0, 1.0 - (var32 - 1.7) / 1.0);
+            double var33 = var32 < 3.2 ? 1.0 : Math.max(0.0, 1.0 - (var32 - 3.1 - 0.1) / 1.0);
             double var38 = Math.min(1.0, var10 / 0.6);
             if (var33 > 0.01) {
                 double var43 = var12.y + var13;
@@ -412,16 +412,16 @@ public final class SpellCircleFx {
             }
         }
 
-        if (var7 != null && var32 > 1.9) {
+        if (var7 != null && var32 > 3.4) {
             Vec3 var34 = var7.field().center();
             double var16 = (double)var7.field().radius();
-            double var40 = Math.min(1.0, (var32 - 1.9) / 1.2);
-            double var20 = Math.max(0.0, Math.min(1.0, (8.3 - var32) / 2.0));
+            double var40 = Math.min(1.0, (var32 - 3.1 - 0.3) / 1.2);
+            double var20 = Math.max(0.0, Math.min(1.0, (12.899999999999999 - var32) / 2.5));
 
             for (int var22 = 0; var22 < 90; var22++) {
                 double var23 = hash(var22, 1) * Math.PI * 2.0;
                 double var25 = var16 * (0.15 + 0.85 * Math.sqrt(hash(var22, 2)));
-                double var27 = var34.y + var16 * 0.9 * hash(var22, 3) + (var32 - 1.9) * (0.25 + 0.5 * hash(var22, 4));
+                double var27 = var34.y + var16 * 0.9 * hash(var22, 3) + (var32 - 3.1 - 0.3) * (0.18 + 0.4 * hash(var22, 4));
                 Vec3 var29 = new Vec3(var34.x + Math.cos(var23 + var32 * 0.05) * var25 * 0.8, var27, var34.z + Math.sin(var23 + var32 * 0.05) * var25 * 0.8);
                 double var30 = 0.5 + 0.5 * Math.sin(var3 * 3.0 + (double)var22);
                 var0.r = 0.45F;
@@ -431,13 +431,13 @@ public final class SpellCircleFx {
             }
         }
 
-        if (var7 != null && var32 > 5.6) {
-            double var35 = Math.min(1.0, (var32 - 5.6) / 1.2);
+        if (var7 != null && var32 > 9.8) {
+            double var35 = Math.min(1.0, (var32 - 9.8) / 1.5);
 
             for (int var39 = 0; var39 < 28; var39++) {
                 double var41 = hash(var39, 6) * Math.PI * 2.0;
                 double var44 = 0.4 + 2.4 * hash(var39, 7);
-                double var47 = var1.y + (hash(var39, 8) * 3.2 + (var32 - 5.6) * 0.3) % 3.2;
+                double var47 = var1.y + (hash(var39, 8) * 3.2 + (var32 - 9.8) * 0.3) % 3.2;
                 Vec3 var24 = new Vec3(var1.x + Math.cos(var41) * var44, var47, var1.z + Math.sin(var41) * var44);
                 var0.r = 0.55F;
                 var0.g = 1.0F;

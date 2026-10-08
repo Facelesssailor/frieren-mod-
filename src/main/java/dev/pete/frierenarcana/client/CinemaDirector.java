@@ -21,7 +21,7 @@ public final class CinemaDirector {
     private static float bands = 0.0F;
     private static float descent = 0.0F;
     private static long fractureSeen = 0L;
-    static final double END_AFTER_SHATTER = 8.6;
+    static final double END_AFTER_SHATTER = 13.2;
 
     private CinemaDirector() {
     }
@@ -125,47 +125,47 @@ public final class CinemaDirector {
                 }
 
                 double var41 = fractureSeen == 0L ? -1.0 : (double)(var3 - fractureSeen) / 1.0E9;
-                if (!(var5 > 30.0) && (fractureSeen == 0L || !(var41 > 8.6)) && (fractureSeen != 0L || ArcanaCinematic.release == 0L || !(var7 > 2.8))) {
+                if (!(var5 > 40.0) && (fractureSeen == 0L || !(var41 > 13.2)) && (fractureSeen != 0L || ArcanaCinematic.release == 0L || !(var7 > 3.6))) {
                     Vec3 var42;
                     Vec3 var43;
                     byte var44;
                     if (ArcanaCinematic.release == 0L) {
-                        if (var5 < 2.4) {
+                        if (var5 < 3.4) {
                             var44 = 10;
-                            double var45 = var5 / 2.4;
+                            double var45 = var5 / 3.4;
                             var42 = var12.add(var10.scale(1.75 - 0.3 * var45)).add(var11.scale(0.3 - 0.1 * var45)).add(0.0, -0.28, 0.0);
                             var43 = var12.add(0.0, -0.5, 0.0);
-                        } else if (var5 < 5.0) {
+                        } else if (var5 < 7.0) {
                             var44 = 11;
-                            double var46 = (var5 - 2.4) / 2.6;
+                            double var46 = (var5 - 3.4) / 3.6;
                             var42 = var12.add(var10.scale(10.0 + 1.5 * var46)).add(var11.scale(6.5)).add(0.0, 0.3 + 0.4 * var46, 0.0);
                             var43 = var12.add(0.0, 2.0 + 4.0 * var46, 0.0);
                         } else {
                             var44 = 0;
-                            double var47 = Math.min(1.0, (var5 - 5.0) / 2.6);
+                            double var47 = Math.min(1.0, (var5 - 7.0) / 3.2);
                             double var56 = Math.sin(var47 * Math.PI * 0.6) * 0.9;
                             Vec3 var60 = var10.scale(-Math.cos(var56)).add(var11.scale(Math.sin(var56)));
                             var42 = var12.add(var60.scale(5.2 - 1.6 * var47)).add(0.0, -0.45 + 0.9 * var47, 0.0);
                             var43 = var12.add(0.0, 0.15, 0.0).add(var10.scale(0.5));
                         }
-                    } else if (var13 == null || var7 < 1.0) {
+                    } else if (var13 == null || var7 < 1.6) {
                         var44 = 1;
-                        var42 = var12.add(var10.scale(-4.2)).add(var11.scale(1.5)).add(0.0, 0.9 + 0.25 * Math.min(var7, 1.0), 0.0);
+                        var42 = var12.add(var10.scale(-4.2)).add(var11.scale(1.5)).add(0.0, 0.9 + 0.25 * Math.min(var7 / 1.6, 1.0), 0.0);
                         var43 = var17 != null ? var17 : var12.add(var37.scale(24.0));
-                    } else if (var7 < 2.6) {
+                    } else if (var7 < 4.2) {
                         var44 = 2;
                         Vec3 var48 = var12.subtract(var17);
                         Vec3 var24 = new Vec3(var48.x, 0.0, var48.z);
                         var24 = var24.lengthSqr() < 0.01 ? var10.scale(-1.0) : var24.normalize();
-                        double var57 = (var7 - 1.0) / 1.6;
+                        double var57 = (var7 - 1.6) / 2.6;
                         double var61 = Math.min(14.0, Math.max(6.0, var40 * 0.45)) * (1.0 - 0.15 * var57);
                         var42 = var17.add(var24.scale(var61)).add(new Vec3(-var24.z, 0.0, var24.x).scale(2.2)).add(0.0, 1.2 + 0.6 * var57, 0.0);
                         var43 = var17.add(0.0, var40 * 0.08 * var57, 0.0);
-                    } else if (var7 < 6.6) {
+                    } else if (var7 < 10.2) {
                         var44 = 3;
                         Vec3 var49 = new Vec3(var17.x - var39.x, 0.0, var17.z - var39.z);
                         var49 = var49.lengthSqr() < 0.01 ? var10 : var49.normalize();
-                        double var54 = (var7 - 2.6) / 4.0;
+                        double var54 = (var7 - 4.2) / 6.0;
                         double var26 = 0.6 + 0.25 * var54;
                         double var28 = Math.cos(var26);
                         double var30 = Math.sin(var26);
@@ -175,7 +175,7 @@ public final class CinemaDirector {
                         var43 = var39.add(0.0, var40 * (0.35 - 0.1 * var54), 0.0);
                     } else {
                         var44 = 4;
-                        double var51 = (var7 - 6.6) / 2.0;
+                        double var51 = (var7 - 10.2) / 3.0;
                         var42 = var12.add(var10.scale(3.0 - 0.3 * var51)).add(var11.scale(0.7 - 0.4 * var51)).add(0.0, 0.05 + 0.1 * var51, 0.0);
                         var43 = var12.add(0.0, -0.05, 0.0);
                     }
