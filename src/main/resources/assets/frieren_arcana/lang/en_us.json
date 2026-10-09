@@ -199,5 +199,6 @@
   "info.frieren_arcana.heals": "Heals %s health, plus Regeneration",
   "info.frieren_arcana.no_damage_hold": "No damage; holds the target for %s s",
   "item.frieren_arcana.guide_book": "Frieren: Magic Compendium",
-  "item.frieren_arcana.guide_book.tooltip": "Right-click to read about every spell, item and keybinding"
+  "item.frieren_arcana.guide_book.tooltip": "Right-click to read about every spell, item and keybinding",
+  "subtitles.frieren_arcana.breaker": "Barrier Breaker"
 }

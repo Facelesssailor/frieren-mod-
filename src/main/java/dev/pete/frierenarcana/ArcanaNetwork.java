@@ -78,6 +78,7 @@ public final class ArcanaNetwork {
     }
 
     public static void shatter(ServerLevel level, BarrierData.Field field, Vec3 impact) {
+        RainHold.broken(level, field);
         CompoundTag tag = message("shatter");
         tag.put("field", field(field));
         vector(tag, "impact", impact);

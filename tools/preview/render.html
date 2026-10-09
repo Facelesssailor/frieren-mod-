@@ -1,0 +1,418 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Arcana preview</title>
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1280" height="720"></canvas>
+<script>
+// Offline preview renderer for the Frieren Arcana Barrier Breaker cutscene.
+// Geometry comes from the mod's own drawing code (CineHarness); the magic is drawn with the mod's own GLSL.
+const W = 1280, H = 720;
+const cv = document.getElementById('c');
+const gl = cv.getContext('webgl2', {preserveDrawingBuffer: true, antialias: false, alpha: false});
+const SH = {};
+function es(src) {
+  return src.replace(/#version 150/, '#version 300 es\nprecision highp float;\nprecision highp int;\nprecision highp sampler2D;');
+}
+function prog(vs, fs, attribs) {
+  const mk = (t, s) => { const sh = gl.createShader(t); gl.shaderSource(sh, s); gl.compileShader(sh);
+    if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(sh) + '\n' + s); return sh; };
+  const p = gl.createProgram();
+  gl.attachShader(p, mk(gl.VERTEX_SHADER, vs)); gl.attachShader(p, mk(gl.FRAGMENT_SHADER, fs));
+  attribs.forEach((a, i) => gl.bindAttribLocation(p, i, a));
+  gl.linkProgram(p);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+  const u = {}; const n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS);
+  for (let i = 0; i < n; i++) { const info = gl.getActiveUniform(p, i); u[info.name.replace(/\[0\]$/, '')] = gl.getUniformLocation(p, info.name); }
+  return {p, u};
+}
+async function text(url) { const r = await fetch(url); if (!r.ok) throw new Error(url); return r.text(); }
+
+// ---------------- math ----------------
+function persp(fovy, asp, n, f) { const t = 1 / Math.tan(fovy / 2); return [t / asp,0,0,0, 0,t,0,0, 0,0,(f + n) / (n - f),-1, 0,0,2 * f * n / (n - f),0]; }
+function norm(v) { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; }
+function cross(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
+function viewRot(dir) { // rotation-only look-at (camera at origin)
+  const f = norm(dir); let s = cross(f, [0, 1, 0]); if (Math.hypot(...s) < 1e-4) s = [1, 0, 0]; s = norm(s); const u = cross(s, f);
+  return [s[0],u[0],-f[0],0, s[1],u[1],-f[1],0, s[2],u[2],-f[2],0, 0,0,0,1];
+}
+function mul(a, b) { const r = new Array(16).fill(0); for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) for (let k = 0; k < 4; k++) r[j * 4 + i] += a[k * 4 + i] * b[j * 4 + k]; return r; }
+function inv(m) { // general 4x4 inverse
+  const a = m, o = new Array(16);
+  const b00=a[0]*a[5]-a[1]*a[4],b01=a[0]*a[6]-a[2]*a[4],b02=a[0]*a[7]-a[3]*a[4],b03=a[1]*a[6]-a[2]*a[5],b04=a[1]*a[7]-a[3]*a[5],b05=a[2]*a[7]-a[3]*a[6],
+        b06=a[8]*a[13]-a[9]*a[12],b07=a[8]*a[14]-a[10]*a[12],b08=a[8]*a[15]-a[11]*a[12],b09=a[9]*a[14]-a[10]*a[13],b10=a[9]*a[15]-a[11]*a[13],b11=a[10]*a[15]-a[11]*a[14];
+  const d = 1 / (b00*b11-b01*b10+b02*b09+b03*b08-b04*b07+b05*b06);
+  o[0]=(a[5]*b11-a[6]*b10+a[7]*b09)*d; o[1]=(a[2]*b10-a[1]*b11-a[3]*b09)*d; o[2]=(a[13]*b05-a[14]*b04+a[15]*b03)*d; o[3]=(a[10]*b04-a[9]*b05-a[11]*b03)*d;
+  o[4]=(a[6]*b08-a[4]*b11-a[7]*b07)*d; o[5]=(a[0]*b11-a[2]*b08+a[3]*b07)*d; o[6]=(a[14]*b02-a[12]*b05-a[15]*b01)*d; o[7]=(a[8]*b05-a[10]*b02+a[11]*b01)*d;
+  o[8]=(a[4]*b10-a[5]*b08+a[7]*b06)*d; o[9]=(a[1]*b08-a[0]*b10-a[3]*b06)*d; o[10]=(a[12]*b04-a[13]*b02+a[15]*b00)*d; o[11]=(a[9]*b02-a[8]*b04-a[11]*b00)*d;
+  o[12]=(a[5]*b07-a[4]*b09-a[6]*b06)*d; o[13]=(a[0]*b09-a[1]*b07+a[2]*b06)*d; o[14]=(a[13]*b01-a[12]*b03-a[14]*b00)*d; o[15]=(a[8]*b03-a[9]*b01+a[10]*b00)*d;
+  return o;
+}
+function hash(a, b) { const x = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453; return x - Math.floor(x); }
+
+// ---------------- built-in shaders ----------------
+const WORLD_VS = `#version 300 es
+precision highp float;
+in vec3 Position; in vec4 Color; in vec3 Normal;
+uniform mat4 View, Proj; uniform vec3 Cam;
+out vec4 col; out vec3 nrm; out vec3 wpos;
+void main(){ wpos = Position; vec3 rel = Position - Cam; gl_Position = Proj * View * vec4(rel,1.0); col = Color; nrm = Normal; }`;
+const WORLD_FS = `#version 300 es
+precision highp float;
+in vec4 col; in vec3 nrm; in vec3 wpos;
+uniform vec3 Light; uniform vec3 LightCol; uniform float Ambient; uniform vec3 Cam; uniform vec3 FogCol; uniform float Wet;
+out vec4 o;
+void main(){
+  vec3 n = normalize(nrm);
+  float moon = max(0.0, dot(n, normalize(vec3(0.3, 0.8, -0.4))));
+  vec3 L = Light - wpos; float d = length(L);
+  float pl = max(0.0, dot(n, L / max(d, 1e-3))) * 1.0 / (1.0 + d * d * 0.004);
+  vec3 c = col.rgb * (Ambient + 0.35 * moon) + col.rgb * LightCol * pl;
+  c *= 1.0 - 0.15 * Wet;
+  float fog = smoothstep(60.0, 260.0, length(wpos - Cam));
+  o = vec4(mix(c, FogCol, fog), 1.0);
+}`;
+const SKY_VS = `#version 300 es
+in vec2 P; out vec2 ndc; void main(){ ndc = P; gl_Position = vec4(P, 0.9999, 1.0); }`;
+const SKY_FS = `#version 300 es
+precision highp float;
+in vec2 ndc; uniform mat4 InvVP; uniform float Time; uniform vec3 Top; uniform vec3 Hor; out vec4 o;
+float h(vec3 p){ return fract(sin(dot(p, vec3(127.1,311.7,74.7)))*43758.5453); }
+float n3(vec3 p){ vec3 i=floor(p), f=fract(p); f=f*f*(3.0-2.0*f);
+ return mix(mix(mix(h(i),h(i+vec3(1,0,0)),f.x),mix(h(i+vec3(0,1,0)),h(i+vec3(1,1,0)),f.x),f.y),mix(mix(h(i+vec3(0,0,1)),h(i+vec3(1,0,1)),f.x),mix(h(i+vec3(0,1,1)),h(i+vec3(1,1,1)),f.x),f.y),f.z);}
+void main(){
+  vec4 w = InvVP * vec4(ndc, 1.0, 1.0); vec3 d = normalize(w.xyz / w.w);
+  float t = clamp(d.y * 2.2, 0.0, 1.0);
+  vec3 c = mix(Hor, Top, t);
+  vec2 cp = d.xz / max(d.y, 0.06) * 1.6 + vec2(Time * 0.01, 0.0);
+  float cl = n3(vec3(cp, 0.0)) * 0.6 + n3(vec3(cp * 2.3, 1.0)) * 0.3 + n3(vec3(cp * 5.1, 2.0)) * 0.1;
+  c = mix(c, c * 1.35 + vec3(0.02,0.025,0.03), smoothstep(0.45, 0.8, cl) * smoothstep(0.0, 0.15, d.y));
+  if (d.y < 0.0) c = Hor * 0.6;
+  o = vec4(c, 1.0);
+}`;
+const SPRITE_VS = `#version 300 es
+in vec3 Position; in vec2 UV; in vec4 Color; uniform mat4 View, Proj; out vec2 uv; out vec4 col;
+void main(){ gl_Position = Proj * View * vec4(Position,1.0); uv = UV; col = Color; }`;
+const SPRITE_FS = `#version 300 es
+precision highp float; in vec2 uv; in vec4 col; uniform sampler2D Atlas; out vec4 o;
+void main(){ vec4 c = texture(Atlas, uv) * col; if (c.a < 0.1) discard; o = c; }`;
+const RAIN_FS = `#version 300 es
+precision highp float; in vec4 col; out vec4 o; void main(){ o = col; }`;
+const FILL_VS = `#version 300 es
+in vec2 P; void main(){ gl_Position = vec4(P, 0.0, 1.0); }`;
+const FILL_FS = `#version 300 es
+precision highp float; uniform vec4 C; out vec4 o; void main(){ o = C; }`;
+const BLIT_FS = `#version 300 es
+precision highp float; uniform sampler2D T; uniform vec2 S; out vec4 o; void main(){ o = texture(T, gl_FragCoord.xy / S); }`;
+
+let P = {}, atlas, world = null, quad, fbo = {};
+function buf(data) { const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW); return b; }
+function tex(w, h, internal, fmt, type, filter) {
+  const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
+  gl.texImage2D(gl.TEXTURE_2D, 0, internal, w, h, 0, fmt, type, null);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  return t;
+}
+function target(withDepth) {
+  const f = gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER, f);
+  const c = tex(W, H, gl.RGBA8, gl.RGBA, gl.UNSIGNED_BYTE, gl.LINEAR);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, c, 0);
+  let d = null;
+  if (withDepth) { d = tex(W, H, gl.DEPTH_COMPONENT24, gl.DEPTH_COMPONENT, gl.UNSIGNED_INT, gl.NEAREST); gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.TEXTURE_2D, d, 0); }
+  return {f, c, d};
+}
+
+// ---------------- world: clearing in a forest, hills, the caster ----------------
+function buildWorld(center, radius) {
+  const P3 = [], C4 = [], N3 = [];
+  const quadF = (a, b, c, d, n, col) => { for (const v of [a, b, c, a, c, d]) { P3.push(...v); C4.push(...col); N3.push(...n); } };
+  const box = (x0, y0, z0, x1, y1, z1, col, shade) => {
+    const s = shade || 1;
+    const k = (m) => [col[0] * m * s, col[1] * m * s, col[2] * m * s, 1];
+    quadF([x0,y1,z0],[x0,y1,z1],[x1,y1,z1],[x1,y1,z0],[0,1,0],k(1.0));
+    quadF([x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1],[0,-1,0],k(0.5));
+    quadF([x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1],[0,0,1],k(0.8));
+    quadF([x1,y0,z0],[x0,y0,z0],[x0,y1,z0],[x1,y1,z0],[0,0,-1],k(0.8));
+    quadF([x1,y0,z1],[x1,y0,z0],[x1,y1,z0],[x1,y1,z1],[1,0,0],k(0.6));
+    quadF([x0,y0,z0],[x0,y0,z1],[x0,y1,z1],[x0,y1,z0],[-1,0,0],k(0.6));
+  };
+  // ground: 1-block grass tiles with slight colour variation, terraced hills beyond 140 blocks
+  const G = 260;
+  for (let x = -G; x < G; x += 4) for (let z = -G; z < G; z += 4) {
+    const r = Math.hypot(x, z);
+    let y = 64;
+    if (r > 150) y = 64 + Math.floor(Math.max(0, (r - 150) * 0.25 + 6 * Math.sin(x * 0.02) * Math.cos(z * 0.025)));
+    const v = 0.85 + 0.3 * hash(x, z);
+    const col = r > 150 ? [0.16 * v, 0.27 * v, 0.14 * v] : [0.26 * v, 0.42 * v, 0.18 * v];
+    box(x, y - 1, z, x + 4, y, z + 4, col);
+  }
+  // trees: blocky oaks around the clearing
+  for (let i = 0; i < 900; i++) {
+    const a = hash(i, 1) * Math.PI * 2, r = 22 + hash(i, 2) * 220;
+    const x = Math.floor(Math.cos(a) * r), z = Math.floor(Math.sin(a) * r);
+    if (Math.hypot(x - 9, z + 14) < 16) continue;
+    const gy = r > 150 ? 64 + Math.floor(Math.max(0, (r - 150) * 0.25)) : 64;
+    const h = 5 + Math.floor(hash(i, 3) * 4);
+    box(x, gy, z, x + 1, gy + h, z + 1, [0.28, 0.2, 0.12]);
+    const lv = 0.7 + 0.4 * hash(i, 4);
+    const lc = [0.08 * lv, 0.22 * lv, 0.1 * lv];
+    box(x - 2, gy + h - 2, z - 2, x + 3, gy + h, z + 3, lc);
+    box(x - 1, gy + h, z - 1, x + 2, gy + h + 2, z + 2, lc, 1.1);
+  }
+  world = {n: P3.length / 3, p: buf(new Float32Array(P3)), c: buf(new Float32Array(C4)), nn: buf(new Float32Array(N3))};
+}
+function playerMesh(px, py, pz, yawDeg, headPitch) {
+  const P3 = [], C4 = [], N3 = [];
+  const yaw = yawDeg * Math.PI / 180, cy = Math.cos(yaw), sy = Math.sin(yaw);
+  // local: x right, y up, z forward (facing). world = rotate about y
+  const tw = (v) => [px + v[0] * cy - v[2] * sy, py + v[1], pz + v[0] * sy + v[2] * cy];
+  const tn = (v) => [v[0] * cy - v[2] * sy, v[1], v[0] * sy + v[2] * cy];
+  const quadF = (a, b, c, d, n, col) => { for (const v of [a, b, c, a, c, d]) { P3.push(...tw(v)); C4.push(...col, 1); N3.push(...tn(n)); } };
+  const part = (cx, cyy, cz, sx, syy, sz, pitch, pivotY, cols) => {
+    const cp = Math.cos(pitch), sp = Math.sin(pitch);
+    const R = (v) => { const y = v[1] - pivotY, z = v[2]; return [v[0], pivotY + y * cp - z * sp, y * sp + z * cp]; };
+    const x0 = cx - sx / 2, x1 = cx + sx / 2, y0 = cyy - syy / 2, y1 = cyy + syy / 2, z0 = cz - sz / 2, z1 = cz + sz / 2;
+    const f = (a, b, c, d, n, col) => quadF(R(a), R(b), R(c), R(d), R([n[0], n[1] + pivotY, n[2]]).map((v, i) => i == 1 ? v - pivotY : v), col);
+    f([x0,y1,z0],[x0,y1,z1],[x1,y1,z1],[x1,y1,z0],[0,1,0],cols.top);
+    f([x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1],[0,0,1],cols.front);
+    f([x1,y0,z0],[x0,y0,z0],[x0,y1,z0],[x1,y1,z0],[0,0,-1],cols.back);
+    f([x1,y0,z1],[x1,y0,z0],[x1,y1,z0],[x1,y1,z1],[1,0,0],cols.side);
+    f([x0,y0,z0],[x0,y0,z1],[x0,y1,z1],[x0,y1,z0],[-1,0,0],cols.side);
+    f([x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1],[0,-1,0],cols.side);
+  };
+  const robe = [0.92, 0.9, 0.85], gold = [0.75, 0.62, 0.3], boot = [0.2, 0.16, 0.14], skin = [0.98, 0.86, 0.78], hair = [0.88, 0.88, 0.92];
+  const s = (c) => ({top: c, front: c, back: c, side: c.map(v => v * 0.9)});
+  part(-0.12, 0.375, 0, 0.25, 0.75, 0.25, 0, 0.75, s(boot));
+  part(0.12, 0.375, 0, 0.25, 0.75, 0.25, 0, 0.75, s(boot));
+  part(0, 1.125, 0, 0.5, 0.75, 0.27, 0, 1.125, {top: robe, front: robe, back: robe, side: robe.map(v => v * 0.9)});
+  part(0, 0.8, 0.0, 0.56, 0.3, 0.3, 0, 0.8, s(robe));
+  // arms held forward, hands together in front of the chest
+  part(-0.33, 1.15, 0.28, 0.24, 0.24, 0.62, 0, 1.15, s(robe));
+  part(0.33, 1.15, 0.28, 0.24, 0.24, 0.62, 0, 1.15, s(robe));
+  part(-0.2, 1.15, 0.62, 0.16, 0.16, 0.12, 0, 1.15, s(skin));
+  part(0.2, 1.15, 0.62, 0.16, 0.16, 0.12, 0, 1.15, s(skin));
+  // head (pitched to look up) with silver hair and a face
+  const hp = -headPitch * Math.PI / 180;
+  part(0, 1.75, 0, 0.5, 0.5, 0.5, hp, 1.5, {top: hair, front: skin, back: hair, side: hair});
+  part(0, 1.94, -0.02, 0.54, 0.14, 0.54, hp, 1.5, s(hair));
+  part(-0.27, 1.72, -0.06, 0.06, 0.5, 0.42, hp, 1.5, s(hair));
+  part(0.27, 1.72, -0.06, 0.06, 0.5, 0.42, hp, 1.5, s(hair));
+  part(-0.11, 1.74, 0.252, 0.09, 0.07, 0.01, hp, 1.5, s([0.25, 0.6, 0.45]));
+  part(0.11, 1.74, 0.252, 0.09, 0.07, 0.01, hp, 1.5, s([0.25, 0.6, 0.45]));
+  part(-0.3, 1.88, 0.0, 0.16, 0.08, 0.08, hp, 1.5, s([0.95, 0.85, 0.8]));
+  part(0.3, 1.88, 0.0, 0.16, 0.08, 0.08, hp, 1.5, s([0.95, 0.85, 0.8]));
+  part(0, 1.3, 0.14, 0.12, 0.12, 0.01, 0, 1.3, s(gold));
+  return {n: P3.length / 3, p: new Float32Array(P3), c: new Float32Array(C4), nn: new Float32Array(N3)};
+}
+
+async function init() {
+  const base = '/b1_5_11/assets/frieren_arcana/shaders/core/';
+  const van = '/vanilla/assets/minecraft/shaders/core/';
+  P.energy = prog(es(await text(base + 'arcana_energy.vsh')), es(await text(base + 'arcana_energy.fsh')), ['Position', 'Color']);
+  P.refr = prog(es(await text(van + 'position_color.vsh')), es(await text(base + 'arcana_refraction.fsh')), ['Position', 'Color']);
+  P.post = prog(es(await text(base + 'arcana_post.vsh')), es(await text(base + 'arcana_post.fsh')), ['Position']);
+  P.world = prog(WORLD_VS, WORLD_FS, ['Position', 'Color', 'Normal']);
+  P.sky = prog(SKY_VS, SKY_FS, ['P']);
+  P.sprite = prog(SPRITE_VS, SPRITE_FS, ['Position', 'UV', 'Color']);
+  P.rain = prog(SPRITE_VS.replace('out vec2 uv;', 'out vec2 uvx;').replace('uv = UV;', 'uvx = UV;'), RAIN_FS, ['Position', 'UV', 'Color']);
+  P.fill = prog(FILL_VS, FILL_FS, ['P']);
+  P.blit = prog(FILL_VS, BLIT_FS, ['P']);
+  quad = buf(new Float32Array([-1, -1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1]));
+  const img = new Image(); img.src = '/b1_5_11/assets/frieren_arcana/textures/fx/pixel_fx.png'; await img.decode();
+  atlas = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, atlas);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  fbo.scene = target(true); fbo.snap = target(false); fbo.post = target(false);
+  return 'ok';
+}
+
+function bindAttr(i, b, size, type, norm, stride, off) {
+  gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.enableVertexAttribArray(i); gl.vertexAttribPointer(i, size, type, norm, stride, off);
+}
+function drawQuad(p) { gl.bindBuffer(gl.ARRAY_BUFFER, quad); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+  for (let i = 1; i < 4; i++) gl.disableVertexAttribArray(i); gl.drawArrays(gl.TRIANGLES, 0, 6); }
+// quads (4 vertices each) -> triangles index buffer
+let qidx = null, qidxN = 0;
+function quadIndex(nq) {
+  if (nq <= qidxN) return qidx;
+  qidxN = Math.max(nq, qidxN * 2, 1 << 16);
+  const a = new Uint32Array(qidxN * 6);
+  for (let q = 0; q < qidxN; q++) { const b = q * 4, o = q * 6; a[o] = b; a[o + 1] = b + 1; a[o + 2] = b + 2; a[o + 3] = b; a[o + 4] = b + 2; a[o + 5] = b + 3; }
+  if (!qidx) qidx = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, qidx); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, a, gl.STATIC_DRAW);
+  return qidx;
+}
+const dyn = {};
+function dynBuf(name, data) { if (!dyn[name]) dyn[name] = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, dyn[name]); gl.bufferData(gl.ARRAY_BUFFER, data, gl.STREAM_DRAW); return dyn[name]; }
+
+function setMats(p, view, proj) { gl.uniformMatrix4fv(p.u.ModelViewMat || p.u.View, false, view); gl.uniformMatrix4fv(p.u.ProjMat || p.u.Proj, false, proj); }
+
+async function renderFrame(url) {
+  const r = await fetch(url); const ab = await r.arrayBuffer(); const dv = new DataView(ab);
+  let o = 0; const I = () => { const v = dv.getInt32(o, true); o += 4; return v; }, F = () => { const v = dv.getFloat32(o, true); o += 4; return v; };
+  if (I() != 0x41524341) throw new Error('bad frame');
+  const idx = I(), u = F(), shot = I();
+  const cam = [F(), F(), F()], tgt = [F(), F(), F()], post = [F(), F(), F()];
+  const layers = [I(), I(), I(), I()], blend = I(), blendAmt = F();
+  const pl = [F(), F(), F()], yaw = F(), headPitch = F(), gameSec = F(), tSec = F();
+  const nMagic = I(), nRefr = I(), nSprite = I(), nRain = I();
+  const center = [F(), F(), F()], radius = F(), fov = F(), nTargets = I();
+  o = 256;
+  if (!world) buildWorld(center, radius);
+  const view = viewRot([tgt[0] - cam[0], tgt[1] - cam[1], tgt[2] - cam[2]]);
+  const proj = persp((fov || 70) * Math.PI / 180, W / H, 0.05, 1024);
+  const vp = mul(proj, view);
+  const invVP = inv(vp);
+
+  gl.bindFramebuffer(gl.FRAMEBUFFER, fbo.scene.f); gl.viewport(0, 0, W, H);
+  gl.clearColor(0, 0, 0, 1); gl.clearDepth(1); gl.depthMask(true); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.disable(gl.BLEND); gl.disable(gl.CULL_FACE);
+  // sky
+  gl.disable(gl.DEPTH_TEST); gl.useProgram(P.sky.p);
+  gl.uniformMatrix4fv(P.sky.u.InvVP, false, invVP); gl.uniform1f(P.sky.u.Time, gameSec);
+  gl.uniform3f(P.sky.u.Top, 0.035, 0.05, 0.09); gl.uniform3f(P.sky.u.Hor, 0.09, 0.12, 0.17);
+  drawQuad(P.sky);
+  // world + caster
+  gl.enable(gl.DEPTH_TEST); gl.depthFunc(gl.LEQUAL);
+  gl.useProgram(P.world.p);
+  gl.uniformMatrix4fv(P.world.u.View, false, view); gl.uniformMatrix4fv(P.world.u.Proj, false, proj);
+  gl.uniform3f(P.world.u.Cam, ...cam);
+  // light from the magic at the hands: strongest through the column and around the shatter
+  const ss = (a, b, x) => { x = Math.min(1, Math.max(0, (x - a) / (b - a))); return x * x * (3 - 2 * x); };
+  let li = u < 0 ? 0.25 : 0.4 + 1.6 * ss(3.1, 3.4, u) * (1 - ss(4.5, 7, u)) + 0.25 + 0.8 * ss(14.6, 15.03, u) * (1 - ss(15.5, 18, u));
+  gl.uniform3f(P.world.u.Light, pl[0], pl[1] + 1.2, pl[2]); gl.uniform3f(P.world.u.LightCol, 0.55 * li, 1.0 * li, 0.75 * li);
+  gl.uniform1f(P.world.u.Ambient, u > 15.03 ? 0.42 + 0.2 * ss(15.03, 17, u) : 0.3); gl.uniform3f(P.world.u.FogCol, 0.09, 0.12, 0.17); gl.uniform1f(P.world.u.Wet, 1.0);
+  bindAttr(0, world.p, 3, gl.FLOAT, false, 0, 0); bindAttr(1, world.c, 4, gl.FLOAT, false, 0, 0); bindAttr(2, world.nn, 3, gl.FLOAT, false, 0, 0);
+  gl.drawArrays(gl.TRIANGLES, 0, world.n);
+  const pm = playerMesh(pl[0], pl[1], pl[2], yaw, headPitch);
+  bindAttr(0, dynBuf('pp', pm.p), 3, gl.FLOAT, false, 0, 0); bindAttr(1, dynBuf('pc', pm.c), 4, gl.FLOAT, false, 0, 0); bindAttr(2, dynBuf('pn', pm.nn), 3, gl.FLOAT, false, 0, 0);
+  gl.drawArrays(gl.TRIANGLES, 0, pm.n);
+
+  // snapshot of the scene for the crystal shards' refraction (ArcanaRefraction.capture)
+  gl.bindFramebuffer(gl.READ_FRAMEBUFFER, fbo.scene.f); gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, fbo.snap.f);
+  gl.blitFramebuffer(0, 0, W, H, 0, 0, W, H, gl.COLOR_BUFFER_BIT, gl.NEAREST);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, fbo.scene.f);
+
+  // magic (RenderType frieren_arcana_magic: translucent, no cull, colour write only, LEQUAL)
+  const magicBytes = new Uint8Array(ab, o, nMagic * 16); o += nMagic * 16;
+  const refrBytes = new Uint8Array(ab, o, nRefr * 16); o += nRefr * 16;
+  gl.enable(gl.BLEND); gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  gl.depthMask(false);
+  if (nMagic > 0) {
+    gl.useProgram(P.energy.p); setMats(P.energy, view, proj);
+    gl.uniform4f(P.energy.u.ColorModulator, 1, 1, 1, 1); gl.uniform1f(P.energy.u.ArcanaTime, gameSec); gl.uniform3f(P.energy.u.CameraOffset, ...cam);
+    const b = dynBuf('m', magicBytes);
+    bindAttr(0, b, 3, gl.FLOAT, false, 16, 0); bindAttr(1, b, 4, gl.UNSIGNED_BYTE, true, 16, 12); gl.disableVertexAttribArray(2);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, quadIndex(nMagic / 4)); gl.drawElements(gl.TRIANGLES, (nMagic / 4) * 6, gl.UNSIGNED_INT, 0);
+  }
+  if (nRefr > 0) {
+    gl.useProgram(P.refr.p); setMats(P.refr, view, proj);
+    gl.uniform4f(P.refr.u.ColorModulator, 1, 1, 1, 1); gl.uniform1f(P.refr.u.ArcanaTime, gameSec); gl.uniform2f(P.refr.u.ScreenSize, W, H);
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, fbo.snap.c); gl.uniform1i(P.refr.u.SceneSampler, 0);
+    const b = dynBuf('r', refrBytes);
+    bindAttr(0, b, 3, gl.FLOAT, false, 16, 0); bindAttr(1, b, 4, gl.UNSIGNED_BYTE, true, 16, 12);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, quadIndex(nRefr / 4)); gl.drawElements(gl.TRIANGLES, (nRefr / 4) * 6, gl.UNSIGNED_INT, 0);
+  }
+  // sprites (entityTranslucentEmissive: textured, translucent, writes depth)
+  const spriteBytes = new Uint8Array(ab, o, nSprite * 4 * 24); o += nSprite * 4 * 24;
+  if (nSprite > 0) {
+    gl.depthMask(true);
+    gl.useProgram(P.sprite.p); gl.uniformMatrix4fv(P.sprite.u.View, false, view); gl.uniformMatrix4fv(P.sprite.u.Proj, false, proj);
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, atlas); gl.uniform1i(P.sprite.u.Atlas, 0);
+    const b = dynBuf('s', spriteBytes);
+    bindAttr(0, b, 3, gl.FLOAT, false, 24, 0); bindAttr(1, b, 2, gl.FLOAT, false, 24, 12); bindAttr(2, b, 4, gl.UNSIGNED_BYTE, true, 24, 20);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, quadIndex(nSprite)); gl.drawElements(gl.TRIANGLES, nSprite * 6, gl.UNSIGNED_INT, 0);
+    gl.depthMask(false);
+  }
+  // weather: vanilla-like rain streaks above the mod's rain roof for each column near the camera
+  const rainF = new Float32Array(ab.slice(o, o + nRain * 16)); o += nRain * 16;
+  if (nRain > 0) {
+    const vs = [], uvs = [], cs = [];
+    const right = [view[0], view[4], view[8]];
+    for (let i = 0; i < nRain; i++) {
+      const x = rainF[i * 4], z = rainF[i * 4 + 1], y0 = rainF[i * 4 + 2], y1 = rainF[i * 4 + 3];
+      for (let k = 0; k < 3; k++) {
+        const ox = (hash(i, k) - 0.5) * 0.9, oz = (hash(i, k + 7) - 0.5) * 0.9;
+        const len = 0.9, sp = 11 + 3 * hash(i, k + 3);
+        let yy = y1 - ((gameSec * sp + hash(i, k + 5) * 20) % (y1 - y0 + len));
+        const ya = Math.max(y0, yy - len), yb = Math.min(y1, yy);
+        if (yb <= ya) continue;
+        const w = 0.012;
+        const px = x + ox, pz = z + oz;
+        vs.push(px - right[0] * w, ya, pz - right[2] * w, px + right[0] * w, ya, pz + right[2] * w, px + right[0] * w, yb, pz + right[2] * w, px - right[0] * w, yb, pz - right[2] * w);
+        for (let q = 0; q < 4; q++) { uvs.push(0, 0); cs.push(0.6, 0.66, 0.78, 0.45); }
+      }
+    }
+    const nq = vs.length / 12;
+    if (nq > 0) {
+      gl.useProgram(P.rain.p); gl.uniformMatrix4fv(P.rain.u.View, false, view); gl.uniformMatrix4fv(P.rain.u.Proj, false, proj);
+      bindAttr(0, dynBuf('rv', new Float32Array(vs)), 3, gl.FLOAT, false, 0, 0); bindAttr(1, dynBuf('ru', new Float32Array(uvs)), 2, gl.FLOAT, false, 0, 0);
+      bindAttr(2, dynBuf('rc', new Float32Array(cs)), 4, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, quadIndex(nq)); gl.drawElements(gl.TRIANGLES, nq * 6, gl.UNSIGNED_INT, 0);
+    }
+  }
+  if (nTargets > 0) {
+    const P3 = [], C4 = [], N3 = [];
+    const face = (a, b, c, d, n, col) => { for (const v of [a, b, c, a, c, d]) { P3.push(...v); C4.push(...col); N3.push(...n); } };
+    for (let i = 0; i < nTargets; i++) {
+      const x = dv.getFloat32(o, true) + cam[0], y = dv.getFloat32(o + 4, true) + cam[1] - 1.0, z = dv.getFloat32(o + 8, true) + cam[2]; o += 12;
+      const parts = [[-0.3, 0, -0.15, 0.3, 0.75, 0.15, [0.25, 0.3, 0.5]], [-0.3, 0.75, -0.15, 0.3, 1.5, 0.15, [0.2, 0.55, 0.55]], [-0.25, 1.5, -0.25, 0.25, 2.0, 0.25, [0.35, 0.6, 0.3]]];
+      for (const [a0, b0, c0, a1, b1, c1, col] of parts) {
+        const x0 = x + a0, x1 = x + a1, y0 = y + b0, y1 = y + b1, z0 = z + c0, z1 = z + c1, k = [...col, 1];
+        face([x0,y1,z0],[x0,y1,z1],[x1,y1,z1],[x1,y1,z0],[0,1,0],k); face([x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1],[0,0,1],k);
+        face([x1,y0,z0],[x0,y0,z0],[x0,y1,z0],[x1,y1,z0],[0,0,-1],k); face([x1,y0,z1],[x1,y0,z0],[x1,y1,z0],[x1,y1,z1],[1,0,0],k);
+        face([x0,y0,z0],[x0,y0,z1],[x0,y1,z1],[x0,y1,z0],[-1,0,0],k);
+      }
+    }
+    gl.depthMask(true); gl.disable(gl.BLEND); gl.enable(gl.DEPTH_TEST);
+    gl.useProgram(P.world.p);
+    bindAttr(0, dynBuf('tp', new Float32Array(P3)), 3, gl.FLOAT, false, 0, 0); bindAttr(1, dynBuf('tc', new Float32Array(C4)), 4, gl.FLOAT, false, 0, 0); bindAttr(2, dynBuf('tn', new Float32Array(N3)), 3, gl.FLOAT, false, 0, 0);
+    gl.drawArrays(gl.TRIANGLES, 0, P3.length / 3);
+  }
+  gl.depthMask(true); gl.disable(gl.BLEND); gl.disable(gl.DEPTH_TEST);
+
+  // the mod's post pass (CinemaPost): copy -> pass into a separate target reading the copy + depth -> back
+  let src = fbo.scene.c;
+  if (post[0] > 0.001 || post[1] > 0.25) {
+    gl.bindFramebuffer(gl.READ_FRAMEBUFFER, fbo.scene.f); gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, fbo.snap.f);
+    gl.blitFramebuffer(0, 0, W, H, 0, 0, W, H, gl.COLOR_BUFFER_BIT, gl.NEAREST);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo.post.f);
+    gl.useProgram(P.post.p);
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, fbo.snap.c); gl.uniform1i(P.post.u.SceneSampler, 0);
+    gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, fbo.scene.d); gl.uniform1i(P.post.u.DepthSampler, 1);
+    gl.uniform2f(P.post.u.ScreenSize, W, H); gl.uniform1f(P.post.u.Bloom, post[0]); gl.uniform1f(P.post.u.Blur, post[1]);
+    gl.uniform1f(P.post.u.Focus, post[2]); gl.uniform2f(P.post.u.Planes, 0.05, 1024);
+    gl.bindBuffer(gl.ARRAY_BUFFER, quad); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+    for (let i = 1; i < 4; i++) gl.disableVertexAttribArray(i);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.activeTexture(gl.TEXTURE0);
+    src = fbo.post.c;
+  }
+  // to the screen
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.viewport(0, 0, W, H);
+  gl.useProgram(P.blit.p); gl.bindTexture(gl.TEXTURE_2D, src); gl.uniform1i(P.blit.u.T, 0); gl.uniform2f(P.blit.u.S, W, H);
+  drawQuad(P.blit);
+  // GUI layers (CinemaOverlay + ArcanaCinematic letterbox)
+  const top = Math.max(12, Math.floor(H / 13)) / H * 2, bot = Math.max(16, Math.floor(H / 13)) / H * 2;
+  const fillRect = (y0, y1, c) => {
+    gl.useProgram(P.fill.p); gl.uniform4f(P.fill.u.C, c[0], c[1], c[2], c[3]);
+    gl.bindBuffer(gl.ARRAY_BUFFER, dynBuf('fq', new Float32Array([-1, y0, 1, y0, 1, y1, -1, y0, 1, y1, -1, y1])));
+    gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0); for (let i = 1; i < 4; i++) gl.disableVertexAttribArray(i);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+  };
+  gl.enable(gl.BLEND);
+  if (blend == 1) { gl.blendFuncSeparate(gl.ONE_MINUS_DST_COLOR, gl.ZERO, gl.ZERO, gl.ONE); fillRect(-1 + bot, 1 - top, [1, 1, 1, 1]); }
+  if (blend == 2) { gl.blendFuncSeparate(gl.ONE, gl.ONE, gl.ZERO, gl.ONE); fillRect(-1 + bot, 1 - top, [blendAmt, blendAmt, blendAmt, 1]); }
+  if (blend == 3) { gl.blendFuncSeparate(gl.DST_COLOR, gl.ZERO, gl.ZERO, gl.ONE); fillRect(-1 + bot, 1 - top, [blendAmt, blendAmt, blendAmt, 1]); }
+  gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  const argb = (v) => [((v >>> 16) & 255) / 255, ((v >>> 8) & 255) / 255, (v & 255) / 255, ((v >>> 24) & 255) / 255];
+  if ((layers[2] >>> 24) > 1) fillRect(-1 + bot, 1 - top, argb(layers[2]));
+  const bar = argb(-553186539);
+  fillRect(1 - top, 1, bar); fillRect(-1, -1 + bot, bar);
+  if ((layers[3] >>> 24) > 1) fillRect(-1, 1, argb(layers[3]));
+  gl.disable(gl.BLEND);
+  gl.finish();
+  return {idx, u, shot, nMagic, nRefr, nSprite, nRain};
+}
+window.initRenderer = init;
+window.renderFrame = renderFrame;
+</script></body></html>

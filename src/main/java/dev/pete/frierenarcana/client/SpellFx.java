@@ -33,44 +33,48 @@ public final class SpellFx {
     }
 
     public static double beamLife(int var0) {
-        switch (var0) {
-            case 0:
-                return 0.7;
-            case 1:
-                return 0.45;
-            case 2:
-                return 1.8;
-            case 3:
-                return 11.5;
-            case 4:
-                return 1.2;
-            case 5:
-                return 0.9;
-            case 6:
-                return 0.6;
-            case 7:
-                return 7.6;
-            case 8:
-                return 0.7;
-            case 9:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            default:
-                return 0.5;
-            case 10:
-                return 0.55;
-            case 15:
-                return 0.75;
-            case 16:
-                return 2.1;
-            case 17:
-                return 1.3;
-            case 18:
-                return 1.3;
-            case 19:
-                return 1.0;
+        if (var0 == 21) {
+            return 0.62;
+        } else {
+            switch (var0) {
+                case 0:
+                    return 0.7;
+                case 1:
+                    return 0.45;
+                case 2:
+                    return 1.8;
+                case 3:
+                    return 15.35;
+                case 4:
+                    return 1.2;
+                case 5:
+                    return 0.9;
+                case 6:
+                    return 0.6;
+                case 7:
+                    return 7.6;
+                case 8:
+                    return 0.7;
+                case 9:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                default:
+                    return 0.5;
+                case 10:
+                    return 0.55;
+                case 15:
+                    return 0.75;
+                case 16:
+                    return 2.1;
+                case 17:
+                    return 1.3;
+                case 18:
+                    return 1.3;
+                case 19:
+                    return 1.0;
+            }
         }
     }
 
@@ -419,7 +423,10 @@ public final class SpellFx {
     }
 
     public static boolean beam(VertexConsumer var0, Matrix4f var1, int var2, Vec3 var3, Vec3 var4, double var5) {
-        if (var2 == 3) {
+        if (var2 == 21) {
+            FernBarrageFx.draw(var0, var1, var3, var4, var5);
+            return true;
+        } else if (var2 == 3) {
             return false;
         } else {
             CUR_VC = var0;

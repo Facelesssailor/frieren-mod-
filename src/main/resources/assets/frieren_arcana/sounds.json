@@ -1,0 +1,56 @@
+{
+  "breaker.charge": {
+    "subtitle": "subtitles.frieren_arcana.breaker",
+    "sounds": [
+      {
+        "name": "frieren_arcana:breaker/charge",
+        "stream": true
+      }
+    ]
+  },
+  "breaker.release": {
+    "subtitle": "subtitles.frieren_arcana.breaker",
+    "sounds": [
+      {
+        "name": "frieren_arcana:breaker/release",
+        "stream": true
+      }
+    ]
+  },
+  "breaker.rise": {
+    "subtitle": "subtitles.frieren_arcana.breaker",
+    "sounds": [
+      {
+        "name": "frieren_arcana:breaker/rise",
+        "stream": true
+      }
+    ]
+  },
+  "breaker.flicker": {
+    "subtitle": "subtitles.frieren_arcana.breaker",
+    "sounds": [
+      {
+        "name": "frieren_arcana:breaker/flicker",
+        "stream": true
+      }
+    ]
+  },
+  "breaker.shatter": {
+    "subtitle": "subtitles.frieren_arcana.breaker",
+    "sounds": [
+      {
+        "name": "frieren_arcana:breaker/shatter",
+        "stream": true
+      }
+    ]
+  },
+  "breaker.after": {
+    "subtitle": "subtitles.frieren_arcana.breaker",
+    "sounds": [
+      {
+        "name": "frieren_arcana:breaker/after",
+        "stream": true
+      }
+    ]
+  }
+}

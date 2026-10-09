@@ -1,0 +1,15 @@
+{
+  "vertex": "frieren_arcana:arcana_post",
+  "fragment": "frieren_arcana:arcana_post",
+  "samplers": [
+    { "name": "SceneSampler" },
+    { "name": "DepthSampler" }
+  ],
+  "uniforms": [
+    { "name": "ScreenSize", "type": "float", "count": 2, "values": [ 1.0, 1.0 ] },
+    { "name": "Bloom", "type": "float", "count": 1, "values": [ 0.0 ] },
+    { "name": "Blur", "type": "float", "count": 1, "values": [ 0.0 ] },
+    { "name": "Focus", "type": "float", "count": 1, "values": [ 2.0 ] },
+    { "name": "Planes", "type": "float", "count": 2, "values": [ 0.05, 512.0 ] }
+  ]
+}

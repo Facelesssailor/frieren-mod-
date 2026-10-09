@@ -94,9 +94,13 @@ public final class BarrierHooks {
     }
 
     public static boolean rainBlocked(Level var0, BlockPos var1) {
-        return var0 instanceof ServerLevel var2
-            ? BarrierData.get(var2).containsConfining(ShipSpace.world(var0, Vec3.atCenterOf(var1)))
-            : ArcanaClient.rainBlocked(ShipSpace.world(var0, Vec3.atCenterOf(var1)));
+        if (var0 instanceof ServerLevel && RainHold.blocked((ServerLevel)var0, var1)) {
+            return true;
+        } else {
+            return var0 instanceof ServerLevel var2
+                ? BarrierData.get(var2).containsConfining(ShipSpace.world(var0, Vec3.atCenterOf(var1)))
+                : ArcanaClient.rainBlocked(ShipSpace.world(var0, Vec3.atCenterOf(var1)));
+        }
     }
 
     public static boolean transitionBlocked(Entity var0, DimensionTransition var1) {

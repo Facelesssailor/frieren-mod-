@@ -1,71 +1,154 @@
 package dev.pete.frierenarcana.client;
 
+import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
+import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.GameRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderGuiEvent.Post;
+import org.joml.Matrix4f;
 
+/**
+ * Full-screen layers over the Barrier Breaker cutscene: the fade in and out, the six one-frame flashes right before the
+ * shatter (ep. 21, 15:17.78 - 15:18.00: white, colour-inverted, normal, black, over-exposed, dark) and the white-out of the
+ * shatter itself. The inverted / over-exposed / dark frames are done with blend modes on the finished picture.
+ */
 @EventBusSubscriber(
-    modid = "frieren_arcana",
-    value = {Dist.CLIENT}
+   modid = "frieren_arcana",
+   value = {Dist.CLIENT}
 )
 public final class CinemaOverlay {
-    private CinemaOverlay() {
-    }
+   static final int NONE = 0;
+   static final int INVERT = 1;
+   static final int ADD = 2;
+   static final int MULTIPLY = 3;
+   private static boolean blendBroken;
 
-    @SubscribeEvent
-    public static void hud(Post var0) {
-        if (ArcanaCinematic.breakerActive()) {
-            long var1 = System.nanoTime();
-            double var3 = (double)(var1 - ArcanaCinematic.startedNanos()) / 1.0E9;
-            long var5 = CinemaDirector.fractureNanos();
-            double var7 = var5 == 0L ? -1.0 : (double)(var1 - var5) / 1.0E9;
-            GuiGraphics var9 = var0.getGuiGraphics();
-            int var10 = var9.guiWidth();
-            int var11 = var9.guiHeight();
+   private CinemaOverlay() {
+   }
 
-            for (int var15 : layers(var3, var7)) {
-                if (var15 >>> 24 > 1) {
-                    var9.fill(0, 0, var10, var11, var15);
-                }
-            }
-        }
-    }
+   @SubscribeEvent
+   public static void hud(Post event) {
+      if (!ArcanaCinematic.breakerActive()) {
+         return;
+      }
+      long now = System.nanoTime();
+      double sinceStart = (double)(now - ArcanaCinematic.startedNanos()) / 1.0E9;
+      long frac = CinemaDirector.fractureNanos();
+      double u = frac == 0L ? -1.0 : (double)(now - frac) / 1.0E9;
+      GuiGraphics g = event.getGuiGraphics();
+      int w = g.guiWidth();
+      int h = g.guiHeight();
+      // keep the letterbox bars black: the flashes only cover the picture between them
+      int top = Math.max(12, h / 13);
+      int bottom = h - Math.max(16, h / 13);
+      int mode = blendMode(u);
+      if (mode != NONE && !blendBroken) {
+         blendFill(g, w, top, bottom, mode, blendAmount(u));
+      }
+      int[] layers = layers(sinceStart, u);
+      if (layers[2] >>> 24 > 1) {
+         g.fill(0, top, w, bottom, layers[2]);
+      }
+      if (layers[3] >>> 24 > 1) {
+         g.fill(0, 0, w, h, layers[3]);
+      }
+   }
 
-    private static double ss(double var0, double var2, double var4) {
-        var4 = Math.max(0.0, Math.min(1.0, (var4 - var0) / (var2 - var0)));
-        return var4 * var4 * (3.0 - 2.0 * var4);
-    }
+   private static double ss(double a, double b, double x) {
+      x = Math.max(0.0, Math.min(1.0, (x - a) / (b - a)));
+      return x * x * (3.0 - 2.0 * x);
+   }
 
-    static int[] layers(double var0, double var2) {
-        double var4 = Math.max(0.0, 1.0 - var0 / 0.7);
-        double var6 = 0.0;
-        double var8 = 0.0;
-        double var10 = 0.0;
-        if (var2 >= 0.0) {
-            double var12 = var2 - 6.2;
-            double var14 = 5.0;
-            if (var12 > var14 - 0.3 && var12 < var14 - 0.15) {
-                var8 = 0.3;
-            }
+   /** Which blend-mode frame (if any) is on screen at {@code u} seconds after release. */
+   static int blendMode(double u) {
+      switch (BreakTimeline.flicker(u)) {
+         case 2:
+            return INVERT;
+         case 5:
+            return ADD;
+         case 6:
+            return MULTIPLY;
+         default:
+            return NONE;
+      }
+   }
 
-            if (var12 > var14 - 0.15 && var12 < var14) {
-                var10 = 0.35 + 0.4 * ss(var14 - 0.15, var14, var12);
-            }
+   static float blendAmount(double u) {
+      switch (BreakTimeline.flicker(u)) {
+         case 5:
+            return 0.38F;
+         case 6:
+            return 0.62F;
+         default:
+            return 1.0F;
+      }
+   }
 
-            double var16 = var12 - var14;
-            if (var16 > 0.0) {
-                var6 = 0.97 * ss(0.0, 0.06, var16) * (1.0 - ss(0.32, 0.75, var16));
-            }
+   /** Plain colour layers, drawn after any blend-mode frame: {lime (unused), cyan (unused), white, black}. */
+   static int[] layers(double sinceStart, double u) {
+      double black = Math.max(0.0, 1.0 - sinceStart / 0.7);
+      double white = 0.0;
+      if (u >= 0.0) {
+         int f = BreakTimeline.flicker(u);
+         if (f == 1) {
+            white = 1.0;
+         } else if (f == 4) {
+            black = 1.0;
+         } else if (f == 2 && blendBroken) {
+            white = 0.85;
+         }
+         double x = u - BreakTimeline.SHATTER_AT;
+         if (x > 0.0) {
+            // 15:18.03: the shards appear through a white-out that clears over about a second
+            white = Math.max(white, 0.88 * ss(0.0, 0.04, x) * (0.45 + 0.55 * (1.0 - ss(0.04, 0.25, x))) * (1.0 - ss(0.35, 1.2, x)));
+         }
+         black = Math.max(black, (u - (BreakTimeline.END - 0.7)) / 0.7);
+      }
+      return new int[]{0, 0, argb(white, 16514559), argb(Math.min(1.0, black), 0)};
+   }
 
-            var4 = Math.max(var4, (var2 - 20.099999999999998) / 0.7);
-        }
+   private static int argb(double a, int rgb) {
+      return (int)Math.round(Math.max(0.0, Math.min(1.0, a)) * 255.0) << 24 | rgb;
+   }
 
-        return new int[]{argb(var8, 14217312), argb(var10, 15138815), argb(var6, 16514559), argb(Math.min(1.0, var4), 0)};
-    }
-
-    private static int argb(double var0, int var2) {
-        return (int)Math.round(Math.max(0.0, Math.min(1.0, var0)) * 255.0) << 24 | var2;
-    }
+   private static void blendFill(GuiGraphics g, int w, int y0, int y1, int mode, float amount) {
+      try {
+         g.flush();
+         RenderSystem.disableDepthTest();
+         RenderSystem.enableBlend();
+         if (mode == INVERT) {
+            RenderSystem.blendFuncSeparate(SourceFactor.ONE_MINUS_DST_COLOR, DestFactor.ZERO, SourceFactor.ZERO, DestFactor.ONE);
+         } else if (mode == ADD) {
+            RenderSystem.blendFuncSeparate(SourceFactor.ONE, DestFactor.ONE, SourceFactor.ZERO, DestFactor.ONE);
+         } else {
+            RenderSystem.blendFuncSeparate(SourceFactor.DST_COLOR, DestFactor.ZERO, SourceFactor.ZERO, DestFactor.ONE);
+         }
+         float c = mode == INVERT ? 1.0F : amount;
+         RenderSystem.setShader(GameRenderer::getPositionColorShader);
+         Matrix4f m = g.pose().last().pose();
+         BufferBuilder b = Tesselator.getInstance().begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+         b.addVertex(m, 0.0F, (float)y0, 0.0F).setColor(c, c, c, 1.0F);
+         b.addVertex(m, 0.0F, (float)y1, 0.0F).setColor(c, c, c, 1.0F);
+         b.addVertex(m, (float)w, (float)y1, 0.0F).setColor(c, c, c, 1.0F);
+         b.addVertex(m, (float)w, (float)y0, 0.0F).setColor(c, c, c, 1.0F);
+         BufferUploader.drawWithShader(b.buildOrThrow());
+      } catch (Throwable t) {
+         blendBroken = true;
+      } finally {
+         try {
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.enableDepthTest();
+         } catch (Throwable ignored) {
+         }
+      }
+   }
 }

@@ -1,0 +1,195 @@
+# child > super [interfaces...]
+net/minecraft/world/entity/LivingEntity > net/minecraft/world/entity/Entity
+net/minecraft/world/entity/player/Player > net/minecraft/world/entity/LivingEntity
+net/minecraft/server/level/ServerPlayer > net/minecraft/world/entity/player/Player
+net/minecraft/client/player/AbstractClientPlayer > net/minecraft/world/entity/player/Player
+net/minecraft/client/player/LocalPlayer > net/minecraft/client/player/AbstractClientPlayer
+net/minecraft/client/player/RemotePlayer > net/minecraft/client/player/AbstractClientPlayer
+net/minecraft/world/entity/Mob > net/minecraft/world/entity/LivingEntity
+net/minecraft/world/entity/PathfinderMob > net/minecraft/world/entity/Mob
+net/minecraft/world/entity/monster/Monster > net/minecraft/world/entity/PathfinderMob
+net/minecraft/world/entity/projectile/Projectile > net/minecraft/world/entity/Entity
+net/minecraft/world/entity/projectile/AbstractArrow > net/minecraft/world/entity/projectile/Projectile
+net/minecraft/world/entity/item/ItemEntity > net/minecraft/world/entity/Entity
+net/minecraft/world/entity/decoration/ArmorStand > net/minecraft/world/entity/LivingEntity
+net/minecraft/world/level/Level > - net/minecraft/world/level/LevelAccessor java/lang/AutoCloseable
+net/minecraft/world/level/LevelAccessor > - net/minecraft/world/level/LevelReader net/minecraft/world/level/CommonLevelAccessor
+net/minecraft/world/level/CommonLevelAccessor > - net/minecraft/world/level/LevelReader net/minecraft/world/level/EntityGetter
+net/minecraft/world/level/LevelReader > - net/minecraft/world/level/BlockAndTintGetter net/minecraft/world/level/CollisionGetter
+net/minecraft/world/level/BlockAndTintGetter > - net/minecraft/world/level/BlockGetter
+net/minecraft/world/level/CollisionGetter > - net/minecraft/world/level/BlockGetter
+net/minecraft/world/level/BlockGetter > - net/minecraft/world/level/LevelHeightAccessor
+net/minecraft/world/level/ServerLevelAccessor > - net/minecraft/world/level/LevelAccessor
+net/minecraft/world/level/WorldGenLevel > - net/minecraft/world/level/ServerLevelAccessor
+net/minecraft/server/level/ServerLevel > net/minecraft/world/level/Level net/minecraft/world/level/WorldGenLevel
+net/minecraft/client/multiplayer/ClientLevel > net/minecraft/world/level/Level
+net/minecraft/core/BlockPos > net/minecraft/core/Vec3i
+net/minecraft/core/BlockPos$MutableBlockPos > net/minecraft/core/BlockPos
+net/minecraft/world/phys/BlockHitResult > net/minecraft/world/phys/HitResult
+net/minecraft/world/phys/EntityHitResult > net/minecraft/world/phys/HitResult
+net/minecraft/network/chat/MutableComponent > java/lang/Object net/minecraft/network/chat/Component
+net/minecraft/network/chat/Component > - com/mojang/brigadier/Message net/minecraft/network/chat/FormattedText
+net/minecraft/world/item/TieredItem > net/minecraft/world/item/Item
+net/minecraft/world/item/SwordItem > net/minecraft/world/item/TieredItem
+net/minecraft/world/item/BlockItem > net/minecraft/world/item/Item
+net/minecraft/world/item/BookItem > net/minecraft/world/item/Item
+net/minecraft/world/item/WrittenBookItem > net/minecraft/world/item/Item
+net/minecraft/world/level/block/Block > net/minecraft/world/level/block/state/BlockBehaviour net/minecraft/world/level/ItemLike
+net/minecraft/world/item/Item > java/lang/Object net/minecraft/world/level/ItemLike
+net/minecraft/world/level/block/BaseEntityBlock > net/minecraft/world/level/block/Block net/minecraft/world/level/block/EntityBlock
+net/minecraft/world/level/block/state/BlockState > net/minecraft/world/level/block/state/BlockBehaviour$BlockStateBase
+net/minecraft/world/level/block/state/BlockBehaviour$BlockStateBase > net/minecraft/world/level/block/state/StateHolder
+net/minecraft/client/gui/screens/Screen > net/minecraft/client/gui/components/events/AbstractContainerEventHandler net/minecraft/client/gui/components/Renderable
+net/minecraft/client/gui/components/events/AbstractContainerEventHandler > java/lang/Object net/minecraft/client/gui/components/events/ContainerEventHandler
+net/minecraft/client/gui/components/events/ContainerEventHandler > - net/minecraft/client/gui/components/events/GuiEventListener
+net/minecraft/client/gui/screens/inventory/BookViewScreen > net/minecraft/client/gui/screens/Screen
+net/minecraft/client/gui/components/AbstractWidget > java/lang/Object net/minecraft/client/gui/components/Renderable net/minecraft/client/gui/components/events/GuiEventListener
+net/minecraft/client/gui/components/AbstractButton > net/minecraft/client/gui/components/AbstractWidget
+net/minecraft/client/gui/components/Button > net/minecraft/client/gui/components/AbstractButton
+net/minecraft/client/renderer/RenderType > net/minecraft/client/renderer/RenderStateShard
+net/minecraft/client/renderer/RenderType$CompositeRenderType > net/minecraft/client/renderer/RenderType
+net/minecraft/client/renderer/RenderStateShard$ShaderStateShard > net/minecraft/client/renderer/RenderStateShard
+net/minecraft/client/renderer/RenderStateShard$TransparencyStateShard > net/minecraft/client/renderer/RenderStateShard
+net/minecraft/client/renderer/RenderStateShard$WriteMaskStateShard > net/minecraft/client/renderer/RenderStateShard
+net/minecraft/client/renderer/RenderStateShard$CullStateShard > net/minecraft/client/renderer/RenderStateShard$BooleanStateShard
+net/minecraft/client/renderer/RenderStateShard$BooleanStateShard > net/minecraft/client/renderer/RenderStateShard
+net/minecraft/client/renderer/RenderStateShard$LightmapStateShard > net/minecraft/client/renderer/RenderStateShard$BooleanStateShard
+net/minecraft/client/renderer/RenderStateShard$OverlayStateShard > net/minecraft/client/renderer/RenderStateShard$BooleanStateShard
+net/minecraft/client/renderer/RenderStateShard$DepthTestStateShard > net/minecraft/client/renderer/RenderStateShard
+net/minecraft/client/renderer/RenderStateShard$LayeringStateShard > net/minecraft/client/renderer/RenderStateShard
+net/minecraft/client/renderer/RenderStateShard$OutputStateShard > net/minecraft/client/renderer/RenderStateShard
+net/minecraft/client/renderer/RenderStateShard$TextureStateShard > net/minecraft/client/renderer/RenderStateShard$EmptyTextureStateShard
+net/minecraft/client/renderer/RenderStateShard$EmptyTextureStateShard > net/minecraft/client/renderer/RenderStateShard
+net/minecraft/client/renderer/MultiBufferSource$BufferSource > java/lang/Object net/minecraft/client/renderer/MultiBufferSource
+com/mojang/blaze3d/pipeline/TextureTarget > com/mojang/blaze3d/pipeline/RenderTarget
+com/mojang/blaze3d/vertex/BufferBuilder > java/lang/Object com/mojang/blaze3d/vertex/VertexConsumer
+net/minecraft/client/renderer/ShaderInstance > java/lang/Object net/minecraft/client/renderer/Shader java/lang/AutoCloseable
+net/minecraft/client/renderer/entity/player/PlayerRenderer > net/minecraft/client/renderer/entity/LivingEntityRenderer
+net/minecraft/client/renderer/entity/LivingEntityRenderer > net/minecraft/client/renderer/entity/EntityRenderer
+net/minecraft/client/model/PlayerModel > net/minecraft/client/model/HumanoidModel
+net/minecraft/client/model/HumanoidModel > net/minecraft/client/model/AgeableListModel
+net/minecraft/client/model/AgeableListModel > net/minecraft/client/model/EntityModel
+net/minecraft/client/model/EntityModel > net/minecraft/client/model/Model
+net/minecraft/client/particle/TextureSheetParticle > net/minecraft/client/particle/SingleQuadParticle
+net/minecraft/client/particle/SingleQuadParticle > net/minecraft/client/particle/Particle
+net/minecraft/client/particle/WaterDropParticle > net/minecraft/client/particle/TextureSheetParticle
+net/minecraft/core/particles/SimpleParticleType > net/minecraft/core/particles/ParticleType net/minecraft/core/particles/ParticleOptions
+net/minecraft/core/particles/DustParticleOptions > net/minecraft/core/particles/ScalableParticleOptionsBase
+net/minecraft/core/particles/ScalableParticleOptionsBase > java/lang/Object net/minecraft/core/particles/ParticleOptions
+net/minecraft/world/damagesource/DamageSource > java/lang/Object
+net/minecraft/world/level/saveddata/SavedData > java/lang/Object
+net/minecraft/nbt/CompoundTag > java/lang/Object net/minecraft/nbt/Tag
+net/minecraft/nbt/ListTag > net/minecraft/nbt/CollectionTag
+net/minecraft/nbt/CollectionTag > java/util/AbstractList net/minecraft/nbt/Tag
+net/minecraft/network/RegistryFriendlyByteBuf > net/minecraft/network/FriendlyByteBuf
+net/minecraft/network/FriendlyByteBuf > io/netty/buffer/ByteBuf
+net/minecraft/client/KeyMapping > java/lang/Object java/lang/Comparable
+net/minecraft/sounds/SoundEvent > java/lang/Object
+net/minecraft/client/resources/sounds/AbstractSoundInstance > java/lang/Object net/minecraft/client/resources/sounds/SoundInstance
+net/minecraft/client/resources/sounds/SimpleSoundInstance > net/minecraft/client/resources/sounds/AbstractSoundInstance
+net/minecraft/client/resources/sounds/AbstractTickableSoundInstance > net/minecraft/client/resources/sounds/AbstractSoundInstance net/minecraft/client/resources/sounds/TickableSoundInstance
+net/minecraft/client/resources/sounds/TickableSoundInstance > - net/minecraft/client/resources/sounds/SoundInstance
+net/minecraft/world/entity/ai/attributes/RangedAttribute > net/minecraft/world/entity/ai/attributes/Attribute
+net/minecraft/world/item/CreativeModeTab$Output > - 
+net/minecraft/advancements/critereon/SimpleCriterionTrigger > java/lang/Object net/minecraft/advancements/CriterionTrigger
+net/minecraft/server/level/ServerEntity > java/lang/Object
+net/minecraft/gametest/framework/GameTestHelper > java/lang/Object
+net/neoforged/neoforge/event/tick/PlayerTickEvent > net/neoforged/neoforge/event/entity/player/PlayerEvent
+net/neoforged/neoforge/event/tick/PlayerTickEvent$Post > net/neoforged/neoforge/event/tick/PlayerTickEvent
+net/neoforged/neoforge/event/tick/PlayerTickEvent$Pre > net/neoforged/neoforge/event/tick/PlayerTickEvent
+net/neoforged/neoforge/event/entity/player/PlayerEvent > net/neoforged/neoforge/event/entity/living/LivingEvent
+net/neoforged/neoforge/event/entity/living/LivingEvent > net/neoforged/neoforge/event/entity/EntityEvent
+net/neoforged/neoforge/event/entity/EntityEvent > net/neoforged/bus/api/Event
+net/neoforged/neoforge/client/event/RenderLevelStageEvent > net/neoforged/bus/api/Event
+net/neoforged/neoforge/client/event/RenderGuiEvent > net/neoforged/bus/api/Event
+net/neoforged/neoforge/client/event/RenderGuiEvent$Pre > net/neoforged/neoforge/client/event/RenderGuiEvent net/neoforged/bus/api/ICancellableEvent
+net/neoforged/neoforge/client/event/RenderGuiEvent$Post > net/neoforged/neoforge/client/event/RenderGuiEvent
+net/neoforged/neoforge/client/event/ClientTickEvent > net/neoforged/bus/api/Event
+net/neoforged/neoforge/client/event/ClientTickEvent$Post > net/neoforged/neoforge/client/event/ClientTickEvent
+net/neoforged/neoforge/client/event/ClientTickEvent$Pre > net/neoforged/neoforge/client/event/ClientTickEvent
+net/neoforged/neoforge/client/event/ViewportEvent > net/neoforged/bus/api/Event
+net/neoforged/neoforge/client/event/ViewportEvent$ComputeCameraAngles > net/neoforged/neoforge/client/event/ViewportEvent
+net/neoforged/neoforge/client/event/ViewportEvent$ComputeFov > net/neoforged/neoforge/client/event/ViewportEvent
+net/neoforged/neoforge/client/event/RegisterShadersEvent > net/neoforged/bus/api/Event net/neoforged/fml/event/IModBusEvent
+net/neoforged/neoforge/registries/RegisterEvent > net/neoforged/bus/api/Event net/neoforged/fml/event/IModBusEvent
+net/neoforged/neoforge/registries/DeferredHolder > java/lang/Object net/minecraft/core/Holder java/util/function/Supplier
+net/neoforged/neoforge/registries/DeferredItem > net/neoforged/neoforge/registries/DeferredHolder net/minecraft/world/level/ItemLike
+net/neoforged/neoforge/registries/DeferredRegister$Items > net/neoforged/neoforge/registries/DeferredRegister
+net/neoforged/neoforge/client/event/InputEvent > net/neoforged/bus/api/Event
+net/neoforged/neoforge/client/event/InputEvent$InteractionKeyMappingTriggered > net/neoforged/neoforge/client/event/InputEvent net/neoforged/bus/api/ICancellableEvent
+net/neoforged/neoforge/client/event/InputEvent$Key > net/neoforged/neoforge/client/event/InputEvent
+net/neoforged/neoforge/client/event/InputEvent$MouseButton > net/neoforged/neoforge/client/event/InputEvent
+net/neoforged/neoforge/client/event/InputEvent$MouseButton$Pre > net/neoforged/neoforge/client/event/InputEvent$MouseButton net/neoforged/bus/api/ICancellableEvent
+net/neoforged/neoforge/client/event/RenderPlayerEvent > net/neoforged/neoforge/event/entity/player/PlayerEvent
+net/neoforged/neoforge/client/event/RenderPlayerEvent$Pre > net/neoforged/neoforge/client/event/RenderPlayerEvent net/neoforged/bus/api/ICancellableEvent
+net/neoforged/neoforge/client/event/RenderHandEvent > net/neoforged/bus/api/Event net/neoforged/bus/api/ICancellableEvent
+net/neoforged/neoforge/client/event/ClientPlayerNetworkEvent > net/neoforged/bus/api/Event
+net/neoforged/neoforge/client/event/ClientPlayerNetworkEvent$LoggingOut > net/neoforged/neoforge/client/event/ClientPlayerNetworkEvent
+net/neoforged/neoforge/client/event/ClientPlayerNetworkEvent$LoggingIn > net/neoforged/neoforge/client/event/ClientPlayerNetworkEvent
+net/neoforged/neoforge/client/event/MovementInputUpdateEvent > net/neoforged/neoforge/event/entity/player/PlayerEvent
+net/neoforged/neoforge/client/event/CalculateDetachedCameraDistanceEvent > net/neoforged/bus/api/Event
+net/neoforged/neoforge/client/event/RegisterKeyMappingsEvent > net/neoforged/bus/api/Event net/neoforged/fml/event/IModBusEvent
+net/neoforged/neoforge/client/event/RegisterGuiLayersEvent > net/neoforged/bus/api/Event net/neoforged/fml/event/IModBusEvent
+net/neoforged/neoforge/event/entity/player/PlayerInteractEvent > net/neoforged/neoforge/event/entity/player/PlayerEvent
+net/neoforged/neoforge/event/entity/player/PlayerInteractEvent$RightClickItem > net/neoforged/neoforge/event/entity/player/PlayerInteractEvent net/neoforged/bus/api/ICancellableEvent
+net/neoforged/neoforge/event/entity/player/PlayerInteractEvent$RightClickBlock > net/neoforged/neoforge/event/entity/player/PlayerInteractEvent net/neoforged/bus/api/ICancellableEvent
+net/neoforged/neoforge/event/entity/player/PlayerInteractEvent$RightClickEmpty > net/neoforged/neoforge/event/entity/player/PlayerInteractEvent
+net/neoforged/neoforge/event/entity/player/PlayerInteractEvent$LeftClickBlock > net/neoforged/neoforge/event/entity/player/PlayerInteractEvent net/neoforged/bus/api/ICancellableEvent
+net/neoforged/fml/event/lifecycle/FMLClientSetupEvent > net/neoforged/fml/event/lifecycle/ParallelDispatchEvent
+net/neoforged/fml/event/lifecycle/FMLCommonSetupEvent > net/neoforged/fml/event/lifecycle/ParallelDispatchEvent
+net/neoforged/fml/event/lifecycle/ParallelDispatchEvent > net/neoforged/fml/event/lifecycle/ModLifecycleEvent
+net/neoforged/fml/event/lifecycle/ModLifecycleEvent > net/neoforged/bus/api/Event net/neoforged/fml/event/IModBusEvent
+net/neoforged/neoforge/network/event/RegisterPayloadHandlersEvent > net/neoforged/bus/api/Event net/neoforged/fml/event/IModBusEvent
+net/neoforged/neoforge/event/BuildCreativeModeTabContentsEvent > net/neoforged/bus/api/Event net/neoforged/fml/event/IModBusEvent net/minecraft/world/item/CreativeModeTab$Output
+itf net/minecraft/network/protocol/common/custom/CustomPacketPayload
+itf net/minecraft/network/codec/StreamCodec
+itf com/mojang/blaze3d/vertex/VertexConsumer
+itf net/minecraft/client/renderer/MultiBufferSource
+itf net/minecraft/core/Holder
+itf net/minecraft/world/level/ItemLike
+itf net/neoforged/bus/api/ICancellableEvent
+itf net/neoforged/fml/event/IModBusEvent
+itf net/minecraft/network/chat/Component
+itf net/minecraft/client/gui/components/Renderable
+itf net/minecraft/client/gui/components/events/GuiEventListener
+itf net/minecraft/world/level/block/EntityBlock
+itf net/neoforged/neoforge/network/handling/IPayloadContext
+itf net/neoforged/neoforge/network/handling/IPayloadHandler
+itf net/minecraft/client/gui/LayeredDraw$Layer
+itf net/minecraft/core/particles/ParticleOptions
+itf net/minecraft/world/level/LevelHeightAccessor
+itf net/minecraft/world/level/EntityGetter
+itf net/minecraft/client/resources/sounds/SoundInstance
+itf net/minecraft/nbt/Tag
+itf net/minecraft/client/renderer/Shader
+itf net/minecraft/advancements/CriterionTrigger
+itf com/mojang/brigadier/Message
+itf net/minecraft/network/chat/FormattedText
+itf net/minecraft/server/packs/resources/ResourceProvider
+enum net/minecraft/world/InteractionHand
+enum net/minecraft/core/Direction
+enum net/minecraft/sounds/SoundSource
+enum net/minecraft/world/entity/Pose
+enum net/minecraft/world/InteractionResult
+enum net/minecraft/world/item/ItemDisplayContext
+enum net/minecraft/world/level/levelgen/Heightmap$Types
+enum net/minecraft/world/level/ClipContext$Block
+enum net/minecraft/world/level/ClipContext$Fluid
+enum net/minecraft/world/phys/HitResult$Type
+enum net/minecraft/world/entity/EquipmentSlot
+enum net/minecraft/world/level/biome/Biome$Precipitation
+enum net/neoforged/api/distmarker/Dist
+enum net/neoforged/neoforge/client/event/RenderLevelStageEvent$Stage
+enum net/neoforged/fml/common/EventBusSubscriber$Bus
+enum net/minecraft/world/item/Rarity
+enum net/minecraft/ChatFormatting
+enum net/minecraft/world/entity/MoverType
+enum com/mojang/blaze3d/vertex/VertexFormat$Mode
+enum com/mojang/blaze3d/platform/GlStateManager$SourceFactor
+enum com/mojang/blaze3d/platform/GlStateManager$DestFactor
+enum net/minecraft/world/entity/MobCategory
+enum net/minecraft/client/CameraType
+enum net/minecraft/world/level/Level$ExplosionInteraction
+enum net/minecraft/world/Difficulty
+enum net/minecraft/world/level/GameType
+enum net/minecraft/world/entity/HumanoidArm

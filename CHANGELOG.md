@@ -2,6 +2,20 @@
 
 Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
 
+## 1.5.11
+
+- Barrier Breaker sequence retimed frame by frame against ep. 21: the rainbow bands descend while the needle is still slowly rising; the dome shatters at 15:18.03.
+- New cutscene shots (close-ups, far dome shot on a long lens) and a full-screen post pass: glow, background blur, and the six one-frame flashes before the shatter.
+- No rain inside the barrier until it visibly shatters; afterwards the world's own weather returns.
+- Cutscene sound effects cut from the episode, played in step with each part of the sequence.
+- Zoltraak barrage: one bold curved streak per shot from a small launch circle.
+- Holding any Iron's staff lets you double-tap jump to fly (uses mana), no Flight spell needed.
+- Build tools added under tools/.
+
+Code: added RainHold, StaffFlight, client.BreakTimeline, client.BreakerAudio, client.CinemaFov, client.CinemaPost, client.ClientRainHold, client.FernBarrageFx; changed ArcanaNetwork, BarrageFern, BarrierHooks, client.ArcanaClient, client.BarrierLook, client.BreakerFx, client.BreakerSound, client.CinemaDirector, client.CinemaOverlay, client.SpellCircleFx, client.SpellFx.
+
+Resources: added shaders/core/arcana_post.fsh, shaders/core/arcana_post.json, shaders/core/arcana_post.vsh, sounds.json, sounds/breaker/after.ogg, sounds/breaker/charge.ogg, sounds/breaker/flicker.ogg, sounds/breaker/release.ogg, sounds/breaker/rise.ogg, sounds/breaker/shatter.ogg.
+
 ## 1.5.10
 
 - Cutscene shots matched to ep. 21; the whitish-green spear replaces the speed-line flash; pre-release ground glow removed.

@@ -116,10 +116,13 @@ public final class ArcanaClient {
     }
 
     public static boolean rainBlocked(Vec3 var0) {
-        return FIELDS.stream().anyMatch(var1 -> !var1.defensive && var1.center.distanceToSqr(var0) < (double)(var1.radius * var1.radius));
+        return ClientRainHold.blocked(var0)
+            ? true
+            : FIELDS.stream().anyMatch(var1 -> !var1.defensive && var1.center.distanceToSqr(var0) < (double)(var1.radius * var1.radius));
     }
 
     public static int rainHeight(int var0, int var1, int var2) {
+        var2 = ClientRainHold.height(var0, var1, var2);
         int var3 = var2;
 
         for (ArcanaClient.VisualField var5 : FIELDS) {
@@ -196,7 +199,7 @@ public final class ArcanaClient {
                 }
 
                 long var22 = System.nanoTime();
-                FRACTURES.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > 23.7);
+                FRACTURES.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > 34.0);
 
                 for (ArcanaClient.Fracture var12 : FRACTURES) {
                     fracture(var6, var4, var12, var7, (double)(var22 - var12.startNanos) / 1.0E9);
