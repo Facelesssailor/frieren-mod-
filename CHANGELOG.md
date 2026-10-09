@@ -1,6 +1,6 @@
 # Changelog
 
-Each version is a tagged commit (`v<version>`). Code/resource lines are derived from the released jars.
+Each version is one commit on `main` and has its own branch, `release/<version>`. Code/resource lines are derived from the released jars.
 
 ## 1.5.11
 

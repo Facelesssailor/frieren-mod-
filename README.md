@@ -10,8 +10,9 @@ flight on any of Iron's staffs, the Magic Compendium guide book, and more spells
 
 ### Versions
 
-Every released version is one commit, tagged `v<version>` (oldest `v1.3.0`, newest at the top of the history).
-`CHANGELOG.md` lists what changed in each. The released `.jar` for each version is attached to its GitHub release.
+Every released version is one commit on `main`, oldest (1.3.0) first, and each version also has its own branch,
+`release/<version>` (for example `release/1.5.11`), pointing at that version's commit. `CHANGELOG.md` lists what
+changed in each.
 
 ### Layout
 
