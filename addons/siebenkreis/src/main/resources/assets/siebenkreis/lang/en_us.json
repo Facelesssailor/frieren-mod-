@@ -1,0 +1,8 @@
+{
+  "spell.siebenkreis.siebenkreis": "Siebenkreis",
+  "spell.siebenkreis.siebenkreis.guide": "Spell of the Seven Heavens. Stacks huge spell circles over the target area, one slow layer at a time, then collapses them into a pillar of light. Each layer adds an effect: 1 Anchor (slows), 2 Binding (pulls inward), 3 Severance (strips buffs), 4 Lens (+30% damage), 5 Echo (second hit), 6 Ward (absorption for you), 7 Crown (shockwave). Interrupted? It fires with the layers already built.",
+  "ui.siebenkreis.layers": "Layers: %s of %s",
+  "entity.siebenkreis.siebenkreis_circle": "Siebenkreis",
+  "death.attack.siebenkreis.siebenkreis": "%1$s was judged by %2$s's Siebenkreis",
+  "death.attack.siebenkreis.siebenkreis.item": "%1$s was judged by %2$s's Siebenkreis"
+}
