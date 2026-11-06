@@ -6,6 +6,9 @@ on:
     paths: [ 'addons/siebenkreis/**', '.github/workflows/build-siebenkreis.yml' ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,3 +30,16 @@ jobs:
         with:
           name: siebenkreis-jar
           path: addons/siebenkreis/build/libs/*.jar
+      - name: Publish jar to the siebenkreis-dist branch
+        working-directory: .
+        run: |
+          mkdir -p /tmp/dist && cp addons/siebenkreis/build/libs/*.jar /tmp/dist/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan siebenkreis-dist
+          git rm -rf --quiet .
+          cp /tmp/dist/*.jar .
+          printf 'Built from %s\n' "$GITHUB_SHA" > BUILD.txt
+          git add *.jar BUILD.txt
+          git commit -m "Siebenkreis jar built from $GITHUB_SHA"
+          git push -f origin siebenkreis-dist
