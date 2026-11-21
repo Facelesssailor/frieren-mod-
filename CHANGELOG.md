@@ -2,6 +2,24 @@
 
 Each version is one commit on `main` and has its own branch, `release/<version>`. Code/resource lines are derived from the released jars.
 
+## 1.6.0
+
+Built from source with Gradle on GitHub Actions, and checked by filming the Barrier Breaker cutscene in the real game
+(headless Minecraft on CI, a forest at dusk in the rain) frame by frame against ep. 21.
+
+- Veil support (optional): with Veil installed, the Barrier Breaker, spell circles, sigils, crystals and Zoltraak bloom,
+  and the spells give off real coloured light (the charge, the hand sequence in its own colours, the climbing needle,
+  the flicker and the shatter). Off under shader packs; the mod works the same without Veil.
+- Clouds no longer draw over the barrier, the needle, the bands and the falling crystals (Fancy graphics).
+- The caster's name tag no longer floats over them in the cutscene, and the caster's hands are empty during the
+  Barrier Breaker, as in the episode.
+- Cutscene camera: far shots rise above trees instead of diving into the dome, the over-the-shoulder shot keeps the
+  caster in frame, the charge close-up shows the light in the hands, the inside view is lower and on a longer lens so
+  the bands run across the sky.
+- Rainbow bands start 0.4 s later, matching the episode's far shot (15:10.0 - 15:11.75).
+- Build checks: resource integrity (lang, sounds, models, textures, animations, shaders, pose-stack balance) and a
+  sweep of the cutscene camera and timeline at every film frame.
+
 ## 1.5.11
 
 - Barrier Breaker sequence retimed frame by frame against ep. 21: the rainbow bands descend while the needle is still slowly rising; the dome shatters at 15:18.03.
