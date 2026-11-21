@@ -241,9 +241,28 @@ public final class CinemaDirector {
          }
       }
       Vec3 from = onCaster(shot) ? chest : target;
+      if (onCaster(shot)) {
+         // uneven ground (a step, a log) between the caster and a close camera: lift the camera over it rather than
+         // pulling it into the caster's chest. The lift only grows within a shot, so the picture never bobs.
+         if (closeShot != shot || closeFor != ArcanaCinematic.started) {
+            closeShot = shot;
+            closeFor = ArcanaCinematic.started;
+            closeLift = 0.0;
+         }
+         for (double l = closeLift; l <= 2.5; l += 0.25) {
+            if (clear(mc, from, cam.add(0.0, l, 0.0))) {
+               closeLift = l;
+               return cam.add(0.0, l, 0.0);
+            }
+         }
+      }
       BlockHitResult hit = mc.level.clip(new ClipContext(from, cam, Block.VISUAL, Fluid.NONE, mc.player));
       return hit.getType() != Type.MISS ? hit.getLocation().lerp(from, 0.12) : cam;
    }
+
+   private static int closeShot = -1;
+   private static long closeFor = -1L;
+   private static double closeLift;
 
    private static boolean clear(Minecraft mc, Vec3 a, Vec3 b) {
       return mc.level.clip(new ClipContext(a, b, Block.VISUAL, Fluid.NONE, mc.player)).getType() == Type.MISS;
