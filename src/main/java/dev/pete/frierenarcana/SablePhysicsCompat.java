@@ -64,92 +64,23 @@ public final class SablePhysicsCompat {
             type.getClassLoader(),
             new Class[]{type},
             (proxy, method, args) -> {
-                // $VF: Couldn't be decompiled
-                // Please report this to the Vineflower issue tracker, at https://github.com/Vineflower/vineflower/issues with a copy of the class file (if you have the rights to distribute it!)
-                // java.lang.RuntimeException: invalid constant type: Ljava/lang/Object; with value FrierenArcanaPhysicsBoundary
-                //   at org.jetbrains.java.decompiler.modules.decompiler.exps.ConstExprent.toJava(ConstExprent.java:356)
-                //   at org.jetbrains.java.decompiler.modules.decompiler.exps.SwitchExprent.toJava(SwitchExprent.java:151)
-                //   at org.jetbrains.java.decompiler.modules.decompiler.ExprProcessor.getCastedExprent(ExprProcessor.java:1018)
-                //   at org.jetbrains.java.decompiler.modules.decompiler.exps.ExitExprent.toJava(ExitExprent.java:86)
-                //   at org.jetbrains.java.decompiler.modules.decompiler.ExprProcessor.listToJava(ExprProcessor.java:895)
-                //   at org.jetbrains.java.decompiler.modules.decompiler.stats.BasicBlockStatement.toJava(BasicBlockStatement.java:90)
-                //   at org.jetbrains.java.decompiler.modules.decompiler.ExprProcessor.jmpWrapper(ExprProcessor.java:833)
-                //   at org.jetbrains.java.decompiler.modules.decompiler.stats.SequenceStatement.toJava(SequenceStatement.java:107)
-                //   at org.jetbrains.java.decompiler.modules.decompiler.ExprProcessor.jmpWrapper(ExprProcessor.java:833)
-                //   at org.jetbrains.java.decompiler.modules.decompiler.stats.IfStatement.toJava(IfStatement.java:241)
-                //   at org.jetbrains.java.decompiler.modules.decompiler.stats.RootStatement.toJava(RootStatement.java:36)
-                //   at org.jetbrains.java.decompiler.main.ClassWriter.methodLambdaToJava(ClassWriter.java:949)
-                //
-                // Bytecode:
-                // 00: aload 2
-                // 01: invokevirtual java/lang/reflect/Method.getDeclaringClass ()Ljava/lang/Class;
-                // 04: ldc java/lang/Object
-                // 06: if_acmpne a8
-                // 09: aload 2
-                // 0a: invokevirtual java/lang/reflect/Method.getName ()Ljava/lang/String;
-                // 0d: astore 4
-                // 0f: bipush -1
-                // 10: istore 5
-                // 12: aload 4
-                // 14: invokevirtual java/lang/String.hashCode ()I
-                // 17: lookupswitch 81 3 -1776922004 33 -1295482945 67 147696667 50
-                // 38: aload 4
-                // 3a: ldc_w "toString"
-                // 3d: invokevirtual java/lang/String.equals (Ljava/lang/Object;)Z
-                // 40: ifeq 68
-                // 43: bipush 0
-                // 44: istore 5
-                // 46: goto 68
-                // 49: aload 4
-                // 4b: ldc_w "hashCode"
-                // 4e: invokevirtual java/lang/String.equals (Ljava/lang/Object;)Z
-                // 51: ifeq 68
-                // 54: bipush 1
-                // 55: istore 5
-                // 57: goto 68
-                // 5a: aload 4
-                // 5c: ldc_w "equals"
-                // 5f: invokevirtual java/lang/String.equals (Ljava/lang/Object;)Z
-                // 62: ifeq 68
-                // 65: bipush 2
-                // 66: istore 5
-                // 68: iload 5
-                // 6a: tableswitch 60 0 2 26 32 42
-                // 84: ldc_w "FrierenArcanaPhysicsBoundary"
-                // 87: goto a7
-                // 8a: aload 1
-                // 8b: invokestatic java/lang/System.identityHashCode (Ljava/lang/Object;)I
-                // 8e: invokestatic java/lang/Integer.valueOf (I)Ljava/lang/Integer;
-                // 91: goto a7
-                // 94: aload 1
-                // 95: aload 3
-                // 96: bipush 0
-                // 97: aaload
-                // 98: if_acmpne 9f
-                // 9b: bipush 1
-                // 9c: goto a0
-                // 9f: bipush 0
-                // a0: invokestatic java/lang/Boolean.valueOf (Z)Ljava/lang/Boolean;
-                // a3: goto a7
-                // a6: aconst_null
-                // a7: areturn
-                // a8: getstatic dev/pete/frierenarcana/SablePhysicsCompat.disabled Z
-                // ab: ifne cb
-                // ae: aload 3
-                // af: bipush 0
-                // b0: aaload
-                // b1: iload 0
-                // b2: invokestatic dev/pete/frierenarcana/SablePhysicsCompat.step (Ljava/lang/Object;Z)V
-                // b5: goto cb
-                // b8: astore 4
-                // ba: bipush 1
-                // bb: putstatic dev/pete/frierenarcana/SablePhysicsCompat.disabled Z
-                // be: invokestatic com/mojang/logging/LogUtils.getLogger ()Lorg/slf4j/Logger;
-                // c1: ldc_w "Frieren Arcana: disabled Sable boundary callback after API error"
-                // c4: aload 4
-                // c6: invokeinterface org/slf4j/Logger.error (Ljava/lang/String;Ljava/lang/Throwable;)V 3
-                // cb: aconst_null
-                // cc: areturn
+                if (method.getDeclaringClass() == Object.class) {
+                    return switch (method.getName()) {
+                        case "toString" -> "FrierenArcanaPhysicsBoundary";
+                        case "hashCode" -> System.identityHashCode(proxy);
+                        case "equals" -> proxy == args[0];
+                        default -> null;
+                    };
+                }
+                if (!disabled) {
+                    try {
+                        step(args[0], before);
+                    } catch (ReflectiveOperationException e) {
+                        disabled = true;
+                        LogUtils.getLogger().error("Frieren Arcana: disabled Sable boundary callback after API error", e);
+                    }
+                }
+                return null;
             }
         );
     }

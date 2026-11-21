@@ -117,6 +117,7 @@ public final class GuideBookClient {
                     StringBuilder var4 = new StringBuilder();
                     char[] var5 = new char[8192];
 
+                    int var6;
                     while ((var6 = var3.read(var5)) > 0) {
                         var4.append(var5, 0, var6);
                     }

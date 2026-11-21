@@ -18,7 +18,7 @@ public abstract class IronProjectileBarrierMixin {
         at = {@At("HEAD")}
     )
     private void arcana$clip(CallbackInfo ci) {
-        this.arcana$surfaceHit = BarrierHooks.clipProjectile((AbstractMagicProjectile)this);
+        this.arcana$surfaceHit = BarrierHooks.clipProjectile((AbstractMagicProjectile)(Object)this);
     }
 
     @Inject(
@@ -27,7 +27,7 @@ public abstract class IronProjectileBarrierMixin {
     )
     private void arcana$consume(CallbackInfo ci) {
         if (this.arcana$surfaceHit) {
-            ((AbstractMagicProjectile)this).discard();
+            ((AbstractMagicProjectile)(Object)this).discard();
         }
     }
 }

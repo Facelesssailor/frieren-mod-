@@ -863,11 +863,11 @@ public final class ArcanaClient {
         return var1 != null && System.nanoTime() - var1 < 1500000000L;
     }
 
-    public static List fields() {
+    public static List<ArcanaClient.VisualField> fields() {
         return FIELDS;
     }
 
-    public static List fractures() {
+    public static List<ArcanaClient.Fracture> fractures() {
         return FRACTURES;
     }
 
@@ -881,7 +881,7 @@ public final class ArcanaClient {
     private static record Effect(Vec3 center, int style, int strength, long startNanos) {
     }
 
-    private static record Fracture(ArcanaClient.VisualField field, Vec3 impact, long startNanos) {
+    static record Fracture(ArcanaClient.VisualField field, Vec3 impact, long startNanos) {
     }
 
     public static record Mana(float current, float capacity) {

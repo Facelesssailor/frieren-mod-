@@ -393,10 +393,10 @@ public final class AdvancedMagic {
                 }
                 break;
             case SPEARS:
-                Vec3 side = p.getLookAngle().cross(new Vec3(0.0, 1.0, 0.0)).normalize();
+                Vec3 spearSide = p.getLookAngle().cross(new Vec3(0.0, 1.0, 0.0)).normalize();
 
                 for (int i = -1; i <= 1; i++) {
-                    ArcanaModes.fire(p, spell, level, p.getLookAngle().add(side.scale((double)i * 0.06)).normalize(), 32.0, 0.1F, power * 0.9F, 19, false);
+                    ArcanaModes.fire(p, spell, level, p.getLookAngle().add(spearSide.scale((double)i * 0.06)).normalize(), 32.0, 0.1F, power * 0.9F, 19, false);
                 }
         }
     }

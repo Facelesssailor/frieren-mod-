@@ -23,7 +23,7 @@ public abstract class ServerPlayerBarrierMixin {
         cancellable = true
     )
     private void arcana$dimension(DimensionTransition transition, CallbackInfoReturnable<Entity> ci) {
-        if (BarrierHooks.transitionBlocked((ServerPlayer)this, transition)) {
+        if (BarrierHooks.transitionBlocked((ServerPlayer)(Object)this, transition)) {
             ci.setReturnValue(null);
         }
     }
@@ -36,7 +36,7 @@ public abstract class ServerPlayerBarrierMixin {
     private void arcana$teleport(
         ServerLevel destination, double x, double y, double z, Set<RelativeMovement> relative, float yaw, float pitch, CallbackInfoReturnable<Boolean> ci
     ) {
-        ServerPlayer p = (ServerPlayer)this;
+        ServerPlayer p = (ServerPlayer)(Object)this;
         Vec3 target = ShipSpace.world(destination, new Vec3(x, y, z));
         if (destination == p.serverLevel()) {
             if (BarrierData.get(destination).crosses(ShipSpace.world(p), target, false)) {

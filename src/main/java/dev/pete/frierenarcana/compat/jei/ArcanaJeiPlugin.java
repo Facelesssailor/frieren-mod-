@@ -38,7 +38,7 @@ public final class ArcanaJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration var1) {
-        List var2 = SpellGuidePages.all();
+        List<SpellGuidePages.Page> var2 = SpellGuidePages.all();
         var1.addRecipes(GUIDE, var2);
 
         for (SpellGuidePages.Page var4 : var2) {
@@ -69,11 +69,11 @@ public final class ArcanaJeiPlugin implements IModPlugin {
     @Override
     public void registerIngredientAliases(IIngredientAliasRegistration var1) {
         for (SpellGuidePages.Page var3 : SpellGuidePages.all()) {
-            var1.addAlias(var3.scroll(), "Frieren Arcana spell magic");
+            var1.addAlias(mezz.jei.api.constants.VanillaTypes.ITEM_STACK, var3.scroll(), "Frieren Arcana spell magic");
         }
 
         for (DeferredItem var5 : FrierenArcana.DEVICES) {
-            var1.addAlias(((Item)var5.get()).getDefaultInstance(), "Frieren examination barrier dome");
+            var1.addAlias(mezz.jei.api.constants.VanillaTypes.ITEM_STACK, ((Item)var5.get()).getDefaultInstance(), "Frieren examination barrier dome");
         }
     }
 }

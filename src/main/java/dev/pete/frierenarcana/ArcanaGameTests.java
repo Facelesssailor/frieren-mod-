@@ -201,7 +201,9 @@ public final class ArcanaGameTests {
 
             var0.succeed();
         } finally {
-            var5.forEach(Entity::discard);
+            for (Object var99 : var5) {
+                ((Entity)var99).discard();
+            }
             var1.getDataStorage().set("frieren_arcana_barriers", var2);
         }
     }
@@ -434,7 +436,7 @@ public final class ArcanaGameTests {
         var2.setPos(var3.x, var3.y, var3.z);
         var2.setYRot(0.0F);
         var2.setXRot(0.0F);
-        List var4 = SpellGuidePages.all();
+        List<SpellGuidePages.Page> var4 = SpellGuidePages.all();
         int var5 = FrierenArcana.SPELL_MAP.values().stream().mapToInt(var0x -> var0x.get().getMaxLevel() - var0x.get().getMinLevel() + 1).sum();
         var0.assertTrue(var4.size() == var5, "JEI data must contain a page for every spell level");
         HashSet var6 = new HashSet();

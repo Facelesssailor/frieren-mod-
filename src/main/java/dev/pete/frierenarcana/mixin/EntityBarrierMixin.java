@@ -19,7 +19,7 @@ public abstract class EntityBarrierMixin {
         argsOnly = true
     )
     private Vec3 arcana$movement(Vec3 movement) {
-        return BarrierHooks.movement((Entity)this, movement);
+        return BarrierHooks.movement((Entity)(Object)this, movement);
     }
 
     @Inject(
@@ -28,7 +28,7 @@ public abstract class EntityBarrierMixin {
         cancellable = true
     )
     private void arcana$position(double x, double y, double z, CallbackInfo ci) {
-        if (BarrierHooks.teleportBlocked((Entity)this, x, y, z)) {
+        if (BarrierHooks.teleportBlocked((Entity)(Object)this, x, y, z)) {
             ci.cancel();
         }
     }
@@ -39,7 +39,7 @@ public abstract class EntityBarrierMixin {
         cancellable = true
     )
     private void arcana$dimension(DimensionTransition transition, CallbackInfoReturnable<Entity> ci) {
-        if (BarrierHooks.transitionBlocked((Entity)this, transition)) {
+        if (BarrierHooks.transitionBlocked((Entity)(Object)this, transition)) {
             ci.setReturnValue(null);
         }
     }

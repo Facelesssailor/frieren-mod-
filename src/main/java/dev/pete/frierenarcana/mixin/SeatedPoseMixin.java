@@ -16,6 +16,6 @@ public abstract class SeatedPoseMixin {
         require = 0
     )
     private void frierenArcana$seat(LivingEntity var1, float var2, float var3, float var4, float var5, float var6, CallbackInfo var7) {
-        SeatedFlight.pose((HumanoidModel<?>)this, var1, var4);
+        SeatedFlight.pose((HumanoidModel<?>)(Object)this, var1, var4);
     }
 }

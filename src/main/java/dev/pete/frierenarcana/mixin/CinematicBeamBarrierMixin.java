@@ -29,7 +29,7 @@ public abstract class CinematicBeamBarrierMixin {
         remap = false
     )
     private void arcana$length(CallbackInfoReturnable<Float> ci) {
-        Entity entity = (Entity)this;
+        Entity entity = (Entity)(Object)this;
         Vec3 from = this.visualOrigin(1.0F);
         Vec3 to = from.add(this.visualDirection(1.0F).normalize().scale((double)ci.getReturnValueF()));
         ci.setReturnValue((float)from.distanceTo(BarrierHooks.clip(entity.level(), from, to)));

@@ -19,7 +19,7 @@ public abstract class LevelBarrierMixin {
         cancellable = true
     )
     private void arcana$protect(BlockPos pos, BlockState state, int flags, int recursion, CallbackInfoReturnable<Boolean> ci) {
-        if (this instanceof ServerLevel level && BarrierData.get(level).protects(pos)) {
+        if ((Object)this instanceof ServerLevel level && BarrierData.get(level).protects(pos)) {
             ci.setReturnValue(false);
         }
     }
@@ -30,7 +30,7 @@ public abstract class LevelBarrierMixin {
         cancellable = true
     )
     private void arcana$weather(BlockPos pos, CallbackInfoReturnable<Boolean> ci) {
-        if (BarrierHooks.rainBlocked((Level)this, pos)) {
+        if (BarrierHooks.rainBlocked((Level)(Object)this, pos)) {
             ci.setReturnValue(false);
         }
     }

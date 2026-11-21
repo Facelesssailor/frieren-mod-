@@ -34,7 +34,7 @@ public final class BarrageClient {
 
     private static KeyMapping[] castKeys(Minecraft var0) {
         if (castKeys == null) {
-            ArrayList var1 = new ArrayList();
+            ArrayList<KeyMapping> var1 = new ArrayList<>();
 
             for (KeyMapping var5 : var0.options.keyMappings) {
                 String var6 = var5.getName();
