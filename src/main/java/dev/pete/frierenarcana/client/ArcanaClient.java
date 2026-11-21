@@ -938,7 +938,7 @@ public final class ArcanaClient {
             float r = 0.3F, g = 1.0F, b = 0.5F, bright = 1.2F;
             double reach = 5.0;
             if (u >= BreakTimeline.SPEAR) {
-                r = 0.85F; g = 1.0F; b = 0.85F; bright = 2.6F; reach = 7.0;
+                r = 0.75F; g = 1.0F; b = 0.8F; bright = 1.8F; reach = 6.0;
             } else if (u >= BreakTimeline.SPLIT) {
                 r = 1.0F; g = 0.45F; b = 0.55F; bright = 0.9F;
             } else if (u >= BreakTimeline.SPHERE) {
