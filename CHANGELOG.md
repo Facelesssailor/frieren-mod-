@@ -2,6 +2,12 @@
 
 Each version is one commit on `main` and has its own branch, `release/<version>`. Code/resource lines are derived from the released jars.
 
+## 1.6.1
+
+- Cutscene camera on uneven ground: when a step or a log stands between the caster and a close camera, the camera
+  now rises over it instead of moving into the caster (found in the in-game capture of 1.6.0, where the hand sequence
+  filmed the inside of the caster's arms).
+
 ## 1.6.0
 
 Built from source with Gradle on GitHub Actions, and checked by filming the Barrier Breaker cutscene in the real game
