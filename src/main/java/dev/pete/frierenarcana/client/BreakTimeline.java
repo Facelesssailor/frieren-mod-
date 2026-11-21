@@ -12,8 +12,9 @@ package dev.pete.frierenarcana.client;
  *  2.80-3.12  whitish-green spear collapses at the hands   15:05.80
  *  3.20       the light leaves the hands as a column       15:06.20
  *  3.20-12.0  needle climbs to the apex at ~0.12 radius/s  (0.46 R at 15:10.0, 0.61 R at 15:11.25)
- *  6.20-10.2  rainbow bands descend from the apex to the ground while the needle is still rising
- *             (seen from the far shot: a thin cap at 15:10.0, the top half striped by 15:11.75)
+ *  6.60-10.6  rainbow bands descend from the apex to the ground while the needle is still rising
+ *             (far shot, share of the dome's height striped: .11 at 15:10.0, .18 at 15:10.5, .38 at 15:11.0,
+ *             .55 at 15:11.75 - a steady quarter of the height per second from 15:09.6)
  *  14.78      white / inverted / normal / black / bright / dark - one anime frame each
  *  15.03      shatter: white-out, crystals hang over the field
  *  17.0       over-the-shoulder, background blurred, crystals falling
@@ -28,8 +29,8 @@ public final class BreakTimeline {
    public static final double SPEAR = 2.80;
    public static final double PINCH = 3.2;
    public static final double APEX = 12.0;
-   public static final double BANDS_BEGIN = 6.2;
-   public static final double BANDS_GROUND = 10.2;
+   public static final double BANDS_BEGIN = 6.6;
+   public static final double BANDS_GROUND = 10.6;
    public static final double FLICKER = 14.78;
    public static final double SHATTER_AT = 15.03;
    /** w (seconds after the needle origin) at which the dome shatters; shard/crack code is written against it. */

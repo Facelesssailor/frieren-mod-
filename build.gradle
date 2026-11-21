@@ -1,0 +1,86 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.+'
+}
+
+version = mod_version
+group = 'dev.pete.frierenarcana'
+
+base {
+    archivesName = 'frieren-arcana-neoforge-1_21_1'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = neo_version
+    mods {
+        frieren_arcana {
+            sourceSet sourceSets.main
+        }
+    }
+    runs {
+        // The mod's own visual self-test: loads a world, plays the Barrier Breaker cutscene and saves screenshots to
+        // run/visual-smoke (see VisualClientSmoke). Used by CI under a virtual display.
+        smokeClient {
+            client()
+            gameDirectory = project.file('run')
+            systemProperty 'frieren_arcana.visualClientSmoke', 'true'
+            programArguments.addAll '--width', '1280', '--height', '720'
+        }
+        // Films the Barrier Breaker cutscene in a fresh forest world, one exact film frame (1/24 s) per rendered frame,
+        // into run/arcana-capture (see CinemaCapture). CI runs it headless and compares the frames with ep. 21.
+        capture {
+            client()
+            gameDirectory = project.file('run')
+            systemProperty 'frieren_arcana.cinemaCapture', 'true'
+            jvmArguments.add '-Xmx3G'
+            programArguments.addAll '--width', '1280', '--height', '720'
+        }
+    }
+}
+
+// the test source set sees Minecraft and the mod (for the timeline sweep below)
+neoForge {
+    addModdingDependenciesTo(sourceSets.test)
+}
+
+// Sweeps the Barrier Breaker cutscene's camera and timeline through every film frame; part of `gradle check`.
+tasks.register('timelineCheck', JavaExec) {
+    group = 'verification'
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'dev.pete.frierenarcana.client.TimelineSweep'
+}
+tasks.named('check') { dependsOn 'timelineCheck' }
+
+repositories {
+    maven { url = 'https://code.redspace.io/releases' }
+    maven { url = 'https://code.redspace.io/snapshots' }
+    maven { url = 'https://maven.theillusivec4.top' }
+    maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+    maven { url = 'https://maven.kosmx.dev/' }
+    maven { url = 'https://maven.blamejared.com' }
+    maven { url = 'https://maven.ryanhcode.dev/releases' }
+    maven { url = 'https://cursemaven.com' }
+}
+
+dependencies {
+    implementation("io.redspace:irons_spellbooks:${irons_version}") { transitive = false }
+    implementation("io.redspace:irons_lib:${irons_lib_version}") { transitive = false }
+    implementation("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}") { transitive = false }
+    implementation("top.theillusivec4.curios:curios-neoforge:${curios_version}") { transitive = false }
+    implementation("dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}") { transitive = false }
+    compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}") { transitive = false }
+    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}") { transitive = false }
+    // Optional: real bloom and coloured light when Veil is installed (only touched behind a ModList check)
+    compileOnly("foundry.veil:veil-neoforge-${minecraft_version}:${veil_version}") { transitive = false }
+    jarJar(implementation("dev.ryanhcode.sable-companion:sable-companion-common-${minecraft_version}:[${sable_companion_version},)")) {
+        version { prefer sable_companion_version }
+        transitive = false
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-Xmaxerrs' << '1000'
+}

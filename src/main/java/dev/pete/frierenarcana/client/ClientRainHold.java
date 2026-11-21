@@ -13,7 +13,7 @@ public final class ClientRainHold {
 
    public static boolean blocked(Vec3 p) {
       try {
-         long now = System.nanoTime();
+         long now = ArcanaClock.nanos();
          for (ArcanaClient.Fracture f : ArcanaClient.fractures()) {
             if (holding(f, now)) {
                double r = f.field().radius();
@@ -31,7 +31,7 @@ public final class ClientRainHold {
    public static int height(int x, int z, int floor) {
       int h = floor;
       try {
-         long now = System.nanoTime();
+         long now = ArcanaClock.nanos();
          for (ArcanaClient.Fracture f : ArcanaClient.fractures()) {
             if (holding(f, now)) {
                Vec3 c = f.field().center();

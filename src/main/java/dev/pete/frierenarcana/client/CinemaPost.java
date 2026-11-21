@@ -101,7 +101,7 @@ public final class CinemaPost {
    /** {bloom strength, blur radius in pixels, focus distance in blocks} for this moment of the cutscene. */
    static float[] params() {
       Minecraft mc = Minecraft.getInstance();
-      long now = System.nanoTime();
+      long now = ArcanaClock.nanos();
       double u = ArcanaCinematic.release == 0L ? -1.0 : (double)(now - ArcanaCinematic.release) / 1.0E9;
       Vec3 cam = mc.gameRenderer.getMainCamera().getPosition();
       Vec3 eye = mc.player == null ? cam : mc.player.getEyePosition();
@@ -123,6 +123,9 @@ public final class CinemaPost {
       if (shot == 14 || shot == 15 || shot == 3) {
          blur = (float)(screenHeight * (shot == 3 ? 0.02 : (shot == 14 ? 0.016 : 0.011)));
          focus = (float)Math.max(0.6, subjectDistance);
+      }
+      if (dev.pete.frierenarcana.client.veil.VeilCompat.bloomActive()) {
+         bloom *= 0.5;
       }
       return new float[]{(float)bloom, blur, focus};
    }

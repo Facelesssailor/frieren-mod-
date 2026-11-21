@@ -168,7 +168,7 @@ public final class ArcanaModes {
         }
 
         double var26 = var10.distanceTo(var11);
-        ArrayList var27 = new ArrayList();
+        ArrayList<LivingEntity> var27 = new ArrayList<>();
 
         for (Entity var18 : var0.serverLevel().getAllEntities()) {
             if (var18 instanceof LivingEntity) {

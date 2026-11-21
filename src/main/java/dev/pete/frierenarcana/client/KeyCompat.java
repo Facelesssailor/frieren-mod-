@@ -56,7 +56,7 @@ public final class KeyCompat {
                     }
 
                     ArrayList var3 = new ArrayList();
-                    ArrayList var4 = new ArrayList();
+                    ArrayList<MutableComponent> var4 = new ArrayList<>();
                     fix(var1.options.keyMappings, var3, var4);
                     if (!var3.isEmpty()) {
                         KeyMapping.resetMapping();

@@ -254,7 +254,7 @@ public final class PixelFx {
 
     @SubscribeEvent
     public static void flush(RenderLevelStageEvent var0) {
-        if (var0.getStage() == Stage.AFTER_PARTICLES) {
+        if (var0.getStage() == ArcanaStages.sprites()) {
             if (count != 0) {
                 Minecraft var1 = Minecraft.getInstance();
                 Vec3 var2 = var0.getCamera().getPosition();

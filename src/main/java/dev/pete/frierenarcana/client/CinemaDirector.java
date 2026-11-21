@@ -75,7 +75,7 @@ public final class CinemaDirector {
             if (BlackHoleCinema.running()) {
                BlackHoleCinema.tick(var1, var2);
             } else {
-               long var3 = System.nanoTime();
+               long var3 = ArcanaClock.nanos();
                double var5 = (double)(var3 - ArcanaCinematic.started) / 1.0E9;
                double var7 = ArcanaCinematic.release == 0L ? 0.0 : (double)(var3 - ArcanaCinematic.release) / 1.0E9;
                bands = ArcanaCinematic.release == 0L ? 0.0F : 1.0F;
@@ -180,7 +180,7 @@ public final class CinemaDirector {
       if (sReady && sEye != null) {
          Minecraft var1 = Minecraft.getInstance();
          if (var1.level != null && var1.player != null) {
-            long var2 = System.nanoTime();
+            long var2 = ArcanaClock.nanos();
             double var4 = (double)(var2 - ArcanaCinematic.started) / 1.0E9;
             double var6 = ArcanaCinematic.release == 0L ? 0.0 : (double)(var2 - ArcanaCinematic.release) / 1.0E9;
             Vec3 var8 = sEyePrev.lerp(sEye, (double)var0);
@@ -196,15 +196,57 @@ public final class CinemaDirector {
                Vec3 var18 = var16[1];
                int var19 = var15[0];
                current = var19;
-               BlockHitResult var20 = var1.level.clip(new ClipContext(var18, var17, Block.VISUAL, Fluid.NONE, var1.player));
-               if (var20.getType() != Type.MISS) {
-                  var17 = var20.getLocation().lerp(var18, 0.12);
-               }
+               var17 = unblock(var1, var17, var18, var8, var19);
 
                CinemaFrame.place(var17, var18, var19, ease(var19));
             }
          }
       }
+   }
+
+   private static int liftShot = -1;
+   private static long liftFor = -1L;
+   private static double lift;
+
+   /** Shots that film the caster: if something stands between the caster and the camera, the camera moves in. */
+   static boolean onCaster(int shot) {
+      return shot == 2 || shot == 3 || shot == 4 || shot == 5 || shot == 7 || shot == 9 || shot == 10 || shot == 12 || shot == 14 || shot == 15;
+   }
+
+   /** Shots from far away: rather than diving in to the first tree in the way, the camera rises until it sees. */
+   static boolean far(int shot) {
+      return shot == 1 || shot == 8 || shot == 11 || shot == 13;
+   }
+
+   /**
+    * Keep the camera's view clear of blocks. The in-game capture showed the old rule (pull the camera towards the far
+    * target) throwing the far dome shot inside the dome and losing the caster from the over-the-shoulder shot.
+    */
+   private static Vec3 unblock(Minecraft mc, Vec3 cam, Vec3 target, Vec3 chest, int shot) {
+      if (far(shot)) {
+         if (liftShot != shot || liftFor != ArcanaCinematic.started) {
+            liftShot = shot;
+            liftFor = ArcanaCinematic.started;
+            lift = -1.0;
+            for (int k = 0; k <= 14; k++) {
+               Vec3 c = cam.add(0.0, 3.0 * k, 0.0);
+               if (clear(mc, target, c) && clear(mc, target.add(0.0, 2.0, 0.0), c)) {
+                  lift = 3.0 * k;
+                  break;
+               }
+            }
+         }
+         if (lift >= 0.0) {
+            return cam.add(0.0, lift, 0.0);
+         }
+      }
+      Vec3 from = onCaster(shot) ? chest : target;
+      BlockHitResult hit = mc.level.clip(new ClipContext(from, cam, Block.VISUAL, Fluid.NONE, mc.player));
+      return hit.getType() != Type.MISS ? hit.getLocation().lerp(from, 0.12) : cam;
+   }
+
+   private static boolean clear(Minecraft mc, Vec3 a, Vec3 b) {
+      return mc.level.clip(new ClipContext(a, b, Block.VISUAL, Fluid.NONE, mc.player)).getType() == Type.MISS;
    }
 
    static double ease(int var0) {
@@ -228,8 +270,10 @@ public final class CinemaDirector {
          if (var0 < 1.8) {
             var16 = 10;
             double var20 = var0 / 1.8;
-            var14 = var19.add(var7.scale(1.05 - 0.1 * var20)).add(var8.scale(0.08)).add(0.0, 0.3, 0.0);
-            var15 = var19.add(0.0, -0.02, 0.0);
+            // the charge sigil sits at chest height 0.8 in front (ChargeFx); a close, slightly high view of it in the hands
+            Vec3 sigil = var6.add(0.0, -0.3, 0.0).add(var7.scale(0.8));
+            var14 = sigil.add(var7.scale(1.15 - 0.12 * var20)).add(var8.scale(0.1)).add(0.0, 0.35, 0.0);
+            var15 = sigil.add(0.0, -0.05, 0.0);
          } else if (var0 < 3.2) {
             var16 = 12;
             var14 = var6.add(var7.scale(2.5)).add(0.0, -0.4, 0.0);
@@ -315,9 +359,9 @@ public final class CinemaDirector {
          var16 = 2;
          Vec3 var34 = new Vec3(var9.x - var6.x, 0.0, var9.z - var6.z);
          var34 = var34.lengthSqr() < 1.0 ? var7 : var34.normalize();
-         double var40 = Math.max(6.0, Math.min(18.0, var10 * 0.4));
+         double var40 = Math.max(8.0, Math.min(30.0, var10 * 0.6));
          var14 = var6.add(var34.scale(var40)).add(0.0, -0.7, 0.0);
-         var15 = var6.add(0.0, var40 * 0.3, 0.0);
+         var15 = var6.add(0.0, var40 * 0.17, 0.0);
       } else if (u < BreakTimeline.MOTES) {
          // 15:20.0 - 15:26.0: over the shoulder, crystals drifting down in a blurred sky
          var16 = 3;
@@ -354,6 +398,12 @@ public final class CinemaDirector {
       if (shot == 1) {
          double v = Math.toDegrees(2.0 * Math.atan(farTan / Math.max(0.5, aspect)));
          return Math.max(8.0, Math.min(base, v));
+      }
+      if (shot == 5) {
+         return Math.min(base, 52.0);
+      }
+      if (shot == 2) {
+         return Math.min(base, 55.0);
       }
       return shot == 8 ? Math.min(base, 55.0) : base;
    }

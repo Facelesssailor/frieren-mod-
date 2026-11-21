@@ -93,7 +93,7 @@ public final class CastCircles {
                 return true;
             } else {
                 UUID var2 = var0.getUUID("player");
-                long var3 = System.nanoTime();
+                long var3 = ArcanaClock.nanos();
                 long var5 = var3 + (long)var0.getInt("ticks") * 50000000L;
 
                 for (CastCircles.Active var8 : ACTIVE) {
@@ -111,11 +111,11 @@ public final class CastCircles {
 
     @SubscribeEvent
     public static void render(RenderLevelStageEvent var0) {
-        if (var0.getStage() == Stage.AFTER_TRANSLUCENT_BLOCKS && !ACTIVE.isEmpty()) {
+        if (var0.getStage() == ArcanaStages.glow() && !ACTIVE.isEmpty()) {
             Minecraft var1 = Minecraft.getInstance();
             ClientLevel var2 = var1.level;
             if (var2 != null && var1.player != null) {
-                long var3 = System.nanoTime();
+                long var3 = ArcanaClock.nanos();
                 ACTIVE.removeIf(var2x -> var2x.end < var3);
                 if (!ACTIVE.isEmpty() && !ArcanaCinematic.active()) {
                     float var5 = var0.getPartialTick().getGameTimeDeltaPartialTick(false);
@@ -126,7 +126,7 @@ public final class CastCircles {
                     var8.camY = var6.y;
                     var8.camZ = var6.z;
                     var8.m = var0.getPoseStack().last().pose();
-                    var8.vc = var7.getBuffer(ArcanaRenderTypes.MAGIC);
+                    var8.vc = dev.pete.frierenarcana.client.veil.VeilCompat.tee(var7.getBuffer(ArcanaRenderTypes.MAGIC));
                     ArcanaShaders.prepare((double)((float)var2.getGameTime() + var5) / 20.0, var6);
 
                     for (CastCircles.Active var10 : ACTIVE) {
@@ -149,6 +149,7 @@ public final class CastCircles {
                     }
 
                     var7.endBatch(ArcanaRenderTypes.MAGIC);
+                    dev.pete.frierenarcana.client.veil.VeilCompat.flushBloom();
                 }
             } else {
                 ACTIVE.clear();

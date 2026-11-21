@@ -50,7 +50,7 @@ public final class FrierenArcana {
         TABS.register(var1);
         var2.registerConfig(Type.SERVER, ArcanaConfig.SPEC);
         var1.addListener(ArcanaNetwork::register);
-        var1.addListener(var0 -> var0.enqueueWork(SablePhysicsCompat::register));
+        var1.addListener((net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent var0) -> var0.enqueueWork(SablePhysicsCompat::register));
         NeoForge.EVENT_BUS.register(ArcanaEvents.class);
     }
 

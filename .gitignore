@@ -6,3 +6,8 @@ out/
 .idea/
 *.iml
 .DS_Store
+
+# Gradle
+.gradle/
+build/
+run/

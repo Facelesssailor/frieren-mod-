@@ -42,14 +42,14 @@ public final class SpellCircleFx {
 
    @SubscribeEvent
    public static void render(RenderLevelStageEvent var0) {
-      if (var0.getStage() == Stage.AFTER_TRANSLUCENT_BLOCKS) {
+      if (var0.getStage() == ArcanaStages.glow()) {
          if (ArcanaCinematic.breakerActive()) {
             Minecraft var1 = Minecraft.getInstance();
             LocalPlayer var2 = var1.player;
             ClientLevel var3 = var1.level;
             if (var2 != null && var3 != null) {
                float var4 = var0.getPartialTick().getGameTimeDeltaPartialTick(false);
-               double var5 = (double)(System.nanoTime() - ArcanaCinematic.startedNanos()) / 1.0E9;
+               double var5 = (double)(ArcanaClock.nanos() - ArcanaCinematic.startedNanos()) / 1.0E9;
                double var7 = ease(var5 / 3.0);
                if (!(var7 <= 0.01)) {
                   Vec3 var9 = var0.getCamera().getPosition();
@@ -65,14 +65,14 @@ public final class SpellCircleFx {
                   var11.camZ = var9.z;
                   var11.m = var0.getPoseStack().last().pose();
                   BufferSource var12 = var1.renderBuffers().bufferSource();
-                  var11.vc = var12.getBuffer(ArcanaRenderTypes.MAGIC);
+                  var11.vc = dev.pete.frierenarcana.client.veil.VeilCompat.tee(var12.getBuffer(ArcanaRenderTypes.MAGIC));
                   ArcanaShaders.prepare((double)((float)var3.getGameTime() + var4) / 20.0, var9);
                   double var15 = ArcanaCinematic.release != 0L ? 1.0 : Math.min(1.0, var5 / 10.0);
                   float var17 = (float)(0.8 + 0.2 * Math.sin(var5 * 4.0));
                   if (ArcanaCinematic.release == 0L) {
                      double var10000 = 0.0;
                   } else {
-                     double var20 = (double)(System.nanoTime() - ArcanaCinematic.release) / 1.0E9;
+                     double var20 = (double)(ArcanaClock.nanos() - ArcanaCinematic.release) / 1.0E9;
                   }
 
                   var11.fade = 1.0F;
@@ -80,6 +80,7 @@ public final class SpellCircleFx {
                   var11.fade = 1.0F;
                   scene(var11, var10, var9, var5);
                   var12.endBatch(ArcanaRenderTypes.MAGIC);
+                  dev.pete.frierenarcana.client.veil.VeilCompat.flushBloom();
                }
             }
          }
@@ -279,7 +280,7 @@ public final class SpellCircleFx {
 
    private static void extras(SpellCircleFx.Ctx var0, Vec3 var1, Vec3 var2, double var3, double var5, float var7) {
       double var8 = var1.y + 1.05;
-      double var10 = ArcanaCinematic.release == 0L ? 0.0 : (double)(System.nanoTime() - ArcanaCinematic.release) / 1.0E9;
+      double var10 = ArcanaCinematic.release == 0L ? 0.0 : (double)(ArcanaClock.nanos() - ArcanaCinematic.release) / 1.0E9;
       Vec3 var12 = CinemaDirector.lockedLook();
       Vec3 var13 = new Vec3(var12.x, 0.0, var12.z);
       var13 = var13.lengthSqr() < 0.01 ? new Vec3(0.0, 0.0, 1.0) : var13.normalize();
@@ -306,7 +307,7 @@ public final class SpellCircleFx {
       Vec3 var22 = new Vec3(var21.x, 0.0, var21.z);
       var22 = var22.lengthSqr() < 0.01 ? new Vec3(0.0, 0.0, 1.0) : var22.normalize();
       Vec3 var16 = new Vec3(var1.x, var8, var1.z).add(var22.scale(0.42));
-      double var24 = ArcanaCinematic.release == 0L ? 0.0 : (double)(System.nanoTime() - ArcanaCinematic.release) / 1.0E9;
+      double var24 = ArcanaCinematic.release == 0L ? 0.0 : (double)(ArcanaClock.nanos() - ArcanaCinematic.release) / 1.0E9;
       if (var24 <= 0.0) {
          nonEuclid(var0, var16, var22, var2, var5, var3, 0.0);
       } else {
@@ -802,7 +803,7 @@ public final class SpellCircleFx {
    }
 
    private static void scene(SpellCircleFx.Ctx var0, Vec3 var1, Vec3 var2, double var3) {
-      long var5 = System.nanoTime();
+      long var5 = ArcanaClock.nanos();
       ArcanaClient.Fracture var7 = null;
 
       for (ArcanaClient.Fracture var9 : ArcanaClient.fractures()) {

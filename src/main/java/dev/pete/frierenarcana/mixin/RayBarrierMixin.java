@@ -21,7 +21,7 @@ public interface RayBarrierMixin {
         cancellable = true
     )
     private void arcana$ray(ClipContext context, CallbackInfoReturnable<BlockHitResult> ci) {
-        if (this instanceof Level level) {
+        if ((Object)this instanceof Level level) {
             Vec3 from = context.getFrom();
             Vec3 to = ci.getReturnValue().getLocation();
             Vec3 end = BarrierHooks.clip(level, from, to);

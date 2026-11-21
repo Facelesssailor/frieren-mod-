@@ -28,13 +28,13 @@ public final class BarrageClient {
 
     public static void state(boolean var0) {
         active = var0;
-        since = System.nanoTime();
+        since = ArcanaClock.nanos();
         holdMode = false;
     }
 
     private static KeyMapping[] castKeys(Minecraft var0) {
         if (castKeys == null) {
-            ArrayList var1 = new ArrayList();
+            ArrayList<KeyMapping> var1 = new ArrayList<>();
 
             for (KeyMapping var5 : var0.options.keyMappings) {
                 String var6 = var5.getName();
@@ -70,7 +70,7 @@ public final class BarrageClient {
             }
 
             if (active && var1.screen == null) {
-                double var10 = (double)(System.nanoTime() - since) / 1.0E9;
+                double var10 = (double)(ArcanaClock.nanos() - since) / 1.0E9;
                 boolean var7 = ArcanaModes.isStaff(var2.getMainHandItem()) || ArcanaModes.isStaff(var2.getOffhandItem());
                 boolean var8 = var1.options.keyUse.isDown();
                 if (var7 && var8) {
