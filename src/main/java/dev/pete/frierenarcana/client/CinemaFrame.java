@@ -43,7 +43,7 @@ public final class CinemaFrame {
                 ArcanaCinematic.previous = null;
             }
 
-            long var6 = System.nanoTime();
+            long var6 = ArcanaClock.nanos();
             double var8 = lastNanos == 0L ? 0.0 : Math.min(0.1, (double)(var6 - lastNanos) / 1.0E9);
             lastNanos = var6;
             boolean var10 = var2 != lastShot || ArcanaCinematic.previous == null;

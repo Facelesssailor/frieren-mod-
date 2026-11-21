@@ -43,7 +43,7 @@ public final class ArcanaCinematic {
         if (var3.player != null && var3.level != null && var0.equals(var3.player.getUUID())) {
             if (!var1) {
                 if (active()) {
-                    release = System.nanoTime();
+                    release = ArcanaClock.nanos();
                 }
             } else {
                 if (active()) {
@@ -51,7 +51,7 @@ public final class ArcanaCinematic {
                 }
 
                 breaker = var2;
-                started = System.nanoTime();
+                started = ArcanaClock.nanos();
                 release = 0L;
                 originalCamera = var3.getCameraEntity();
                 originalType = var3.options.getCameraType();

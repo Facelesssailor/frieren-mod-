@@ -56,7 +56,7 @@ public final class BlackHoleCinema {
                 travel = SpellFx.bhTravel(a.distanceTo(b));
                 rise = BlackHoleShape.rise(var1.level, b);
                 ArcanaCinematic.charge(var1.player.getUUID(), true, false);
-                start = System.nanoTime();
+                start = ArcanaClock.nanos();
                 on = true;
             }
         }
@@ -71,7 +71,7 @@ public final class BlackHoleCinema {
     }
 
     private static double t() {
-        return (double)(System.nanoTime() - start) / 1.0E9;
+        return (double)(ArcanaClock.nanos() - start) / 1.0E9;
     }
 
     public static void tick(Minecraft var0, LocalPlayer var1) {

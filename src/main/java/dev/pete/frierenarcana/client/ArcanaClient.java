@@ -80,28 +80,28 @@ public final class ArcanaClient {
                     break;
                 case "beam":
                     BEAMS.add(
-                        new ArcanaClient.Beam(ArcanaNetwork.vector(var0, "start"), ArcanaNetwork.vector(var0, "end"), var0.getInt("style"), System.nanoTime())
+                        new ArcanaClient.Beam(ArcanaNetwork.vector(var0, "start"), ArcanaNetwork.vector(var0, "end"), var0.getInt("style"), ArcanaClock.nanos())
                     );
                     break;
                 case "shatter":
-                    FRACTURES.add(new ArcanaClient.Fracture(readField(var0.getCompound("field")), ArcanaNetwork.vector(var0, "impact"), System.nanoTime()));
+                    FRACTURES.add(new ArcanaClient.Fracture(readField(var0.getCompound("field")), ArcanaNetwork.vector(var0, "impact"), ArcanaClock.nanos()));
                     break;
                 case "flight":
                     UUID var6 = var0.getUUID("player");
                     if (var0.getBoolean("active")) {
-                        FLIGHTS.put(var6, System.nanoTime());
+                        FLIGHTS.put(var6, ArcanaClock.nanos());
                     } else {
                         FLIGHTS.remove(var6);
                     }
                     break;
                 case "effect":
-                    EFFECTS.add(new ArcanaClient.Effect(ArcanaNetwork.vector(var0, "center"), var0.getInt("style"), var0.getInt("strength"), System.nanoTime()));
+                    EFFECTS.add(new ArcanaClient.Effect(ArcanaNetwork.vector(var0, "center"), var0.getInt("style"), var0.getInt("strength"), ArcanaClock.nanos()));
                     break;
                 case "charge":
                     UUID var3 = var0.getUUID("player");
                     ArcanaCinematic.charge(var3, var0.getBoolean("active"), var0.getBoolean("breaker"));
                     if (var0.getBoolean("active")) {
-                        CHARGES.put(var3, System.nanoTime());
+                        CHARGES.put(var3, ArcanaClock.nanos());
                         if (var0.getBoolean("breaker")) {
                             BREAKER_CHARGES.add(var3);
                         } else {
@@ -198,7 +198,7 @@ public final class ArcanaClient {
                     }
                 }
 
-                long var22 = System.nanoTime();
+                long var22 = ArcanaClock.nanos();
                 FRACTURES.removeIf(var2x -> (double)(var22 - var2x.startNanos) / 1.0E9 > 34.0);
 
                 for (ArcanaClient.Fracture var12 : FRACTURES) {
@@ -860,7 +860,7 @@ public final class ArcanaClient {
 
     public static boolean isFlying(UUID var0) {
         Long var1 = FLIGHTS.get(var0);
-        return var1 != null && System.nanoTime() - var1 < 1500000000L;
+        return var1 != null && ArcanaClock.nanos() - var1 < 1500000000L;
     }
 
     public static List<ArcanaClient.VisualField> fields() {

@@ -40,7 +40,7 @@ public final class CinemaOverlay {
       if (!ArcanaCinematic.breakerActive()) {
          return;
       }
-      long now = System.nanoTime();
+      long now = ArcanaClock.nanos();
       double sinceStart = (double)(now - ArcanaCinematic.startedNanos()) / 1.0E9;
       long frac = CinemaDirector.fractureNanos();
       double u = frac == 0L ? -1.0 : (double)(now - frac) / 1.0E9;

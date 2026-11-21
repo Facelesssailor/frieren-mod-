@@ -36,7 +36,7 @@ public final class ChargeFx {
     ) {
         Vec3 var12 = ArcanaClient.camera();
         if (var12 != null && !local(var2)) {
-            double var13 = 0.5 + 0.5 * Math.sin((double)System.nanoTime() / 1.0E9 * 5.0 + var2.x * 3.1 + var2.z * 2.3);
+            double var13 = 0.5 + 0.5 * Math.sin((double)ArcanaClock.nanos() / 1.0E9 * 5.0 + var2.x * 3.1 + var2.z * 2.3);
             BreakerFx.sparkle(var0, var1, var12, var2, 0.09 + 0.07 * var13, 0.85F, 1.0F, 0.9F, (float)(0.4 + 0.5 * var13) * var11);
         }
     }

@@ -93,7 +93,7 @@ public final class CastCircles {
                 return true;
             } else {
                 UUID var2 = var0.getUUID("player");
-                long var3 = System.nanoTime();
+                long var3 = ArcanaClock.nanos();
                 long var5 = var3 + (long)var0.getInt("ticks") * 50000000L;
 
                 for (CastCircles.Active var8 : ACTIVE) {
@@ -115,7 +115,7 @@ public final class CastCircles {
             Minecraft var1 = Minecraft.getInstance();
             ClientLevel var2 = var1.level;
             if (var2 != null && var1.player != null) {
-                long var3 = System.nanoTime();
+                long var3 = ArcanaClock.nanos();
                 ACTIVE.removeIf(var2x -> var2x.end < var3);
                 if (!ACTIVE.isEmpty() && !ArcanaCinematic.active()) {
                     float var5 = var0.getPartialTick().getGameTimeDeltaPartialTick(false);

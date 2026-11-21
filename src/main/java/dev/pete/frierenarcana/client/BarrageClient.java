@@ -28,7 +28,7 @@ public final class BarrageClient {
 
     public static void state(boolean var0) {
         active = var0;
-        since = System.nanoTime();
+        since = ArcanaClock.nanos();
         holdMode = false;
     }
 
@@ -70,7 +70,7 @@ public final class BarrageClient {
             }
 
             if (active && var1.screen == null) {
-                double var10 = (double)(System.nanoTime() - since) / 1.0E9;
+                double var10 = (double)(ArcanaClock.nanos() - since) / 1.0E9;
                 boolean var7 = ArcanaModes.isStaff(var2.getMainHandItem()) || ArcanaModes.isStaff(var2.getOffhandItem());
                 boolean var8 = var1.options.keyUse.isDown();
                 if (var7 && var8) {

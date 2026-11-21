@@ -28,6 +28,15 @@ neoForge {
             systemProperty 'frieren_arcana.visualClientSmoke', 'true'
             programArguments.addAll '--width', '1280', '--height', '720'
         }
+        // Films the Barrier Breaker cutscene in a fresh forest world, one exact film frame (1/24 s) per rendered frame,
+        // into run/arcana-capture (see CinemaCapture). CI runs it headless and compares the frames with ep. 21.
+        capture {
+            client()
+            gameDirectory = project.file('run')
+            systemProperty 'frieren_arcana.cinemaCapture', 'true'
+            jvmArguments.add '-Xmx3G'
+            programArguments.addAll '--width', '1280', '--height', '720'
+        }
     }
 }
 

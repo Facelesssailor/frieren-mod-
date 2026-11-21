@@ -23,12 +23,36 @@ jobs:
       - name: Build
         run: gradle build --no-daemon --stacktrace 2>&1 | tee build.log
         shell: bash
+      - name: Film the Barrier Breaker cutscene in the real game
+        if: success()
+        timeout-minutes: 50
+        shell: bash
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq xvfb xauth mesa-utils libgl1-mesa-dri libgl1 libegl1 libxrandr2 libxinerama1 libxcursor1 libxi6 libxxf86vm1 ffmpeg > /dev/null
+          mkdir -p run && cp ci/options.txt run/options.txt
+          export LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe
+          xvfb-run -a -s "-screen 0 1280x720x24" glxinfo -B || true
+          # the game's output goes to a file only: a closed pipe would kill it
+          timeout 42m xvfb-run -a -s "-screen 0 1280x720x24" gradle runCapture --no-daemon > capture.log 2>&1 || echo "capture exited with $?"
+          grep -E "FRIEREN_CAPTURE|Exception|Caused by|FATAL|BUILD" capture.log | head -300 || true
+          cat run/arcana-capture/result.txt || true
+          if ls run/arcana-capture/frames/*.jpg > /dev/null 2>&1; then
+            ffmpeg -loglevel error -y -framerate 24 -i run/arcana-capture/frames/%05d.jpg -c:v libx264 -preset slow -crf 24 -pix_fmt yuv420p -movflags +faststart capture.mp4
+            ls -la capture.mp4
+          fi
+          grep -q PASS run/arcana-capture/result.txt
       - name: Publish to the rework-dist branch
         if: always()
         run: |
           mkdir -p /tmp/dist
           for f in build/libs/*.jar; do [ -f "$f" ] && cp "$f" "/tmp/dist/$(basename "$f" | sed -E 's/-([0-9]+)\.([0-9]+)\.([0-9]+)\.jar$/-\1_\2_\3.jar/')"; done
           cp build.log /tmp/dist/ 2>/dev/null || true
+          mkdir -p /tmp/dist/capture
+          cp capture.mp4 /tmp/dist/capture/ 2>/dev/null || true
+          gzip -c capture.log > /tmp/dist/capture/capture.log.gz 2>/dev/null || true
+          cp run/arcana-capture/frames.csv run/arcana-capture/result.txt /tmp/dist/capture/ 2>/dev/null || true
+          cp -r run/arcana-capture/stills /tmp/dist/capture/ 2>/dev/null || true
           # publish only our own outputs: never the game jars or caches Gradle leaves in the workspace
           rm -rf build .gradle run
           git config user.name "github-actions[bot]"

@@ -75,7 +75,7 @@ public final class CinemaDirector {
             if (BlackHoleCinema.running()) {
                BlackHoleCinema.tick(var1, var2);
             } else {
-               long var3 = System.nanoTime();
+               long var3 = ArcanaClock.nanos();
                double var5 = (double)(var3 - ArcanaCinematic.started) / 1.0E9;
                double var7 = ArcanaCinematic.release == 0L ? 0.0 : (double)(var3 - ArcanaCinematic.release) / 1.0E9;
                bands = ArcanaCinematic.release == 0L ? 0.0F : 1.0F;
@@ -180,7 +180,7 @@ public final class CinemaDirector {
       if (sReady && sEye != null) {
          Minecraft var1 = Minecraft.getInstance();
          if (var1.level != null && var1.player != null) {
-            long var2 = System.nanoTime();
+            long var2 = ArcanaClock.nanos();
             double var4 = (double)(var2 - ArcanaCinematic.started) / 1.0E9;
             double var6 = ArcanaCinematic.release == 0L ? 0.0 : (double)(var2 - ArcanaCinematic.release) / 1.0E9;
             Vec3 var8 = sEyePrev.lerp(sEye, (double)var0);

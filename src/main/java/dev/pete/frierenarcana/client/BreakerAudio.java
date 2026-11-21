@@ -76,7 +76,7 @@ public final class BreakerAudio {
       if (available == 0) {
          return;
       }
-      long now = System.nanoTime();
+      long now = ArcanaClock.nanos();
       if (session != ArcanaCinematic.started) {
          stopAll();
          session = ArcanaCinematic.started;

@@ -101,7 +101,7 @@ public final class CinemaPost {
    /** {bloom strength, blur radius in pixels, focus distance in blocks} for this moment of the cutscene. */
    static float[] params() {
       Minecraft mc = Minecraft.getInstance();
-      long now = System.nanoTime();
+      long now = ArcanaClock.nanos();
       double u = ArcanaCinematic.release == 0L ? -1.0 : (double)(now - ArcanaCinematic.release) / 1.0E9;
       Vec3 cam = mc.gameRenderer.getMainCamera().getPosition();
       Vec3 eye = mc.player == null ? cam : mc.player.getEyePosition();
