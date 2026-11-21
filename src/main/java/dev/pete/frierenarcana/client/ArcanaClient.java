@@ -168,6 +168,7 @@ public final class ArcanaClient {
         FLIGHTS.clear();
         EFFECTS.clear();
         sight = false;
+        dev.pete.frierenarcana.client.veil.VeilCompat.clear();
         ArcanaCinematic.restore();
         ArcanaRefraction.release();
     }
@@ -183,7 +184,7 @@ public final class ArcanaClient {
                 var3.pushPose();
                 Matrix4f var4 = var3.last().pose();
                 BufferSource var5 = var1.renderBuffers().bufferSource();
-                VertexConsumer var6 = var5.getBuffer(ArcanaRenderTypes.MAGIC);
+                VertexConsumer var6 = dev.pete.frierenarcana.client.veil.VeilCompat.tee(var5.getBuffer(ArcanaRenderTypes.MAGIC));
                 double var7 = (double)((float)var1.level.getGameTime() + var0.getPartialTick().getGameTimeDeltaPartialTick(false)) / 20.0;
                 ArcanaShaders.prepare(var7, var2);
                 if (!FRACTURES.isEmpty()) {
@@ -265,6 +266,7 @@ public final class ArcanaClient {
                 }
 
                 var5.endBatch(ArcanaRenderTypes.MAGIC);
+                dev.pete.frierenarcana.client.veil.VeilCompat.flushBloom();
                 if (!FRACTURES.isEmpty()) {
                     VertexConsumer var27 = var5.getBuffer(ArcanaRenderTypes.REFRACTION);
 
@@ -873,6 +875,95 @@ public final class ArcanaClient {
 
     public static Vec3 camera() {
         return drawCamera;
+    }
+
+    /**
+     * Real light for the spells while Veil is installed (see {@link dev.pete.frierenarcana.client.veil.VeilCompat}): the
+     * charge at the caster's hands, the Barrier Breaker's hand sequence in its own colours (ep. 21, 15:03 - 15:06), the
+     * needle's tip as it climbs, the flicker and the shatter, and the end of a Zoltraak beam.
+     */
+    @SubscribeEvent
+    public static void glows(RenderLevelStageEvent event) {
+        if (event.getStage() != Stage.AFTER_SKY || !dev.pete.frierenarcana.client.veil.VeilCompat.available()) {
+            return;
+        }
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null) {
+            dev.pete.frierenarcana.client.veil.VeilCompat.clear();
+            return;
+        }
+        float partial = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        long now = ArcanaClock.nanos();
+        Map<String, dev.pete.frierenarcana.client.veil.VeilCompat.Glow> out = new HashMap<>();
+        for (Map.Entry<UUID, Long> e : CHARGES.entrySet()) {
+            Player p = mc.level.getPlayerByUUID(e.getKey());
+            if (p == null) {
+                continue;
+            }
+            boolean breaker = BREAKER_CHARGES.contains(e.getKey());
+            double t = Math.min(1.0, (now - e.getValue()) / 1.0E9 / (breaker ? 5.0 : 8.0));
+            Vec3 at = ShipSpace.world(mc.level, p.getPosition(partial)).add(0.0, 1.0, 0.0).add(p.getLookAngle().scale(0.8));
+            glow(out, "charge" + e.getKey(), at, 4.0 + 4.0 * t, breaker ? 0.35F : 0.75F, breaker ? 1.0F : 0.9F, breaker ? 0.55F : 1.0F, (float)(0.5 + 1.0 * t));
+        }
+        for (int i = 0; i < BEAMS.size(); i++) {
+            ArcanaClient.Beam b = BEAMS.get(i);
+            double u = (now - b.startNanos()) / 1.0E9;
+            if (b.style() == 3) {
+                breakerGlows(out, "beam" + i, b.start(), b.end(), u);
+            } else {
+                double life = SpellFx.beamLife(b.style());
+                float fade = (float)Math.max(0.0, 1.0 - u / Math.max(0.05, life));
+                if (fade > 0.0F) {
+                    glow(out, "beam" + i, b.end(), 7.0, 0.55F, 0.85F, 1.0F, 2.2F * fade);
+                    glow(out, "muzzle" + i, b.start(), 4.0, 0.6F, 0.9F, 1.0F, 1.2F * fade);
+                }
+            }
+        }
+        for (int i = 0; i < FRACTURES.size(); i++) {
+            ArcanaClient.Fracture f = FRACTURES.get(i);
+            double u = (now - f.startNanos()) / 1.0E9;
+            double after = u - BreakTimeline.SHATTER_AT;
+            if (after >= 0.0 && after < 2.5) {
+                double k = 1.0 - after / 2.5;
+                Vec3 c = f.field().center().add(0.0, f.field().radius() * 0.55, 0.0);
+                glow(out, "shatter" + i, c, f.field().radius() * 1.3, 0.86F, 0.8F, 1.0F, (float)(3.0 * k * k));
+            }
+        }
+        dev.pete.frierenarcana.client.veil.VeilCompat.lights(out);
+    }
+
+    private static void breakerGlows(Map<String, dev.pete.frierenarcana.client.veil.VeilCompat.Glow> out, String key, Vec3 hands, Vec3 apex, double u) {
+        if (u < BreakTimeline.PINCH) {
+            // the hand sequence: glass, cyan orb, pink sphere, split orb, the spear collapsing
+            float r = 0.3F, g = 1.0F, b = 0.5F, bright = 1.2F;
+            double reach = 5.0;
+            if (u >= BreakTimeline.SPEAR) {
+                r = 0.85F; g = 1.0F; b = 0.85F; bright = 2.6F; reach = 7.0;
+            } else if (u >= BreakTimeline.SPLIT) {
+                r = 1.0F; g = 0.45F; b = 0.55F; bright = 0.9F;
+            } else if (u >= BreakTimeline.SPHERE) {
+                r = 1.0F; g = 0.55F; b = 0.8F; bright = 1.0F; reach = 4.5;
+            } else if (u >= BreakTimeline.ORB) {
+                r = 0.45F; g = 0.95F; b = 1.0F; bright = 1.0F; reach = 4.0;
+            }
+            glow(out, key + "hands", hands, reach, r, g, b, bright);
+            return;
+        }
+        if (u >= BreakTimeline.SHATTER_AT) {
+            return;
+        }
+        int flick = BreakTimeline.flicker(u);
+        float mult = flick == 1 || flick == 5 ? 2.2F : (flick == 4 || flick == 6 ? 0.1F : 1.0F);
+        double pulse = 0.85 + 0.15 * Math.sin(u * 9.0);
+        // the column leaving the hands flares, then settles to a steady glow at the base
+        double flare = 1.0 + 1.6 * Math.max(0.0, 1.0 - (u - BreakTimeline.PINCH) / 0.8);
+        glow(out, key + "base", hands, 7.0, 0.7F, 1.0F, 0.8F, (float)(1.4 * pulse * flare * mult));
+        Vec3 tip = hands.lerp(apex, BreakTimeline.needle(u));
+        glow(out, key + "tip", tip, 14.0, 0.8F, 1.0F, 0.9F, 2.2F * mult);
+    }
+
+    private static void glow(Map<String, dev.pete.frierenarcana.client.veil.VeilCompat.Glow> out, String key, Vec3 at, double radius, float r, float g, float b, float brightness) {
+        out.put(key, new dev.pete.frierenarcana.client.veil.VeilCompat.Glow(at.x, at.y, at.z, (float)radius, r, g, b, brightness));
     }
 
     private static record Beam(Vec3 start, Vec3 end, int style, long startNanos) {

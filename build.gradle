@@ -40,6 +40,19 @@ neoForge {
     }
 }
 
+// the test source set sees Minecraft and the mod (for the timeline sweep below)
+neoForge {
+    addModdingDependenciesTo(sourceSets.test)
+}
+
+// Sweeps the Barrier Breaker cutscene's camera and timeline through every film frame; part of `gradle check`.
+tasks.register('timelineCheck', JavaExec) {
+    group = 'verification'
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'dev.pete.frierenarcana.client.TimelineSweep'
+}
+tasks.named('check') { dependsOn 'timelineCheck' }
+
 repositories {
     maven { url = 'https://code.redspace.io/releases' }
     maven { url = 'https://code.redspace.io/snapshots' }

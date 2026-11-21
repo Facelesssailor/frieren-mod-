@@ -65,7 +65,7 @@ public final class SpellCircleFx {
                   var11.camZ = var9.z;
                   var11.m = var0.getPoseStack().last().pose();
                   BufferSource var12 = var1.renderBuffers().bufferSource();
-                  var11.vc = var12.getBuffer(ArcanaRenderTypes.MAGIC);
+                  var11.vc = dev.pete.frierenarcana.client.veil.VeilCompat.tee(var12.getBuffer(ArcanaRenderTypes.MAGIC));
                   ArcanaShaders.prepare((double)((float)var3.getGameTime() + var4) / 20.0, var9);
                   double var15 = ArcanaCinematic.release != 0L ? 1.0 : Math.min(1.0, var5 / 10.0);
                   float var17 = (float)(0.8 + 0.2 * Math.sin(var5 * 4.0));
@@ -80,6 +80,7 @@ public final class SpellCircleFx {
                   var11.fade = 1.0F;
                   scene(var11, var10, var9, var5);
                   var12.endBatch(ArcanaRenderTypes.MAGIC);
+                  dev.pete.frierenarcana.client.veil.VeilCompat.flushBloom();
                }
             }
          }

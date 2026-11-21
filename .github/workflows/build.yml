@@ -11,6 +11,13 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # plain: the mod alone. veil: the same capture with Veil installed, for its bloom and lights.
+        variant: [plain, veil]
+    env:
+      VARIANT: ${{ matrix.variant }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -20,6 +27,8 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.10.2'
+      - name: Integrity checks
+        run: python3 tools/check_integrity.py
       - name: Build
         run: gradle build --no-daemon --stacktrace 2>&1 | tee build.log
         shell: bash
@@ -30,7 +39,10 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq xvfb xauth mesa-utils libgl1-mesa-dri libgl1 libegl1 libxrandr2 libxinerama1 libxcursor1 libxi6 libxxf86vm1 ffmpeg > /dev/null
-          mkdir -p run && cp ci/options.txt run/options.txt
+          mkdir -p run/mods && cp ci/options.txt run/options.txt
+          if [ "$VARIANT" = veil ]; then
+            curl -fsSL -o run/mods/veil-neoforge-1.21.1-4.5.2.jar https://maven.blamejared.com/foundry/veil/veil-neoforge-1.21.1/4.5.2/veil-neoforge-1.21.1-4.5.2.jar
+          fi
           export LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe
           xvfb-run -a -s "-screen 0 1280x720x24" glxinfo -B || true
           # the game's output goes to a file only: a closed pipe would kill it
@@ -42,7 +54,7 @@ jobs:
             ls -la capture.mp4
           fi
           grep -q PASS run/arcana-capture/result.txt
-      - name: Publish to the rework-dist branch
+      - name: Publish to the dist branch (rework-dist, or rework-veil-dist for the Veil capture)
         if: always()
         run: |
           mkdir -p /tmp/dist
@@ -57,11 +69,12 @@ jobs:
           rm -rf build .gradle run
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout --orphan rework-dist
+          BRANCH=rework-dist; [ "$VARIANT" = veil ] && BRANCH=rework-veil-dist
+          git checkout --orphan "$BRANCH"
           git rm -rf --quiet .
           git clean -fdxq
           cp -r /tmp/dist/. .
-          printf 'Built from %s\n' "$GITHUB_SHA" > BUILD.txt
+          printf 'Built from %s (%s)\n' "$GITHUB_SHA" "$VARIANT" > BUILD.txt
           git add -A
           git commit -q -m "Build output for $GITHUB_SHA"
-          git push -f origin rework-dist
+          git push -f origin "$BRANCH"

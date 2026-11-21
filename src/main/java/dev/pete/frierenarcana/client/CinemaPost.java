@@ -124,6 +124,9 @@ public final class CinemaPost {
          blur = (float)(screenHeight * (shot == 3 ? 0.02 : (shot == 14 ? 0.016 : 0.011)));
          focus = (float)Math.max(0.6, subjectDistance);
       }
+      if (dev.pete.frierenarcana.client.veil.VeilCompat.bloomActive()) {
+         bloom *= 0.5;
+      }
       return new float[]{(float)bloom, blur, focus};
    }
 

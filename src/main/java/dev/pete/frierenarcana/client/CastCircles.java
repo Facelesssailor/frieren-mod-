@@ -126,7 +126,7 @@ public final class CastCircles {
                     var8.camY = var6.y;
                     var8.camZ = var6.z;
                     var8.m = var0.getPoseStack().last().pose();
-                    var8.vc = var7.getBuffer(ArcanaRenderTypes.MAGIC);
+                    var8.vc = dev.pete.frierenarcana.client.veil.VeilCompat.tee(var7.getBuffer(ArcanaRenderTypes.MAGIC));
                     ArcanaShaders.prepare((double)((float)var2.getGameTime() + var5) / 20.0, var6);
 
                     for (CastCircles.Active var10 : ACTIVE) {
@@ -149,6 +149,7 @@ public final class CastCircles {
                     }
 
                     var7.endBatch(ArcanaRenderTypes.MAGIC);
+                    dev.pete.frierenarcana.client.veil.VeilCompat.flushBloom();
                 }
             } else {
                 ACTIVE.clear();
