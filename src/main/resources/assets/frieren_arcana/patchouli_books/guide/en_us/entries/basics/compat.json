@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Requires Iron's Spells 'n Spellbooks 3.16, Iron's Lib, GeckoLib, Curios and Player Animator. Tested against Sable, Create Aeronautics ships, Zoltraak Cinematic and Frieren Void.",
+      "text": "Requires Iron's Spells 'n Spellbooks 3.16, Iron's Lib, GeckoLib, Curios and Player Animator. Tested against Sable, Create Aeronautics ships, Zoltraak Cinematic and Frieren Void. With Veil installed, spells bloom and give off real coloured light (off under shader packs).",
       "title": "Compatibility"
     },
     {
