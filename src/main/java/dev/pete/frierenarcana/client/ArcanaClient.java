@@ -175,7 +175,7 @@ public final class ArcanaClient {
 
     @SubscribeEvent
     public static void render(RenderLevelStageEvent var0) {
-        if (var0.getStage() == Stage.AFTER_TRANSLUCENT_BLOCKS) {
+        if (var0.getStage() == ArcanaStages.glow()) {
             Minecraft var1 = Minecraft.getInstance();
             if (var1.level != null) {
                 Vec3 var2 = var0.getCamera().getPosition();

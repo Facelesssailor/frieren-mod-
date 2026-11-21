@@ -106,6 +106,8 @@ public final class CinemaCapture {
     private static int rateWindowFrames;
     private static float tickRate = 20.0F;
     private static long startedReal;
+    private static int settleFrames;
+    private static long settleReal;
 
     private CinemaCapture() {
     }
@@ -160,12 +162,17 @@ public final class CinemaCapture {
             case SETTLE -> {
                 mc.player.setYRot(0.0F);
                 mc.player.setXRot(0.0F);
-                if (phaseTicks > 60) {
+                if (phaseTicks > 60 && settleFrames > 20) {
+                    // start the cast with the tick rate already matched to the renderer, so the 10 s charge is 10 film seconds
+                    double fps = settleFrames / ((System.nanoTime() - settleReal) / 1.0E9);
+                    tickRate = (float)Math.max(1.0, Math.min(20.0, 20.0 * fps / 24.0));
+                    log(String.format(Locale.ROOT, "render %.2f fps before the cast -> tick rate %.2f", fps, tickRate));
                     open(mc);
                     ArcanaClock.startVirtual();
                     rateWindowReal = System.nanoTime();
+                    rateWindowFrames = 0;
                     castNanos = ArcanaClock.nanos();
-                    cast(mc);
+                    cast(mc, tickRate);
                     next(Phase.CAST);
                 }
             }
@@ -196,7 +203,7 @@ public final class CinemaCapture {
                 rules.getRule(GameRules.RULE_DOMOBSPAWNING).set(false, server);
                 rules.getRule(GameRules.RULE_SENDCOMMANDFEEDBACK).set(false, server);
                 // the episode: last light of the evening, rain outside the barrier
-                level.setDayTime(13000L);
+                level.setDayTime(13600L);
                 level.setWeatherParameters(0, 1_000_000, true, false);
                 BlockPos origin = sp.blockPosition();
                 com.mojang.datafixers.util.Pair<BlockPos, Holder<Biome>> found =
@@ -262,10 +269,11 @@ public final class CinemaCapture {
     }
 
     /** Raise the barrier around the player and cast Barrier Breaker the way Iron's /cast does; simulate it if that is refused. */
-    private static void cast(Minecraft mc) {
+    private static void cast(Minecraft mc, float rate) {
         IntegratedServer server = mc.getSingleplayerServer();
         java.util.UUID id = mc.player.getUUID();
         server.execute(() -> {
+            server.tickRateManager().setTickRate(rate);
             ServerLevel level = server.overworld();
             ServerPlayer sp = server.getPlayerList().getPlayer(id);
             boolean made = BarrierData.get(level).create(level, sp, RADIUS, false);
@@ -315,16 +323,21 @@ public final class CinemaCapture {
 
     @SubscribeEvent
     public static void frameStart(RenderFrameEvent.Pre event) {
+        if (ENABLED && phase == Phase.SETTLE) {
+            if (settleFrames++ == 0) {
+                settleReal = System.nanoTime();
+            }
+        }
         if (!ENABLED || !ArcanaClock.isVirtual() || phase == Phase.DONE) {
             return;
         }
         ArcanaClock.advance(FRAME_NANOS);
         // keep 20 game ticks per film second: the tick rate follows how fast the software renderer is drawing
-        if (++rateWindowFrames >= 24) {
+        if (++rateWindowFrames >= 12) {
             long now = System.nanoTime();
             double fps = rateWindowFrames / ((now - rateWindowReal) / 1.0E9);
             float want = (float)Math.max(1.0, Math.min(20.0, 20.0 * fps / 24.0));
-            if (Math.abs(want - tickRate) / tickRate > 0.12F) {
+            if (Math.abs(want - tickRate) / tickRate > 0.08F) {
                 tickRate = want;
                 IntegratedServer server = Minecraft.getInstance().getSingleplayerServer();
                 if (server != null) {

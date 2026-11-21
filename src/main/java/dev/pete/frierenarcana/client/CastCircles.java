@@ -111,7 +111,7 @@ public final class CastCircles {
 
     @SubscribeEvent
     public static void render(RenderLevelStageEvent var0) {
-        if (var0.getStage() == Stage.AFTER_TRANSLUCENT_BLOCKS && !ACTIVE.isEmpty()) {
+        if (var0.getStage() == ArcanaStages.glow() && !ACTIVE.isEmpty()) {
             Minecraft var1 = Minecraft.getInstance();
             ClientLevel var2 = var1.level;
             if (var2 != null && var1.player != null) {

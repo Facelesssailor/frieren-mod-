@@ -42,7 +42,7 @@ public final class SpellCircleFx {
 
    @SubscribeEvent
    public static void render(RenderLevelStageEvent var0) {
-      if (var0.getStage() == Stage.AFTER_TRANSLUCENT_BLOCKS) {
+      if (var0.getStage() == ArcanaStages.glow()) {
          if (ArcanaCinematic.breakerActive()) {
             Minecraft var1 = Minecraft.getInstance();
             LocalPlayer var2 = var1.player;

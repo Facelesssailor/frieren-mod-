@@ -92,6 +92,7 @@ public final class ArcanaCinematic {
 
     @SubscribeEvent
     public static void tick(Post var0) {
+        putHandsBack();
         CinemaDirector.tick(var0);
     }
 
@@ -163,6 +164,58 @@ public final class ArcanaCinematic {
                 14149631
             );
         }
+    }
+
+    private static net.minecraft.world.item.ItemStack heldMain;
+    private static net.minecraft.world.item.ItemStack heldOff;
+    private static int heldSlot = -1;
+
+    /** The caster's own name tag would float over them in every shot of the cutscene (the camera is not the player). */
+    @SubscribeEvent
+    public static void nameTag(net.neoforged.neoforge.client.event.RenderNameTagEvent event) {
+        if (active() && event.getEntity() == Minecraft.getInstance().player) {
+            event.setCanRender(net.neoforged.neoforge.common.util.TriState.FALSE);
+        }
+    }
+
+    /**
+     * Frieren breaks the barrier with empty hands (ep. 21, 15:03 - 15:07): while the Barrier Breaker cutscene films the
+     * caster, whatever they hold is left out of the picture (only while their model is drawn, then put straight back).
+     */
+    @SubscribeEvent
+    public static void handsPre(net.neoforged.neoforge.client.event.RenderPlayerEvent.Pre event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (breakerActive() && event.getEntity() == mc.player && heldSlot < 0) {
+            net.minecraft.world.entity.player.Inventory inv = mc.player.getInventory();
+            heldSlot = inv.selected;
+            heldMain = inv.items.get(heldSlot);
+            heldOff = inv.offhand.get(0);
+            inv.items.set(heldSlot, net.minecraft.world.item.ItemStack.EMPTY);
+            inv.offhand.set(0, net.minecraft.world.item.ItemStack.EMPTY);
+        }
+    }
+
+    @SubscribeEvent
+    public static void handsPost(net.neoforged.neoforge.client.event.RenderPlayerEvent.Post event) {
+        if (event.getEntity() == Minecraft.getInstance().player) {
+            putHandsBack();
+        }
+    }
+
+    private static void putHandsBack() {
+        Minecraft mc = Minecraft.getInstance();
+        if (heldSlot >= 0 && mc.player != null) {
+            net.minecraft.world.entity.player.Inventory inv = mc.player.getInventory();
+            if (inv.items.get(heldSlot).isEmpty()) {
+                inv.items.set(heldSlot, heldMain);
+            }
+            if (inv.offhand.get(0).isEmpty()) {
+                inv.offhand.set(0, heldOff);
+            }
+        }
+        heldSlot = -1;
+        heldMain = null;
+        heldOff = null;
     }
 
     public static boolean breakerActive() {
